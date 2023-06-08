@@ -22,7 +22,7 @@ namespace TornadosCallouts.Callouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            Spawnpoint = new Vector3(929.79f, -948.78f, 7.14f); // YellowJack in the County
+            Spawnpoint = new Vector3(127.44f, -1306.12f, 29.23f); // Vanilla Unicorn Strip Club Location
             ShowCalloutAreaBlipBeforeAccepting(Spawnpoint, 30f);
             AddMinimumDistanceCheck(30f, Spawnpoint);
             CalloutMessage = "Bar Fight in Progress";
@@ -33,21 +33,21 @@ namespace TornadosCallouts.Callouts
         }
         public override bool OnCalloutAccepted()
         {
-            // creates suspect 1 at the YellowJack Bar
+            // creates suspect 1 at the Vanilla Unicorn Strip Club
             Suspect1 = new Ped("a_m_y_mexthug_01", Spawnpoint, 180f); 
             Suspect1.IsPersistent = true;
             Suspect1.BlockPermanentEvents = true;
 
-            SuspectBlip1 = Suspect1.AttachBlip(); // attach a blip to the suspect
+            SuspectBlip1 = Suspect1.AttachBlip(); // attach a blip to suspect 1
             SuspectBlip1.Color = System.Drawing.Color.Yellow;
             SuspectBlip1.IsRouteEnabled = true;
 
-            // creates suspect 2 at the YellowJack Bar
-            Suspect2 = new Ped("a_m_m_tramp_01", Spawnpoint, 180f);
+            // creates suspect 2 at the Vanilla Unicorn Strip Club
+            Suspect2 = new Ped("a_m_m_golfer_01", Spawnpoint, 180f);
             Suspect2.IsPersistent = true;
             Suspect2.BlockPermanentEvents = true;
 
-            SuspectBlip2 = Suspect2.AttachBlip(); // attach a blip to the suspect
+            SuspectBlip2 = Suspect2.AttachBlip(); // attach a blip to suspect 2
             SuspectBlip2.Color = System.Drawing.Color.Yellow;
 
             FightCreated = false;
@@ -62,11 +62,13 @@ namespace TornadosCallouts.Callouts
 
             if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 50f)
             {
+
                 // Have Suspect1 fight against Suspect2
                 Suspect1.Tasks.FightAgainst(Suspect2);
 
                 // Have Suspect2 fight against Suspect1
                 Suspect2.Tasks.FightAgainst(Suspect1);
+
 
                 FightCreated = true;
             }
