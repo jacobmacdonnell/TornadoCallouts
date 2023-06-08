@@ -50,6 +50,7 @@ namespace TornadosCallouts.Callouts
             // creates suspect 2 at the Vanilla Unicorn Strip Club
             Suspect2 = new Ped("g_m_importexport_01", Spawnpoint, 180f);
             Suspect2.IsPersistent = true;
+            Suspect2.BlockPermanentEvents = true;
             Suspect2.CanRagdoll = false;
             Suspect2.Alertness += 50;
             Suspect2.CanOnlyBeDamagedByPlayer = true;
