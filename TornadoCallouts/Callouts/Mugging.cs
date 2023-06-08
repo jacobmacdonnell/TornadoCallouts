@@ -5,7 +5,7 @@ using LSPD_First_Response.Mod.Callouts;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Engine.Scripting.Entities;
 
-namespace StraysCallouts.Callouts
+namespace TornadoCallouts.Callouts
 {
     //Name the callout, and set the probability.
     [CalloutInfo("Mugging", CalloutProbability.Medium)]

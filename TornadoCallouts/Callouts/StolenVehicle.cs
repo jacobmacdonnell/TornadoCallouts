@@ -9,7 +9,7 @@ using LSPD_First_Response.Mod.Callouts;
 using LSPD_First_Response.Engine.Scripting.Entities;
 
 
-namespace LSPDFR_API_Guide.Callouts
+namespace TornadoCallouts.Callouts
 {
     [CalloutInfo("StolenVehicle", CalloutProbability.Medium)]
     public class StolenVehicle : Callout

@@ -12,7 +12,7 @@ using System.Drawing;
 namespace TornadoCallouts.Callouts
 {
 
-    [CalloutInfo("BarFight", CalloutProbability.High )]
+    [CalloutInfo("BarFight", CalloutProbability.High)]
     public class BarFight : Callout
     {
         private Ped Suspect1, Suspect2;

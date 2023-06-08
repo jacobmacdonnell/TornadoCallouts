@@ -38,6 +38,8 @@ namespace TornadoCallouts
         private static void RegisterCallouts()
         {
             Functions.RegisterCallout(typeof(Callouts.BarFight));
+            Functions.RegisterCallout(typeof(Callouts.StolenVehicle));
+            Functions.RegisterCallout(typeof(Callouts.Mugging));
         }
 
         public static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
