@@ -1,12 +1,19 @@
 ﻿<Properties>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Callouts/Mugging.cs">
+    <Files>
+      <File FileName="Callouts/Mugging.cs" Line="52" Column="54" />
+      <File FileName="Callouts/StolenVehicle.cs" Line="31" Column="40" />
+      <File FileName="Callouts/BarFight.cs" Line="120" Column="6" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="TornadoCallouts" expanded="True">
-            <Node name="TornadoCallouts" expanded="True" />
+            <Node name="TornadoCallouts" expanded="True">
+              <Node name="Callouts" expanded="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
