@@ -27,7 +27,7 @@ namespace TornadoCallouts.Callouts
             AddMinimumDistanceCheck(30f, Spawnpoint);
             CalloutMessage = "Bar Fight in Progress";
             CalloutPosition = Spawnpoint;
-            Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_04 CRIME_ASSAULT_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", Spawnpoint);
+            Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_04 CRIME_ASSAULT_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", Spawnpoint);
             
             return base.OnBeforeCalloutDisplayed();
         }
