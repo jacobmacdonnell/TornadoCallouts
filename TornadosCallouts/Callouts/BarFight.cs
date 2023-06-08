@@ -37,15 +37,24 @@ namespace TornadosCallouts.Callouts
             Suspect1 = new Ped("a_m_y_mexthug_01", Spawnpoint, 180f); 
             Suspect1.IsPersistent = true;
             Suspect1.BlockPermanentEvents = true;
+            Suspect1.CanRagdoll = false;
+            Suspect1.Alertness += 50;
+            Suspect1.CanOnlyBeDamagedByPlayer = true;
+            Suspect1.MaxHealth = 200;
+            Suspect1.Health += 50;
 
             SuspectBlip1 = Suspect1.AttachBlip(); // attach a blip to suspect 1
             SuspectBlip1.Color = System.Drawing.Color.Yellow;
             SuspectBlip1.IsRouteEnabled = true;
 
             // creates suspect 2 at the Vanilla Unicorn Strip Club
-            Suspect2 = new Ped("a_m_m_golfer_01", Spawnpoint, 180f);
+            Suspect2 = new Ped("g_m_importexport_01", Spawnpoint, 180f);
             Suspect2.IsPersistent = true;
-            Suspect2.BlockPermanentEvents = true;
+            Suspect2.CanRagdoll = false;
+            Suspect2.Alertness += 50;
+            Suspect2.CanOnlyBeDamagedByPlayer = true;
+            Suspect2.MaxHealth = 200;
+            Suspect2.Health += 50;
 
             SuspectBlip2 = Suspect2.AttachBlip(); // attach a blip to suspect 2
             SuspectBlip2.Color = System.Drawing.Color.Yellow;
@@ -73,11 +82,18 @@ namespace TornadosCallouts.Callouts
                 FightCreated = true;
             }
 
-            // Check if both suspects are dead or they have stopped fighting
-            if (FightCreated && ((Suspect1.IsDead && Suspect2.IsDead) || (!Suspect1.IsInCombat && !Suspect2.IsInCombat)))
+            // Check if both suspects are dead, they have stopped fighting, or both are cuffed.
+            bool v = (Suspect1.IsCuffed && Suspect2.IsCuffed);
+            if (FightCreated && ((Suspect1.IsDead && Suspect2.IsDead) || (!Suspect1.IsInCombat && !Suspect2.IsInCombat) || v))
             {
                 End();
+
+                // Display code 4 notification with green "Code 4" text
+                string notificationText = "~g~Code 4~s~: Situation resolved";
+                Game.DisplayNotification(notificationText);
             }
+
+
         }
 
         public override void End()
