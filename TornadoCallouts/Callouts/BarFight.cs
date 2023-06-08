@@ -82,13 +82,14 @@ namespace TornadoCallouts.Callouts
 
                 FightCreated = true;
             }
-
             // Check if both suspects are dead, they have stopped fighting, are cuffed, or player is dead.
 
             bool v = Suspect1.IsCuffed || Suspect2.IsCuffed; // Suspect 1 or 2 is cuffed.
             bool n = Suspect1.IsCuffed && Suspect2.IsCuffed; // Suspect 1 and 2 are cuffed.
-            if (Suspect1.IsDead && Suspect2.IsDead || !Suspect1.IsInCombat && !Suspect2.IsInCombat || Game.LocalPlayer.Character.IsDead || !Suspect1.Exists() || !Suspect2.Exists() || v || n)
+            if (Suspect1.IsDead && Suspect2.IsDead || Game.LocalPlayer.Character.IsDead || !Suspect1.Exists() || !Suspect2.Exists() || v || n)
             {
+                Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
+                Functions.PlayScannerAudio("GP_CODE4_01");
                 End();
             }
         }
