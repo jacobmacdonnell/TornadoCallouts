@@ -1,0 +1,11 @@
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\obj\x64\Debug\TornadosCallouts.csproj.AssemblyReference.cache
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\obj\x64\Debug\TornadosCallouts.csproj.CoreCompileInputs.cache
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\bin\x64\Debug\TornadosCallouts.dll
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\bin\x64\Debug\TornadosCallouts.pdb
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\bin\x64\Debug\LSPD First Response.dll
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\bin\x64\Debug\RagePluginHookSDK.dll
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\bin\x64\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\bin\x64\Debug\LSPD First Response.pdb
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\obj\x64\Debug\TornadosCallouts.csproj.CopyComplete
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\obj\x64\Debug\TornadosCallouts.dll
+C:\Users\jmacd\Documents\GitHub\TornadosCallouts\TornadosCallouts\obj\x64\Debug\TornadosCallouts.pdb

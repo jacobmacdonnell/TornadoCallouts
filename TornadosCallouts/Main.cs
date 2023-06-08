@@ -37,7 +37,7 @@ namespace TornadosCallouts
 
         private static void RegisterCallouts()
         {
-
+            Functions.RegisterCallout(typeof(Callouts.BarFight));
         }
 
         public static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)

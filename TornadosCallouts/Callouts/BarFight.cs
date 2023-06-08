@@ -70,8 +70,9 @@ namespace TornadosCallouts.Callouts
 
                 FightCreated = true;
             }
-            Suspect1
-            if (FightCreated && !Suspect1.Tasks.FightAgainst(Suspect2))
+
+            // Check if both suspects are dead or they have stopped fighting
+            if (FightCreated && ((Suspect1.IsDead && Suspect2.IsDead) || (!Suspect1.IsInCombat && !Suspect2.IsInCombat)))
             {
                 End();
             }
@@ -81,6 +82,7 @@ namespace TornadosCallouts.Callouts
         {
             base.End();
 
+            // Dismisses suspects 1 & 2
             if (Suspect1.Exists())
             {
                 Suspect1.Dismiss();
@@ -89,7 +91,18 @@ namespace TornadosCallouts.Callouts
             {
                 Suspect2.Dismiss();
             }
+           
+            // Removes blips for Suspects 1 & 2
+            if (SuspectBlip1.Exists())
+            {
+                SuspectBlip1.Delete();
+            }
+            if (SuspectBlip2.Exists())
+            {
+                SuspectBlip2.Delete();
+            }
 
+            Game.LogTrivial("TornadosCallouts Bar Fight Cleaned Up.");
         }
     }
 }
