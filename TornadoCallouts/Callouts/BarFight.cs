@@ -9,7 +9,7 @@ using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 
 
-namespace TornadosCallouts.Callouts
+namespace TornadoCallouts.Callouts
 {
 
     [CalloutInfo("BarFight", CalloutProbability.High )]
@@ -83,18 +83,14 @@ namespace TornadosCallouts.Callouts
                 FightCreated = true;
             }
 
-            // Check if both suspects are dead, they have stopped fighting, or both are cuffed.
-            bool v = (Suspect1.IsCuffed && Suspect2.IsCuffed);
-            if (FightCreated && ((Suspect1.IsDead && Suspect2.IsDead) || (!Suspect1.IsInCombat && !Suspect2.IsInCombat) || v))
+            // Check if both suspects are dead, they have stopped fighting, are cuffed, or player is dead.
+
+            bool v = Suspect1.IsCuffed || Suspect2.IsCuffed; // Suspect 1 or 2 is cuffed.
+            bool n = Suspect1.IsCuffed && Suspect2.IsCuffed; // Suspect 1 and 2 are cuffed.
+            if (Suspect1.IsDead && Suspect2.IsDead || !Suspect1.IsInCombat && !Suspect2.IsInCombat || Game.LocalPlayer.Character.IsDead || !Suspect1.Exists() || !Suspect2.Exists() || v || n)
             {
                 End();
-
-                // Display code 4 notification with green "Code 4" text
-                string notificationText = "~g~Code 4~s~: Situation resolved";
-                Game.DisplayNotification(notificationText);
             }
-
-
         }
 
         public override void End()
@@ -102,6 +98,7 @@ namespace TornadosCallouts.Callouts
             base.End();
 
             // Dismisses suspects 1 & 2
+
             if (Suspect1.Exists())
             {
                 Suspect1.Dismiss();
@@ -111,7 +108,8 @@ namespace TornadosCallouts.Callouts
                 Suspect2.Dismiss();
             }
            
-            // Removes blips for Suspects 1 & 2
+            // Removes blips for suspects 1 & 2
+
             if (SuspectBlip1.Exists())
             {
                 SuspectBlip1.Delete();
@@ -121,7 +119,7 @@ namespace TornadosCallouts.Callouts
                 SuspectBlip2.Delete();
             }
 
-            Game.LogTrivial("TornadosCallouts Bar Fight Cleaned Up.");
+            Game.LogTrivial("TornadoCallouts Bar Fight Has Cleaned Up.");
         }
     }
 }
