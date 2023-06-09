@@ -8,12 +8,14 @@ using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using CalloutInterfaceAPI;
 using System.Drawing;
+using System.Collections;
+using System.Security.Cryptography;
 
 
 namespace TornadoCallouts.Callouts
 {
 
-    [CalloutInterface("Bar Fight", CalloutProbability.Medium, "Two males currently fighting", "Code 3", "LSPD")]
+    [CalloutInterface("Bar Fight", CalloutProbability.Medium, "Two males currently fighting.", "Code 3", "LSPD")]
     public class BarFight : Callout
 
     {
@@ -27,11 +29,12 @@ namespace TornadoCallouts.Callouts
             Spawnpoint = new Vector3(127.44f, -1306.12f, 29.23f); // Vanilla Unicorn Strip Club Location
             ShowCalloutAreaBlipBeforeAccepting(Spawnpoint, 50f);
             AddMinimumDistanceCheck(100f, Spawnpoint);
-            CalloutMessage = "Bar Fight in Progress";
+            CalloutMessage = "Bar Fight";
             CalloutPosition = Spawnpoint;
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Staff at the Vanilla Unicorn bar are reporting two males currently fighting outside.Approach with caution.");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_04 CRIME_ASSAULT_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", Spawnpoint);
 
-            CalloutInterfaceAPI.Functions.SendMessage(this, "Staff at the Vanilla Unicorn bar are reporting two males currently fighting outside. Approach with caution.");
+           
             
             return base.OnBeforeCalloutDisplayed();
         }

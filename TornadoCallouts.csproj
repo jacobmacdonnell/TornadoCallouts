@@ -7,8 +7,8 @@
     <ProjectGuid>{1C644681-05ED-461E-9CF9-985F18785275}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TornadosCallouts</RootNamespace>
-    <AssemblyName>TornadosCallouts</AssemblyName>
+    <RootNamespace>TornadoCallouts</RootNamespace>
+    <AssemblyName>TornadoCallouts</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
