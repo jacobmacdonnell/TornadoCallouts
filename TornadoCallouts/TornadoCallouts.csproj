@@ -64,6 +64,9 @@
     <Reference Include="RagePluginHookSDK">
       <HintPath>bin\x64\Debug\RagePluginHookSDK.dll</HintPath>
     </Reference>
+    <Reference Include="CalloutInterfaceAPI">
+      <HintPath>bin\x64\Debug\CalloutInterfaceAPI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Callouts\BarFight.cs" />

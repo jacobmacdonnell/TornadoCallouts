@@ -4,13 +4,15 @@ using Rage.Native;
 using LSPD_First_Response.Mod.Callouts;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Engine.Scripting.Entities;
+using CalloutInterfaceAPI;
+
 
 namespace TornadoCallouts.Callouts
 {
-    //Name the callout, and set the probability.
-    [CalloutInfo("Mugging", CalloutProbability.Medium)]
-    //Inherit the Callout class, since we're making a callout.
-    public class Mugging : LSPD_First_Response.Mod.Callouts.Callout
+
+    [CalloutInterface("Mugging", CalloutProbability.Medium, "A possible mugging", "Code 3", "LSPD")]
+    public class Mugging : Callout
+
     {
         /// <summary>
         /// This callout waits until the player is on scene to start, which is the purpose of EMuggingState, so we know when to start running the callout's logic.
@@ -40,20 +42,16 @@ namespace TornadoCallouts.Callouts
             if(!Victim.Exists()) return false;
 
             //If the peds are valid, display the area that the callout is in.
-            this.ShowCalloutAreaBlipBeforeAccepting(spawnPoint, 15f);
-            this.AddMinimumDistanceCheck(5f, spawnPoint);
+            this.ShowCalloutAreaBlipBeforeAccepting(spawnPoint, 100f);
+            this.AddMinimumDistanceCheck(50f, spawnPoint);
 
             //Give the aggressor his weapon
             WeaponAsset weaponAsset = new WeaponAsset("WEAPON_PISTOL");
             Aggressor.Inventory.GiveNewWeapon(weaponAsset, 500, true);
-
-
-            //Set the callout message(displayed in the notification), and the position(also shown in the notification)
-            this.CalloutMessage = "Possible Mugging";
             this.CalloutPosition = spawnPoint;
 
-            //Play the scanner audio.
-            Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_03 CRIME_POSSIBLE_MUGGING IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", this.spawnPoint);
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Citiznes are reporting a possible mugging of an individual. Approach with caution.");
+
 
             return base.OnBeforeCalloutDisplayed();
         }

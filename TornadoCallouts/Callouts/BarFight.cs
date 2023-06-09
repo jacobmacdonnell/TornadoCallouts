@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 using Rage;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
+using CalloutInterfaceAPI;
 using System.Drawing;
 
 
 namespace TornadoCallouts.Callouts
 {
 
-    [CalloutInfo("BarFight", CalloutProbability.High)]
+    [CalloutInterface("Bar Fight", CalloutProbability.Medium, "Two males currently fighting", "Code 3", "LSPD")]
     public class BarFight : Callout
+
     {
         private Ped Suspect1, Suspect2;
         private Blip SuspectBlip1, SuspectBlip2;
@@ -23,11 +25,11 @@ namespace TornadoCallouts.Callouts
         public override bool OnBeforeCalloutDisplayed()
         {
             Spawnpoint = new Vector3(127.44f, -1306.12f, 29.23f); // Vanilla Unicorn Strip Club Location
-            ShowCalloutAreaBlipBeforeAccepting(Spawnpoint, 30f);
-            AddMinimumDistanceCheck(30f, Spawnpoint);
-            CalloutMessage = "Bar Fight in Progress";
+            ShowCalloutAreaBlipBeforeAccepting(Spawnpoint, 50f);
+            AddMinimumDistanceCheck(100f, Spawnpoint);
             CalloutPosition = Spawnpoint;
-            Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_04 CRIME_ASSAULT_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", Spawnpoint);
+
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Staff at the Vanilla Unicorn bar are reporting two males currently fighting outside. Approach with caution.");
             
             return base.OnBeforeCalloutDisplayed();
         }
@@ -83,8 +85,7 @@ namespace TornadoCallouts.Callouts
             bool n = Suspect1.IsCuffed && Suspect2.IsCuffed; // Suspect 1 and 2 are cuffed.
             if (Suspect1.IsDead && Suspect2.IsDead || Game.LocalPlayer.Character.IsDead || !Suspect1.Exists() || !Suspect2.Exists() || v || n)
             {
-                Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
-                Functions.PlayScannerAudio("GP_CODE4_01");
+                Game.DisplayNotification("Callout Ended. ~g~We Are Code 4. DUBUG CHECK");
                 End();
             }
         }

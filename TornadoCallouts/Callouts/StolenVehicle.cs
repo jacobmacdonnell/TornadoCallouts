@@ -7,12 +7,15 @@ using Rage;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using LSPD_First_Response.Engine.Scripting.Entities;
+using CalloutInterfaceAPI;
 
 
 namespace TornadoCallouts.Callouts
 {
-    [CalloutInfo("StolenVehicle", CalloutProbability.Medium)]
+
+    [CalloutInterface("Stolen Vehicle", CalloutProbability.Medium, "Possible stolen vehicle", "Code 3", "LSPD")]
     public class StolenVehicle : Callout
+
     {
         private Ped Suspect;
         private Vehicle SuspectVehicle;
@@ -25,13 +28,11 @@ namespace TornadoCallouts.Callouts
         {
             SpawnPoint = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around(250f));
 
-            ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, 30f);
-            AddMinimumDistanceCheck(20f, SpawnPoint);
-
-            CalloutMessage = "Possbile Stolen Vehicle";
+            ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, 50f);
+            AddMinimumDistanceCheck(100f, SpawnPoint);
             CalloutPosition = SpawnPoint;
 
-            Functions.PlayScannerAudioUsingPosition("WE_HAVE CRIME_GRAND_THEFT_AUTO IN_OR_ON_POSITION SUSPECT_LAST_SEEN_01 DRIVING_A_01 VEHICLE_CATEGORY_SPORTS_CAR_01 UNITS_RESPOND_CODE_03_02", SpawnPoint);
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Citiznes are reporting someone just stole a vehicle and are driving eratically. Approach with caution.");
 
             return base.OnBeforeCalloutDisplayed();
         }
