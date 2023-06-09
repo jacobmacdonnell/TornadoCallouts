@@ -110,7 +110,7 @@ namespace TornadoCallouts.Callouts
             }
 
             //If the state is DecisionMade(The aggressor already decided what random outcome to execute), and the pursuit isn't running anymore, end the callout.
-            if (state == EMuggingState.DecisionMade && !Functions.IsPursuitStillRunning(pursuit))
+            if (state == EMuggingState.DecisionMade && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(pursuit))
             {
                 this.End();
             }
@@ -141,7 +141,7 @@ namespace TornadoCallouts.Callouts
             GameFiber.StartNew(delegate
             {
                 //Create the pursuit
-                this.pursuit = Functions.CreatePursuit();
+                this.pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
 
                 //Pick a random number, to choose a random outcome
                 int r = new Random().Next(1, 4);
@@ -179,10 +179,10 @@ namespace TornadoCallouts.Callouts
                 Aggressor.Dismiss();
 
                 //Add the aggressor to a pursuit
-                Functions.AddPedToPursuit(this.pursuit, Aggressor);
+                LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(this.pursuit, Aggressor);
 
                 //Dispatch a backup unit.
-                Functions.RequestBackup(Game.LocalPlayer.Character.Position, LSPD_First_Response.EBackupResponseType.Pursuit, LSPD_First_Response.EBackupUnitType.LocalUnit);
+                LSPD_First_Response.Mod.API.Functions.RequestBackup(Game.LocalPlayer.Character.Position, LSPD_First_Response.EBackupResponseType.Pursuit, LSPD_First_Response.EBackupUnitType.LocalUnit);
             });
         }
     }

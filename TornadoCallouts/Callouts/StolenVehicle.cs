@@ -59,13 +59,13 @@ namespace TornadoCallouts.Callouts
             base.Process();
             if (!PursuitCreated && Game.LocalPlayer.Character.DistanceTo(Suspect.Position) < 30f)
             {
-                Pursuit = Functions.CreatePursuit();
-                Functions.AddPedToPursuit(Pursuit, Suspect);
-                Functions.SetPursuitIsActiveForPlayer(Pursuit, true);
+                Pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
+                LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(Pursuit, Suspect);
+                LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(Pursuit, true);
                 PursuitCreated = true;
             }
 
-            if (PursuitCreated && !Functions.IsPursuitStillRunning(Pursuit))
+            if (PursuitCreated && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(Pursuit))
             {
                 End();
             }
