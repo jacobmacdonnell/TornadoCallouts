@@ -1,11 +1,20 @@
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\bin\x64\Debug\TornadosCallouts.dll
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\bin\x64\Debug\TornadosCallouts.pdb
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\bin\x64\Debug\LSPD First Response.dll
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\bin\x64\Debug\RagePluginHookSDK.dll
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\bin\x64\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\bin\x64\Debug\LSPD First Response.pdb
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\obj\x64\Debug\TornadoCallouts.csproj.AssemblyReference.cache
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\obj\x64\Debug\TornadoCallouts.csproj.CoreCompileInputs.cache
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\obj\x64\Debug\TornadoCallouts.csproj.CopyComplete
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\obj\x64\Debug\TornadosCallouts.dll
-C:\Users\jmacd\Documents\GitHub\TornadoCallouts\TornadoCallouts\obj\x64\Debug\TornadosCallouts.pdb
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/bin/x64/Debug/TornadosCallouts.dll
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/bin/x64/Debug/TornadosCallouts.pdb
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/bin/x64/Debug/LSPD First Response.dll
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/bin/x64/Debug/RagePluginHookSDK.dll
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/bin/x64/Debug/Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/bin/x64/Debug/LSPD First Response.pdb
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/obj/x64/Debug/TornadoCallouts.csproj.AssemblyReference.cache
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/obj/x64/Debug/TornadoCallouts.csproj.CoreCompileInputs.cache
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/obj/x64/Debug/TornadoCallouts.csproj.CopyComplete
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/obj/x64/Debug/TornadosCallouts.dll
+C:/Users/jmacd/Documents/GitHub/TornadoCallouts/TornadoCallouts/obj/x64/Debug/TornadosCallouts.pdb
+/Users/jmac/Documents/GitHub/TornadoCallouts/TornadoCallouts/bin/x64/Debug/TornadosCallouts.dll
+/Users/jmac/Documents/GitHub/TornadoCallouts/TornadoCallouts/bin/x64/Debug/TornadosCallouts.pdb
+/Users/jmac/Documents/GitHub/TornadoCallouts/TornadoCallouts/bin/x64/Debug/Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+/Users/jmac/Documents/GitHub/TornadoCallouts/TornadoCallouts/bin/x64/Debug/LSPD First Response.pdb
+/Users/jmac/Documents/GitHub/TornadoCallouts/TornadoCallouts/obj/x64/Debug/TornadoCallouts.csproj.AssemblyReference.cache
+/Users/jmac/Documents/GitHub/TornadoCallouts/TornadoCallouts/obj/x64/Debug/TornadoCallouts.csproj.CoreCompileInputs.cache
+/Users/jmac/Documents/GitHub/TornadoCallouts/TornadoCallouts/obj/x64/Debug/TornadoCallouts.csproj.CopyComplete
+/Users/jmac/Documents/GitHub/TornadoCallouts/TornadoCallouts/obj/x64/Debug/TornadosCallouts.dll
+/Users/jmac/Documents/GitHub/TornadoCallouts/TornadoCallouts/obj/x64/Debug/TornadosCallouts.pdb
