@@ -33,7 +33,7 @@ namespace TornadoCallouts.Callouts
             AddMinimumDistanceCheck(100f, Spawnpoint);
             CalloutMessage = "Bar Fight";
             CalloutPosition = Spawnpoint;
-            CalloutInterfaceAPI.Functions.SendMessage(this, "Staff at the Vanilla Unicorn bar are reporting two males currently fighting outside.Approach with caution.");
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Staff at the Vanilla Unicorn bar are reporting two males currently fighting outside. Approach with caution.");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_04 CRIME_ASSAULT_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", Spawnpoint);
 
            
@@ -74,7 +74,7 @@ namespace TornadoCallouts.Callouts
         {
             base.Process();
 
-            if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 50f)
+            if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 60f)
             {
 
                 // Have Suspect1 fight against Suspect2

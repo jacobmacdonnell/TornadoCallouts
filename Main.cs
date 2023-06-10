@@ -31,7 +31,7 @@ namespace TornadoCallouts
             if (OnDuty)
             {
                 RegisterCallouts();
-                Game.DisplayNotification("TornadoCallouts by TornadoMac | ~r~Version 1.0.0~s~| Was ~g~Successfully Loaded!");
+                Game.DisplayNotification("TornadoCallouts by TornadoMac | ~r~Version 1.0.2~s~| Was ~g~Successfully Loaded!");
             }
         }
 
