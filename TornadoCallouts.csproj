@@ -50,12 +50,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LSPD First Response">
-      <HintPath>D:\GAMES\SteamLibrary\steamapps\common\Grand Theft Auto V\plugins\LSPD First Response.dll</HintPath>
-    </Reference>
-    <Reference Include="RagePluginHookSDK">
-      <HintPath>D:\GAMES\SteamLibrary\steamapps\common\Grand Theft Auto V\SDK\RagePluginHookSDK.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -67,6 +61,12 @@
     <Reference Include="System.Xml" />
     <Reference Include="CalloutInterfaceAPI">
       <HintPath>bin\x64\Debug\CalloutInterfaceAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="LSPD First Response">
+      <HintPath>bin\x64\Debug\LSPD First Response.dll</HintPath>
+    </Reference>
+    <Reference Include="RagePluginHookSDK">
+      <HintPath>bin\x64\Debug\RagePluginHookSDK.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

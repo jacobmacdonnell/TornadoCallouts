@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Rage;
 using LSPD_First_Response.Mod.API;
-using LSPD_First_Response.Mod.Callouts;
 using CalloutInterfaceAPI;
+using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using System.Collections;
 using System.Security.Cryptography;
@@ -16,6 +16,8 @@ namespace TornadoCallouts.Callouts
 {
 
     [CalloutInterface("Bar Fight", CalloutProbability.Medium, "Two males currently fighting.", "Code 3", "LSPD")]
+
+
     public class BarFight : Callout
 
     {
