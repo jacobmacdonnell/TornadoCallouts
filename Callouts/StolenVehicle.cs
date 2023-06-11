@@ -35,13 +35,16 @@ namespace TornadoCallouts.Callouts
             CalloutMessage = "Possible Stolen Vehicle";
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_04 CRIME_GRAND_THEFT_AUTO_01 IN_OR_ON_POSITION SUSPECT_LAST_SEEN_01 DRIVING_A_01 VEHICLE_CATEGORY_SPORTS_CAR_01 UNITS_RESPOND_CODE_03_02", SpawnPoint);
 
-            CalloutInterfaceAPI.Functions.SendMessage(this, "Citiznes are reporting someone just stole a vehicle and are driving eratically. Approach with caution.");
 
             return base.OnBeforeCalloutDisplayed();
         }
 
         public override bool OnCalloutAccepted()
+
         {
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Citiznes are reporting someone just stole a vehicle and are driving eratically. Approach with caution.");
+
+
             SuspectVehicle = new Vehicle("ZENTORNO", SpawnPoint);
             SuspectVehicle.IsPersistent = true;
 

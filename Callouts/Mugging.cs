@@ -52,8 +52,6 @@ namespace TornadoCallouts.Callouts
             Aggressor.Inventory.GiveNewWeapon(weaponAsset, 500, true);
             this.CalloutPosition = spawnPoint;
 
-            CalloutInterfaceAPI.Functions.SendMessage(this, "Citiznes are reporting a possible mugging of an individual. Approach with caution.");
-
 
             return base.OnBeforeCalloutDisplayed();
         }
@@ -64,6 +62,9 @@ namespace TornadoCallouts.Callouts
         /// <returns></returns>
         public override bool OnCalloutAccepted()
         {
+
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Citiznes are reporting a possible mugging of an individual. Approach with caution.");
+
             //Set the player as en route to the scene
             state = EMuggingState.EnRoute;
 

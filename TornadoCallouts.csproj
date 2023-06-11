@@ -63,10 +63,10 @@
       <HintPath>bin\x64\Debug\CalloutInterfaceAPI.dll</HintPath>
     </Reference>
     <Reference Include="LSPD First Response">
-      <HintPath>bin\x64\Debug\LSPD First Response.dll</HintPath>
+      <HintPath>D:\GAMES\SteamLibrary\steamapps\common\Grand Theft Auto V\plugins\LSPD First Response.dll</HintPath>
     </Reference>
     <Reference Include="RagePluginHookSDK">
-      <HintPath>bin\x64\Debug\RagePluginHookSDK.dll</HintPath>
+      <HintPath>D:\GAMES\SteamLibrary\steamapps\common\Grand Theft Auto V\SDK\RagePluginHookSDK.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
