@@ -73,6 +73,7 @@ namespace TornadoCallouts.Callouts
 
             if (PursuitCreated && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(Pursuit))
             {
+                Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
                 End();
             }
         }

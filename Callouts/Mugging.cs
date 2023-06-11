@@ -115,6 +115,7 @@ namespace TornadoCallouts.Callouts
             //If the state is DecisionMade(The aggressor already decided what random outcome to execute), and the pursuit isn't running anymore, end the callout.
             if (state == EMuggingState.DecisionMade && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(pursuit))
             {
+                Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
                 this.End();
             }
         }

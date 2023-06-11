@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using Rage;
 using LSPD_First_Response.Mod.API;
-using System.Reflection;
-using System.Runtime.Remoting.Channels;
+
 
 namespace TornadoCallouts
 {
@@ -14,13 +10,16 @@ namespace TornadoCallouts
     {
         public override void Initialize()
         {
+            Game.LogTrivial("TornadoCallouts Initialize() method called."); // Debugging line
             Functions.OnOnDutyStateChanged += OnOnDutyStateChangedHandler;
-            Game.LogTrivial("Plugin TornadoCallouts" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "by TornadoMac has been initialized!");
+            Game.LogTrivial("Attempting to load IniFile..."); // Debugging line
+            IniFile.LoadIniFile();
+            Game.LogTrivial("IniFile.LoadIniFile() method has been called."); // Debugging line
+            Game.LogTrivial($"Plugin TornadoCallouts {Assembly.GetExecutingAssembly().GetName().Version} by TornadoMac has been initialized!");
             Game.LogTrivial("Go on duty to fully load TornadoCallouts.");
-
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LSPDFRResolveEventHandler);
-
+            AppDomain.CurrentDomain.AssemblyResolve += LSPDFRResolveEventHandler;
         }
+
         public override void Finally()
         {
             Game.LogTrivial("TornadoCallouts has been cleaned up!");
@@ -30,20 +29,20 @@ namespace TornadoCallouts
         {
             if (OnDuty)
             {
-                RegisterCallouts();
-                Game.DisplayNotification("TornadoCallouts by TornadoMac | ~r~Version 1.0.3~s~| Was ~g~Successfully Loaded!");
+                RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging);
+                Game.DisplayNotification("TornadoCallouts by TornadoMac | ~r~Version 1.0.4~s~| Was ~g~Successfully Loaded!");
             }
         }
 
-        private static void RegisterCallouts()
+        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled)
         {
-            Functions.RegisterCallout(typeof(Callouts.BarFight));
-            Functions.RegisterCallout(typeof(Callouts.StolenVehicle));
-            Functions.RegisterCallout(typeof(Callouts.Mugging));
+            if (barFightEnabled) { Functions.RegisterCallout(typeof(Callouts.BarFight)); }
+            if (stolenVehicleEnabled) { Functions.RegisterCallout(typeof(Callouts.StolenVehicle)); }
+            if (muggingEnabled) { Functions.RegisterCallout(typeof(Callouts.Mugging)); }
         }
 
-        public static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
-        { 
+        private static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
+        {
             foreach (Assembly assembly in Functions.GetAllUserPlugins())
             {
                 if (args.Name.ToLower().Contains(assembly.GetName().Name.ToLower()))
@@ -67,8 +66,7 @@ namespace TornadoCallouts
                     }
                 }
             }
-            return false;   
+            return false;
         }
-   
     }
 }
