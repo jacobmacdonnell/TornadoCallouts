@@ -14,7 +14,7 @@ using LSPD_First_Response.Engine;
 namespace TornadoCallouts.Callouts
 {
 
-    [CalloutInterface("Stolen Vehicle", CalloutProbability.Medium, "Possible stolen vehicle", "Code 3", "LSPD")]
+    [CalloutInterface("Stolen Vehicle", CalloutProbability.Low, "Possible stolen vehicle", "Code 3", "LSPD")]
     public class StolenVehicle : Callout
 
     {

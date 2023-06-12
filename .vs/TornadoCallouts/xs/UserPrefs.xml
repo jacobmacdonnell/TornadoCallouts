@@ -1,28 +1,35 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Callouts/BarFight.cs">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Properties/AssemblyInfo.cs">
     <Files>
-      <File FileName="Callouts/StolenVehicle.cs" Line="61" Column="14" IsPinned="True" />
-      <File FileName="Callouts/Mugging.cs" Line="118" Column="1" IsPinned="True" />
-      <File FileName="Callouts/BarFight.cs" Line="24" Column="1" />
+      <File FileName="Main.cs" Line="26" Column="10" IsPinned="True" />
+      <File FileName="Callouts/BarFight.cs" Line="42" Column="14" IsPinned="True" />
+      <File FileName="Callouts/Mugging.cs" Line="18" Column="84" IsPinned="True" />
+      <File FileName="Callouts/StolenVehicle.cs" Line="20" Column="6" IsPinned="True" />
+      <File FileName="IniFile.cs" Line="35" Column="63" IsPinned="True" />
+      <File FileName="Properties/AssemblyInfo.cs" Line="36" Column="41" IsPinned="True" />
+      <File FileName="VersionChecker/PluginCheck.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="TornadoCallouts" expanded="True">
             <Node name="TornadoCallouts" expanded="True">
-              <Node name="Callouts" expanded="True">
-                <Node name="BarFight.cs" selected="True" />
+              <Node name="References" expanded="True" />
+              <Node name="Callouts" expanded="True" />
+              <Node name="Properties" expanded="True">
+                <Node name="AssemblyInfo.cs" selected="True" />
               </Node>
+              <Node name="VersionChecker" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>

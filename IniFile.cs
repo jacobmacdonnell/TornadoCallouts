@@ -32,7 +32,7 @@ namespace TornadoCallouts
         }
 
 
-        public static readonly string PluginVersion = "1.0.4";
+        public static readonly string PluginVersion = "1.0.5";
     }
 
 }

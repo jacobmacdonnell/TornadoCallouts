@@ -2,7 +2,7 @@
 using System.Reflection;
 using Rage;
 using LSPD_First_Response.Mod.API;
-
+using TornadoCallouts.VersionChecker;
 
 namespace TornadoCallouts
 {
@@ -10,11 +10,11 @@ namespace TornadoCallouts
     {
         public override void Initialize()
         {
-            Game.LogTrivial("TornadoCallouts Initialize() method called."); // Debugging line
+            Game.LogTrivial("TornadoCallouts Initialize() method called.");
             Functions.OnOnDutyStateChanged += OnOnDutyStateChangedHandler;
-            Game.LogTrivial("Attempting to load IniFile..."); // Debugging line
+            Game.LogTrivial("Attempting to load IniFile...");
             IniFile.LoadIniFile();
-            Game.LogTrivial("IniFile.LoadIniFile() method has been called."); // Debugging line
+            Game.LogTrivial("IniFile.LoadIniFile() method has been called.");
             Game.LogTrivial($"Plugin TornadoCallouts {Assembly.GetExecutingAssembly().GetName().Version} by TornadoMac has been initialized!");
             Game.LogTrivial("Go on duty to fully load TornadoCallouts.");
             AppDomain.CurrentDomain.AssemblyResolve += LSPDFRResolveEventHandler;
@@ -30,7 +30,12 @@ namespace TornadoCallouts
             if (OnDuty)
             {
                 RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging);
-                Game.DisplayNotification("TornadoCallouts by TornadoMac | ~r~Version 1.0.4~s~| Was ~g~Successfully Loaded!");
+                GameFiber.StartNew(delegate
+                {
+                    Game.LogTrivial("Checking for a new TornadoCallouts version...");
+                    PluginCheck.IsUpdateAvailable();
+                    Game.DisplayNotification("TornadoCallouts by TornadoMac | ~y~Version " + Assembly.GetExecutingAssembly().GetName().Version + "~s~| Has ~g~Successfully Loaded!");
+                });
             }
         }
 
@@ -39,6 +44,7 @@ namespace TornadoCallouts
             if (barFightEnabled) { Functions.RegisterCallout(typeof(Callouts.BarFight)); }
             if (stolenVehicleEnabled) { Functions.RegisterCallout(typeof(Callouts.StolenVehicle)); }
             if (muggingEnabled) { Functions.RegisterCallout(typeof(Callouts.Mugging)); }
+            Game.LogTrivial("All callouts were loaded successfully.");
         }
 
         private static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
