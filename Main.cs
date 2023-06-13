@@ -48,7 +48,7 @@ namespace TornadoCallouts
             if (muggingEnabled) { Functions.RegisterCallout(typeof(Callouts.Mugging)); }
             if (activeStabbingEnabled) { Functions.RegisterCallout(typeof(Callouts.ActiveStabbing)); }
            
-            Game.LogTrivial("All callouts were loaded successfully.");
+            Game.LogTrivial("[TornadoCallouts] All callouts were loaded successfully.");
         }
 
         private static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)

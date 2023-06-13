@@ -1,13 +1,13 @@
 ﻿<Properties>
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Callouts/ActiveStabbing.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Properties/AssemblyInfo.cs">
     <Files>
-      <File FileName="Properties/AssemblyInfo.cs" Line="36" Column="41" IsPinned="True" />
+      <File FileName="Properties/AssemblyInfo.cs" Line="35" Column="37" IsPinned="True" />
       <File FileName="IniFile.cs" Line="35" Column="63" IsPinned="True" />
-      <File FileName="Main.cs" Line="26" Column="10" IsPinned="True" />
+      <File FileName="Main.cs" Line="51" Column="48" IsPinned="True" />
       <File FileName="Callouts/BarFight.cs" Line="42" Column="14" IsPinned="True" />
-      <File FileName="Callouts/BarFight (copy).cs" Line="22" Column="10" IsPinned="True" />
-      <File FileName="Callouts/StolenVehicle.cs" Line="20" Column="5" />
+      <File FileName="Callouts/StolenVehicle.cs" />
+      <File FileName="Callouts/ActiveStabbing.cs" Line="95" Column="111" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,10 +15,10 @@
           <Node name="TornadoCallouts" expanded="True">
             <Node name="TornadoCallouts" expanded="True">
               <Node name="References" expanded="True" />
-              <Node name="Callouts" expanded="True">
-                <Node name="ActiveStabbing.cs" selected="True" />
+              <Node name="Callouts" expanded="True" />
+              <Node name="Properties" expanded="True">
+                <Node name="AssemblyInfo.cs" selected="True" />
               </Node>
-              <Node name="Properties" expanded="True" />
               <Node name="VersionChecker" expanded="True" />
             </Node>
           </Node>

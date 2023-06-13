@@ -84,15 +84,15 @@ namespace TornadoCallouts.Callouts
                         switch (new Random().Next(1, 3))
                         {
                             case 1:
-                                Game.DisplaySubtitle("~r~Suspect: ~w~I do not want to live anymore!", 4000);
+                                Game.DisplaySubtitle("~r~Suspect: ~w~ I will kill them all!", 4000);
                                 _hasSpoke = true;
                                 break;
                             case 2:
-                                Game.DisplaySubtitle("~r~Suspect: ~w~Go away! - I'm not going back to the psychiatric hospital!", 4000);
+                                Game.DisplaySubtitle("~r~Suspect: ~w~Go away! - I have business to finish!", 4000);
                                 _hasSpoke = true;
                                 break;
                             case 3:
-                                Game.DisplaySubtitle("~r~Suspect: ~w~I'm not going back to the psychiatric hospital!", 4000);
+                                Game.DisplaySubtitle("~r~Suspect: ~w~If you take one step closer I will do it.", 4000);
                                 _hasSpoke = true;
                                 break;
                             default: break;
