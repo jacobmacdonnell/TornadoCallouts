@@ -128,12 +128,17 @@ namespace TornadoCallouts.Callouts
 
             bool v = Suspect1.IsCuffed || Suspect2.IsCuffed; // Suspect 1 or 2 is cuffed.
             bool n = Suspect1.IsCuffed && Suspect2.IsCuffed; // Suspect 1 and 2 are cuffed.
-            if (Suspect1.IsDead && Suspect2.IsDead || Game.LocalPlayer.Character.IsDead || !Suspect1.Exists() || !Suspect2.Exists() || v || n)
-            {
-                Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
-                End();
-            }
+            if (Suspect1.IsDead && Suspect2.IsDead || Game.LocalPlayer.Character.IsDead || !Suspect1.Exists() || !Suspect2.Exists() || v || n) End();
+            if (Game.IsKeyDown(IniFile.EndCall)) End();
+
+                {
+                    Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
+
+                }
+        
+        
         }
+
 
         public override void End()
         {
@@ -157,7 +162,7 @@ namespace TornadoCallouts.Callouts
                 SuspectBlip2.Delete();
             }
 
-            Game.LogTrivial("TornadoCallouts Bar Fight Has Cleaned Up.");
+            Game.LogTrivial("TornadoCallouts | Bar Fight | Has Cleaned Up.");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Reflection;
 using Rage;
 using LSPD_First_Response.Mod.API;
 using TornadoCallouts.VersionChecker;
+using TornadoCallouts.Callouts;
 
 namespace TornadoCallouts
 {
@@ -29,7 +30,7 @@ namespace TornadoCallouts
         {
             if (OnDuty)
             {
-                RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging);
+                RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging, IniFile.ActiveStabbing);
                 GameFiber.StartNew(delegate
                 {
                     Game.LogTrivial("Checking for a new TornadoCallouts version...");
@@ -39,11 +40,14 @@ namespace TornadoCallouts
             }
         }
 
-        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled)
+        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled, bool activeStabbingEnabled)
         {
+           
             if (barFightEnabled) { Functions.RegisterCallout(typeof(Callouts.BarFight)); }
             if (stolenVehicleEnabled) { Functions.RegisterCallout(typeof(Callouts.StolenVehicle)); }
             if (muggingEnabled) { Functions.RegisterCallout(typeof(Callouts.Mugging)); }
+            if (activeStabbingEnabled) { Functions.RegisterCallout(typeof(Callouts.ActiveStabbing)); }
+           
             Game.LogTrivial("All callouts were loaded successfully.");
         }
 

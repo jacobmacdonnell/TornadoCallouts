@@ -71,21 +71,25 @@ namespace TornadoCallouts.Callouts
                 PursuitCreated = true;
             }
 
-            if (PursuitCreated && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(Pursuit))
+            if (PursuitCreated && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(Pursuit)) End();
+            if (Game.IsKeyDown(IniFile.EndCall)) End();
+
             {
                 Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
-                End();
+
             }
+
         }
 
         public override void End()
         {
+
             base.End();
             if (Suspect.Exists()) { Suspect.Dismiss(); }
             if (SuspectVehicle.Exists()) { SuspectVehicle.Dismiss(); }
             if (SuspectBlip.Exists()) { SuspectBlip.Delete(); }
 
-            Game.LogTrivial("TornadoCallouts Stolen Vehicle Has Cleaned Up.");
+            Game.LogTrivial("TornadoCallouts | Stolen Vehicle | Has Cleaned Up.");
         }
     }
 }

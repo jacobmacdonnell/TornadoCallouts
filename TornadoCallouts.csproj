@@ -71,6 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Callouts\ActiveStabbing.cs" />
     <Compile Include="Callouts\BarFight.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Main.cs" />
@@ -78,10 +79,7 @@
     <Compile Include="Callouts\Mugging.cs" />
     <Compile Include="Callouts\StolenVehicle.cs" />
     <Compile Include="VersionChecker\PluginCheck.cs" />
-    <Compile Include="Callouts\ActiveStabbing.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="VersionChecker\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

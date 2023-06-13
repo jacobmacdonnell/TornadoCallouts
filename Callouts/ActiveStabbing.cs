@@ -1,148 +1,130 @@
-﻿using System;
-using System.Collections.Generic;
-using Rage;
-using LSPD_First_Response.Mod.API;
+﻿using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
+using Rage;
 using CalloutInterfaceAPI;
-using LSPD_First_Response.Engine;
+using System;
+using System.Drawing;
+using System.Runtime;
+
 
 namespace TornadoCallouts.Callouts
 {
-    [CalloutInterface("Active Stabbing", CalloutProbability.High, "Someone is actively stabbing people.", "Code 3", "LSPD")]
-    public class ActiveStabbing : Callout
+    [CalloutInfo("Active Stabbing", CalloutProbability.Medium)]
+    public class ActiveStabbing: Callout
     {
-        private Ped Suspect1, Suspect2;
-        private Blip SuspectBlip1, SuspectBlip2;
-        private Vector3 SpawnPoint;
-        private bool FightCreated;
-        private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
-        private Random rand = new Random();
-
-        private List<Vector3> spawnLocations = new List<Vector3>()
-        {
-            new Vector3(127.44f, -1306.12f, 29.23f), // Vanilla Unicorn Strip Club (Strawberry)
-            new Vector3(-1391.837f, -585.1603f, 30.23638f), // Bahama Mamas Bar (Del Perro)
-            new Vector3(487.0231f, -1545.364f, 29.19354f), // Hi-Men Bar (Rancho)
-            new Vector3(250.0017f, -1011.299f, 29.26846f), // Shenanigan's Bar (Legion Square)
-            new Vector3(226.7715f, 301.7152f, 105.5336f), // Singleton's Nightclub (Downtown Vinewood)
-            new Vector3(919.417f, 50.9967f, 80.89855f), // Diamond Casino (Los Santos)
-        };
+        private string[] pedList = new string[] { "A_F_M_SouCent_01", "A_F_M_SouCent_02", "A_M_Y_Skater_01", "A_M_M_FatLatin_01", "A_M_M_EastSA_01", "A_M_Y_Latino_01", "G_M_Y_FamDNF_01",
+                                                  "G_M_Y_FamCA_01", "G_M_Y_BallaSout_01", "G_M_Y_BallaOrig_01", "G_M_Y_BallaEast_01", "G_M_Y_StrPunk_02", "S_M_Y_Dealer_01", "A_M_M_RurMeth_01",
+                                                  "A_M_M_Skidrow_01", "A_M_Y_MexThug_01", "G_M_Y_MexGoon_03", "G_M_Y_MexGoon_02", "G_M_Y_MexGoon_01", "G_M_Y_SalvaGoon_01", "G_M_Y_SalvaGoon_02",
+                                                  "G_M_Y_SalvaGoon_03", "G_M_Y_Korean_01", "G_M_Y_Korean_02", "G_M_Y_StrPunk_01" };
+        private Ped _subject;
+        private Vector3 _SpawnPoint;
+        private Vector3 _searcharea;
+        private Blip _Blip;
+        private LHandle _pursuit;
+        private int _scenario = 0;
+        private bool _hasBegunAttacking = false;
+        private bool _isArmed = false;
+        private bool _hasPursuitBegun = false;
+        private bool _hasSpoke = false;
+        private bool _pursuitCreated = false;
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            // Generate a spawn point around the player within a radius of...
-            SpawnPoint = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around(500f));
-
-            ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, 50f);
-            AddMinimumDistanceCheck(100f, SpawnPoint);
-
-            CalloutMessage = "Active Stabbing";
-            CalloutPosition = SpawnPoint;
-            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_04 CRIME_ASSAULT_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", SpawnPoint);
+            _scenario = new Random().Next(0, 100);
+            _SpawnPoint = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around(1000f));
+            ShowCalloutAreaBlipBeforeAccepting(_SpawnPoint, 100f);
+            CalloutMessage = "~w~ Reports of an Active Stabbing.";
+            CalloutPosition = _SpawnPoint;
+            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS ASSAULT_WITH_AN_DEADLY_WEAPON CIV_ASSISTANCE IN_OR_ON_POSITION", _SpawnPoint);
             return base.OnBeforeCalloutDisplayed();
         }
 
-
         public override bool OnCalloutAccepted()
         {
-            CalloutInterfaceAPI.Functions.SendMessage(this, "Citizens are reporting someone is actively stabbing people. EMERGENCY RESPONSE.");
+            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Active Stabbing", "~b~Dispatch: ~w~Stop the susepect. Respond with ~r~Code 3");
 
-            // List of ped model names
-            List<string> pedModels = new List<string>()
-            {
-                // Male Gang Peds
-                "a_m_y_mexthug_01",
-                "g_m_importexport_01",
-                "g_m_m_korboss_01",
-                "g_m_y_ballaorig_01",
-                "g_m_y_famdnf_01",
-                "g_m_y_mexgoon_01",
-                "g_m_y_salvaboss_01",
-                "g_m_y_mexgoon_01",
-                "g_m_m_chigoon_02",
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Citizens are reporting a person stabbing and attacking people. EMERGENCY RESPONSE. Approach with caution. ");
 
-                // Female Gang Peds
-                "g_f_y_ballas_01",
-                "g_f_y_lost_01",
-                "g_f_y_families_01",
-                "g_f_y_vagos_01",
-            };
+            _subject = new Ped(pedList[new Random().Next((int)pedList.Length)], _SpawnPoint, 0f);
+            _subject.BlockPermanentEvents = true;
+            _subject.IsPersistent = true;
+            _subject.Tasks.Wander();
 
-            // Select random models for the suspects
-            string model1 = pedModels[rand.Next(pedModels.Count)];
-            string model2 = pedModels[rand.Next(pedModels.Count)];
-
-            // Create suspect 1 at the selected location
-            Suspect1 = new Ped(model1, SpawnPoint, 180f);
-            Suspect1.IsPersistent = true;
-            Suspect1.BlockPermanentEvents = true;
-            Suspect1.Alertness += 50;
-            Suspect1.CanOnlyBeDamagedByPlayer = true;
-            Suspect1.Health += 50;
-
-            SuspectBlip1 = Suspect1.AttachBlip();
-            SuspectBlip1.Color = System.Drawing.Color.Yellow;
-            SuspectBlip1.IsRouteEnabled = true;
-
-            // Create suspect 2 at the selected location
-            Suspect2 = new Ped(model2, SpawnPoint, 180f);
-            Suspect2.IsPersistent = true;
-            Suspect2.BlockPermanentEvents = true;
-            Suspect2.Alertness += 50;
-            Suspect2.CanOnlyBeDamagedByPlayer = true;
-            Suspect2.Health += 50;
-
-            SuspectBlip2 = Suspect2.AttachBlip();
-            SuspectBlip2.Color = System.Drawing.Color.Yellow;
-
-            FightCreated = false;
-
+            _searcharea = _SpawnPoint.Around2D(1f, 2f);
+            _Blip = new Blip(_searcharea, 80f);
+            _Blip.Color = Color.Yellow;
+            _Blip.EnableRoute(Color.Yellow);
+            _Blip.Alpha = 0.5f;
             return base.OnCalloutAccepted();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (_Blip) _Blip.Delete();
+            if (_subject) _subject.Delete();
+            base.OnCalloutNotAccepted();
         }
 
         public override void Process()
         {
+            GameFiber.StartNew(delegate
+            {
+                if (_subject.DistanceTo(Game.LocalPlayer.Character.GetOffsetPosition(Vector3.RelativeFront)) < 18f && !_isArmed)
+                {
+                    _subject.Inventory.GiveNewWeapon("WEAPON_KNIFE", 500, true);
+                    _isArmed = true;
+                }
+                if (_subject && _subject.DistanceTo(Game.LocalPlayer.Character.GetOffsetPosition(Vector3.RelativeFront)) < 18f && !_hasBegunAttacking)
+                {
+                    if (_scenario > 40)
+                    {
+                        _subject.KeepTasks = true;
+                        _subject.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                        _hasBegunAttacking = true;
+                        switch (new Random().Next(1, 3))
+                        {
+                            case 1:
+                                Game.DisplaySubtitle("~r~Suspect: ~w~I do not want to live anymore!", 4000);
+                                _hasSpoke = true;
+                                break;
+                            case 2:
+                                Game.DisplaySubtitle("~r~Suspect: ~w~Go away! - I'm not going back to the psychiatric hospital!", 4000);
+                                _hasSpoke = true;
+                                break;
+                            case 3:
+                                Game.DisplaySubtitle("~r~Suspect: ~w~I'm not going back to the psychiatric hospital!", 4000);
+                                _hasSpoke = true;
+                                break;
+                            default: break;
+                        }
+                        GameFiber.Wait(2000);
+                    }
+                    else
+                    {
+                        if (!_hasPursuitBegun)
+                        {
+                            _pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
+                            LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(_pursuit, _subject);
+                            LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
+                            _hasPursuitBegun = true;
+                        }
+                    }
+                }
+                if (Game.LocalPlayer.Character.IsDead) End();
+                if (Game.IsKeyDown(IniFile.EndCall)) End();
+                if (_subject && _subject.IsDead) End();
+                if (_subject && LSPD_First_Response.Mod.API.Functions.IsPedArrested(_subject)) End();
+            }, "Active Stabbing [TornadoCallouts]");
             base.Process();
-
-            if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 60f)
-            {
-                Suspect1.Tasks.FightAgainst(Suspect2);
-                Suspect2.Tasks.FightAgainst(Suspect1);
-                FightCreated = true;
-            }
-
-            bool v = Suspect1.IsCuffed || Suspect2.IsCuffed; // Suspect 1 or 2 is cuffed.
-            bool n = Suspect1.IsCuffed && Suspect2.IsCuffed; // Suspect 1 and 2 are cuffed.
-            if (Suspect1.IsDead && Suspect2.IsDead || Game.LocalPlayer.Character.IsDead || !Suspect1.Exists() || !Suspect2.Exists() || v || n)
-            {
-                Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
-                End();
-            }
         }
 
         public override void End()
         {
+            if (_subject) _subject.Dismiss();
+            if (_Blip) _Blip.Delete();
+            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Active Stabbing", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
+            LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("ATTENTION_THIS_IS_DISPATCH_HIGH ALL_UNITS_CODE4 NO_FURTHER_UNITS_REQUIRED");
             base.End();
-
-            if (Suspect1.Exists())
-            {
-                Suspect1.Dismiss();
-            }
-            if (Suspect2.Exists())
-            {
-                Suspect2.Dismiss();
-            }
-
-            if (SuspectBlip1.Exists())
-            {
-                SuspectBlip1.Delete();
-            }
-            if (SuspectBlip2.Exists())
-            {
-                SuspectBlip2.Delete();
-            }
-
-            Game.LogTrivial("TornadoCallouts | Active Stabbing | Has Cleaned Up.");
         }
     }
 }
