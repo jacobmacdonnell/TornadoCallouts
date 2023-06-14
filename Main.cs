@@ -4,6 +4,7 @@ using Rage;
 using LSPD_First_Response.Mod.API;
 using TornadoCallouts.VersionChecker;
 using TornadoCallouts.Callouts;
+using System.Runtime;
 
 namespace TornadoCallouts
 {
@@ -36,6 +37,14 @@ namespace TornadoCallouts
                     Game.LogTrivial("Checking for a new TornadoCallouts version...");
                     PluginCheck.IsUpdateAvailable();
                     Game.DisplayNotification("TornadoCallouts by TornadoMac | ~y~Version " + Assembly.GetExecutingAssembly().GetName().Version + "~s~| Has ~g~Successfully Loaded!");
+
+                    if (IniFile.HelpMessages)
+                    {
+                        Game.DisplayHelp("You can change all ~y~keys~w~ in the ~g~TornadoCallouts.ini~w~. Press ~b~" + IniFile.EndCall + "~w~ to end a callout.", 5000);
+                    }
+                    else { IniFile.HelpMessages = false; }
+
+
                 });
             }
         }
