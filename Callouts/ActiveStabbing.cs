@@ -92,7 +92,7 @@ namespace TornadoCallouts.Callouts
                                 _hasSpoke = true;
                                 break;
                             case 3:
-                                Game.DisplaySubtitle("~r~Suspect: ~w~If you take one step closer I will do it.", 4000);
+                                Game.DisplaySubtitle("~r~Suspect: ~w~If you take one step closer I'll do it!", 4000);
                                 _hasSpoke = true;
                                 break;
                             default: break;

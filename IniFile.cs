@@ -15,9 +15,11 @@ namespace TornadoCallouts
         internal static bool ActiveStabbing = true;
 
 
-        // Keys
 
+
+        internal static bool HelpMessages = true;
         internal static Keys EndCall = Keys.End;
+
 
         private static string path = "plugins/LSPDFR/TornadoCallouts.ini";
         private static InitializationFile ini = new InitializationFile(path);
