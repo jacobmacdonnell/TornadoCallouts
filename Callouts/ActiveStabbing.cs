@@ -41,9 +41,7 @@ namespace TornadoCallouts.Callouts
 
         public override bool OnCalloutAccepted()
         {
-            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Active Stabbing", "~b~Dispatch: ~w~Stop the susepect. Respond with ~r~Code 3");
-
-            CalloutInterfaceAPI.Functions.SendMessage(this, "Citizens are reporting a person stabbing and attacking people. EMERGENCY RESPONSE. Approach with caution. ");
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Citizens are reporting a person is actively stabbing and attacking people. EMERGENCY RESPONSE. Approach with caution. ");
 
             _subject = new Ped(pedList[new Random().Next((int)pedList.Length)], _SpawnPoint, 0f);
             _subject.BlockPermanentEvents = true;

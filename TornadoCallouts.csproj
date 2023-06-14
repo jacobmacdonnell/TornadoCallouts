@@ -79,6 +79,9 @@
     <Compile Include="Callouts\Mugging.cs" />
     <Compile Include="Callouts\StolenVehicle.cs" />
     <Compile Include="VersionChecker\PluginCheck.cs" />
+    <Compile Include="Callouts\TrafficStopBackupRequired.cs" />
+    <Compile Include="Stuff\LocationChooser.cs" />
+    <Compile Include="Stuff\Vector3Extension.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

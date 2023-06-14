@@ -45,7 +45,7 @@ namespace TornadoCallouts
             }
             catch (Exception e)
             {
-                Game.LogTrivial("[LOG]: Exception while loading config file - " + e.Message);
+                Game.LogTrivial("[LOG]: Exception while loading  Ini file - " + e.Message);
             }
         }
 
