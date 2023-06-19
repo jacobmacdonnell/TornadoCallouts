@@ -13,7 +13,8 @@ namespace TornadoCallouts
         internal static bool StolenVehicle = true;
         internal static bool Mugging = true;
         internal static bool ActiveStabbing = true;
-
+        internal static bool TrafficStopBackupRequired = true;
+        internal static bool DrugOverdose = true;
 
 
 
@@ -28,13 +29,15 @@ namespace TornadoCallouts
         {
             try
             {
-                Game.LogTrivial("[LOG]: Attempting to load config file from TornadoCallouts."); // Debugging line
+                Game.LogTrivial("[LOG]: Attempting to load ini file from TornadoCallouts."); // Debugging line
                 ini.Create();
                 
                 BarFight = ini.ReadBoolean("Callouts", "BarFight", true);
                 StolenVehicle = ini.ReadBoolean("Callouts", "StolenVehicle", true);
                 Mugging = ini.ReadBoolean("Callouts", "Mugging", true);
                 ActiveStabbing = ini.ReadBoolean("Callouts", "ActiveStabbing", true);
+                TrafficStopBackupRequired = ini.ReadBoolean("Callouts", "TrafficStopBackupRequired", true);
+                DrugOverdose = ini.ReadBoolean("Callouts", "DrugOverdose", true);
 
 
                 // Keys

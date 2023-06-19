@@ -103,7 +103,7 @@ namespace TornadoCallouts.Callouts
             Game.LogTrivial("TornadoCallouts Log: Traffic Stop Backup Required callout accepted.");
 
 
-            CalloutInterfaceAPI.Functions.SendMessage(this, "An officer is requesting backup for an active traffic stop. Respond and assist the officer. ");
+            CalloutInterfaceAPI.Functions.SendMessage(this, "An officer is requesting backup for an active traffic stop. Respond and assist the officer.");
 
 
             _Cop = new Ped(CopList[new Random().Next((int)CopList.Length)], _SpawnPoint, 0f);

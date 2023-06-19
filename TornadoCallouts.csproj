@@ -82,6 +82,7 @@
     <Compile Include="Callouts\TrafficStopBackupRequired.cs" />
     <Compile Include="Stuff\LocationChooser.cs" />
     <Compile Include="Stuff\Vector3Extension.cs" />
+    <Compile Include="Callouts\DrugOverdose.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

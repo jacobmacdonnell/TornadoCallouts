@@ -31,7 +31,11 @@ namespace TornadoCallouts
         {
             if (OnDuty)
             {
-                RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging, IniFile.ActiveStabbing);
+                RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging, IniFile.ActiveStabbing,IniFile.TrafficStopBackupRequired,
+
+                    IniFile.DrugOverdose);
+
+
                 GameFiber.StartNew(delegate
                 {
                     Game.LogTrivial("Checking for a new TornadoCallouts version...");
@@ -49,14 +53,16 @@ namespace TornadoCallouts
             }
         }
 
-        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled, bool activeStabbingEnabled)
+        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled, bool activeStabbingEnabled, bool trafficStopBackupRequiredEnabled, bool drugOverdoseEnabled)
         {
            
             if (barFightEnabled) { Functions.RegisterCallout(typeof(Callouts.BarFight)); }
             if (stolenVehicleEnabled) { Functions.RegisterCallout(typeof(Callouts.StolenVehicle)); }
             if (muggingEnabled) { Functions.RegisterCallout(typeof(Callouts.Mugging)); }
             if (activeStabbingEnabled) { Functions.RegisterCallout(typeof(Callouts.ActiveStabbing)); }
-           
+            if (trafficStopBackupRequiredEnabled) { Functions.RegisterCallout(typeof(Callouts.TrafficStopBackupRequired)); }
+            if (drugOverdoseEnabled) { Functions.RegisterCallout(typeof(Callouts.DrugOverdose)); }
+
             Game.LogTrivial("[TornadoCallouts] All callouts were loaded successfully.");
         }
 
