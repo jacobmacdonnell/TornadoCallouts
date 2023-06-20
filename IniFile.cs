@@ -20,6 +20,7 @@ namespace TornadoCallouts
 
         internal static bool HelpMessages = true;
         internal static Keys EndCall = Keys.End;
+        internal static Keys Dialog = Keys.Y;
 
 
         private static string path = "plugins/LSPDFR/TornadoCallouts.ini";
@@ -43,6 +44,8 @@ namespace TornadoCallouts
                 // Keys
 
                 EndCall = ini.ReadEnum("Keys", "EndCall", Keys.End);
+                Dialog = ini.ReadEnum("Keys", "Dialog", Keys.Y);
+
 
                 Game.LogTrivial("[LOG]: Config file from TornadoCallouts has been loaded."); // Debugging line
             }

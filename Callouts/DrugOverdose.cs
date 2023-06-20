@@ -9,6 +9,7 @@ using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using CalloutInterfaceAPI;
 using System.Windows.Forms;
+using LSPD_First_Response.Engine;
 
 namespace TornadoCallouts.Callouts
 {
@@ -18,21 +19,25 @@ namespace TornadoCallouts.Callouts
     public class DrugOverdose : Callout
     {
 
-        private Ped Suspect;
-        private Blip SuspectBlip;
-        private Vector3 Spawnnpoint;
+        private Ped Bystander;
+        private Blip BystanderBlip;
+        private Ped Victim;
+        private Blip VictimBlip;
+        private Vector3 SpawnPoint;
         private float heading;
         private int counter;
         private string malefemale;
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            Spawnnpoint = new Vector3(94.63f, -217.37f, 54.49f);
+            SpawnPoint = new Vector3(94.63f, -217.37f, 54.49f);
             heading = 53.08f;
-            ShowCalloutAreaBlipBeforeAccepting(Spawnnpoint, 900f);
-            AddMinimumDistanceCheck(900f, Spawnnpoint);
-            CalloutPosition = Spawnnpoint;
-
+            ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, 500f);
+            AddMinimumDistanceCheck(500f, SpawnPoint);
+            CalloutMessage = "Potential Drug Overdose";
+            CalloutPosition = SpawnPoint;
+            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 CITIZENS_REPORT_04 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", SpawnPoint);
+            
             return base.OnBeforeCalloutDisplayed();
         }
 
@@ -41,20 +46,37 @@ namespace TornadoCallouts.Callouts
 
             CalloutInterfaceAPI.Functions.SendMessage(this, "Citizens are currently reporting an individual who has collapsed in a public area, exhibiting signs consistent with a drug overdose. The nature of the substance involved is unknown. Respond and assist the individual if EMS has not arrived yet.");
 
-            Suspect = new Ped(Spawnnpoint, heading);
-            Suspect.IsPersistent = true;
-            Suspect.BlockPermanentEvents = true;
+            // Victim ped
 
-            SuspectBlip = Suspect.AttachBlip();
-            SuspectBlip.Color = System.Drawing.Color.CadetBlue;
-            SuspectBlip.IsRouteEnabled = true;
+            Victim = new Ped(SpawnPoint, heading);
+            Victim.IsPersistent = true;
+            Victim.BlockPermanentEvents = true;
 
-            if (Suspect.IsMale)
+            VictimBlip = Victim.AttachBlip();
+            VictimBlip.Color = System.Drawing.Color.CadetBlue;
+            VictimBlip.IsRouteEnabled = true;
+
+            if (Victim.IsMale)
+                malefemale = "sir";
+            else
+                malefemale = "ma'am";
+
+            // Bystander ped
+
+            Bystander = new Ped(SpawnPoint, heading);
+            Bystander.IsPersistent = true;
+            Bystander.BlockPermanentEvents = true;
+
+            BystanderBlip = Bystander.AttachBlip();
+            BystanderBlip.Color = System.Drawing.Color.Yellow;
+
+            if (Bystander.IsMale)
                 malefemale = "sir";
             else
                 malefemale = "ma'am";
 
             counter = 0;
+
 
             return base.OnCalloutAccepted();
         }
@@ -63,10 +85,10 @@ namespace TornadoCallouts.Callouts
         {
             base.Process();
 
-            if(Game.LocalPlayer.Character.DistanceTo(Suspect) <= 10f)
+            if(Game.LocalPlayer.Character.DistanceTo(Bystander) <= 10f)
             {
 
-                Game.DisplayHelp("Press ~y~Y~~ to talk to Suspect. ~y~Approach with caution.", false);
+                Game.DisplayHelp("Press ~y~Y~~ to talk to the bystander.", false);
 
                 if (Game.IsKeyDown(System.Windows.Forms.Keys.Y))
                 {
@@ -74,37 +96,30 @@ namespace TornadoCallouts.Callouts
 
                     if(counter == 1)
                     {
-                        Game.DisplaySubtitle("Player: Good Afternoon " + malefemale + ", How are you today?");
+                        Game.DisplaySubtitle("Player: Can you tell me what happened here" + malefemale + "?");
                     }
                     if(counter == 2)
                     {
-                        Game.DisplaySubtitle("~r~Suspect: I'm fine, Officer. What's the problem?");
+                        Game.DisplaySubtitle("~y~Bystander: I don't know, I was walking by when I saw this person collapse to the ground, and then I called 9-11.");
                     }
                     if(counter == 3)
                     {
-                        Game.DisplaySubtitle("Player: We've gotten reports from this business behind you that you were intoxicated. Did you have anything to drink today?");
+                        Game.DisplaySubtitle("Player: Okay, we beleive it may be a drug overdose, thank you for calling us" + malefemale + ", you are fee to go.");
                     }
                     if(counter == 4)
                     {
-                        Game.DisplaySubtitle("~r~Suspect: I'm not **hiccup* drunk. I'm fine.");
+                        Game.DisplaySubtitle("~y~Bystander: Of course. I hope they are okay, bye.");
                     }
                     if(counter == 5)
                     {
-                        Game.DisplaySubtitle("Player: Let me give you a sobriety test to make sure you're not under the influence of alcohol or drugs.");
-                    }
-                    if(counter == 6)
-                    {
-                        Game.DisplaySubtitle("~r~Suspect: I DO NOT CONSENT TO THIS TYPE OF INTERROGATION!");
-                    }
-                    if(counter == 7)
-                    {
                         Game.DisplaySubtitle("Conversation has ended!");
-                        Suspect.Tasks.ReactAndFlee(Suspect);
+                        
+                        Bystander.Tasks.Wander();
                     }
                 }
             }
 
-            if (Suspect.IsCuffed || Suspect.IsDead || Game.LocalPlayer.Character.IsDead || Game.IsKeyDown(IniFile.EndCall) || !Suspect.Exists())
+            if (Victim.IsCuffed || Victim.IsDead || !Victim.Exists() || Game.IsKeyDown(IniFile.EndCall) || Game.LocalPlayer.Character.IsDead)
             {
                 End();
             }
@@ -120,13 +135,22 @@ namespace TornadoCallouts.Callouts
         {
             base.End();
 
-            if (Suspect.Exists())
+            if (Victim.Exists())
             {
-                Suspect.Dismiss();
+                Victim.Dismiss();
             }
-            if (SuspectBlip.Exists())
+            if (VictimBlip.Exists())
             {
-                SuspectBlip.Delete();
+                VictimBlip.Delete();
+            }   
+            
+            if (Bystander.Exists())
+            {
+                Bystander.Dismiss();
+            }
+            if (BystanderBlip.Exists())
+            {
+                BystanderBlip.Delete();
             }
 
 
