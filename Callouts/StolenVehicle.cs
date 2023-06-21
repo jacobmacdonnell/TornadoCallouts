@@ -75,7 +75,7 @@ namespace TornadoCallouts.Callouts
             if (Game.IsKeyDown(IniFile.EndCall)) End();
 
             {
-                Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Stolen Vehicle", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
 
             }
 
@@ -89,7 +89,7 @@ namespace TornadoCallouts.Callouts
             if (SuspectVehicle.Exists()) { SuspectVehicle.Dismiss(); }
             if (SuspectBlip.Exists()) { SuspectBlip.Delete(); }
 
-            Game.LogTrivial("TornadoCallouts | Stolen Vehicle | Has Cleaned Up.");
+            Game.LogTrivial("[TornadoCallouts LOG]: | Stolen Vehicle | Has Cleaned Up.");
         }
     }
 }

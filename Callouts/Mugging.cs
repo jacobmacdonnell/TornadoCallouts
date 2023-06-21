@@ -63,6 +63,8 @@ namespace TornadoCallouts.Callouts
         public override bool OnCalloutAccepted()
         {
 
+            Game.LogTrivial("[TornadoCallouts LOG]: Mugging callout accepted");
+
             CalloutInterfaceAPI.Functions.SendMessage(this, "Citiznes are reporting a possible mugging of an individual. Approach with caution.");
 
             //Set the player as en route to the scene
@@ -116,7 +118,7 @@ namespace TornadoCallouts.Callouts
             if (state == EMuggingState.DecisionMade && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(pursuit)) End();
             if (Game.IsKeyDown(IniFile.EndCall)) End();
             {
-                Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Mugging", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
 
             }
         }
@@ -134,7 +136,7 @@ namespace TornadoCallouts.Callouts
             if (ABlip.Exists()) ABlip.Delete();
             base.End();
 
-            Game.LogTrivial("TornadoCallouts | Mugging | Has Cleaned Up.");
+            Game.LogTrivial("[TornadoCallouts LOG]: | Mugging | Has Cleaned Up.");
         }
 
         /// <summary>

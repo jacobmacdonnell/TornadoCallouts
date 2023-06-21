@@ -17,6 +17,8 @@ namespace TornadoCallouts.Callouts
                                                   "A_M_M_Skidrow_01", "A_M_Y_MexThug_01", "G_M_Y_MexGoon_03", "G_M_Y_MexGoon_02", "G_M_Y_MexGoon_01", "G_M_Y_SalvaGoon_01", "G_M_Y_SalvaGoon_02",
                                                   "G_M_Y_SalvaGoon_03", "G_M_Y_Korean_01", "G_M_Y_Korean_02", "G_M_Y_StrPunk_01" };
         private Ped _subject;
+        private Ped _victim;
+        private Ped _bystander;
         private Vector3 _SpawnPoint;
         private Vector3 _searcharea;
         private Blip _Blip;
@@ -27,6 +29,8 @@ namespace TornadoCallouts.Callouts
         private bool _hasPursuitBegun = false;
         private bool _hasSpoke = false;
         private bool _pursuitCreated = false;
+        private bool _hasBegunFleeing = false;
+        private bool _fightAgainstVictim = false;
 
         public override bool OnBeforeCalloutDisplayed()
         {
@@ -46,13 +50,22 @@ namespace TornadoCallouts.Callouts
             _subject = new Ped(pedList[new Random().Next((int)pedList.Length)], _SpawnPoint, 0f);
             _subject.BlockPermanentEvents = true;
             _subject.IsPersistent = true;
-            _subject.Tasks.Wander();
 
+            _victim = new Ped(pedList[new Random().Next((int)pedList.Length)], _SpawnPoint, 0f);
+            _victim.BlockPermanentEvents = true;
+            _victim.IsPersistent = true;
+
+            _bystander = new Ped(pedList[new Random().Next((int)pedList.Length)], _SpawnPoint, 0f);
+            _bystander.BlockPermanentEvents = true;
+            _bystander.IsPersistent = true;
+          
             _searcharea = _SpawnPoint.Around2D(1f, 2f);
             _Blip = new Blip(_searcharea, 80f);
             _Blip.Color = Color.Yellow;
             _Blip.EnableRoute(Color.Yellow);
             _Blip.Alpha = 0.5f;
+
+
             return base.OnCalloutAccepted();
         }
 
@@ -67,10 +80,19 @@ namespace TornadoCallouts.Callouts
         {
             GameFiber.StartNew(delegate
             {
-                if (_subject.DistanceTo(Game.LocalPlayer.Character.GetOffsetPosition(Vector3.RelativeFront)) < 18f && !_isArmed)
+                if (_subject.DistanceTo(Game.LocalPlayer.Character.GetOffsetPosition(Vector3.RelativeFront)) <= 200f && !_isArmed && !_fightAgainstVictim)
                 {
                     _subject.Inventory.GiveNewWeapon("WEAPON_KNIFE", 500, true);
                     _isArmed = true;
+                    _subject.Tasks.FightAgainst(_victim);
+                    _fightAgainstVictim = true;
+
+                }
+                if (_bystander && _bystander.DistanceTo(Game.LocalPlayer.Character.GetOffsetPosition(Vector3.RelativeFront)) <= 70f && !_hasBegunFleeing)
+                {
+                    _bystander.KeepTasks = true;
+                    _bystander.Tasks.ReactAndFlee(_subject); 
+                    _hasBegunFleeing = true;
                 }
                 if (_subject && _subject.DistanceTo(Game.LocalPlayer.Character.GetOffsetPosition(Vector3.RelativeFront)) < 18f && !_hasBegunAttacking)
                 {
@@ -112,17 +134,22 @@ namespace TornadoCallouts.Callouts
                 if (Game.IsKeyDown(IniFile.EndCall)) End();
                 if (_subject && _subject.IsDead) End();
                 if (_subject && LSPD_First_Response.Mod.API.Functions.IsPedArrested(_subject)) End();
-            }, "Active Stabbing [TornadoCallouts]");
+            }, "[TornadoCallouts] Active Stabbing");
             base.Process();
         }
 
         public override void End()
         {
             if (_subject) _subject.Dismiss();
+            if (_victim) _victim.Dismiss();
+            if (_bystander) _bystander.Dismiss();
             if (_Blip) _Blip.Delete();
+
             Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Active Stabbing", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("ATTENTION_THIS_IS_DISPATCH_HIGH ALL_UNITS_CODE4 NO_FURTHER_UNITS_REQUIRED");
+
             base.End();
         }
+
     }
 }

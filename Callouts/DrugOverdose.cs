@@ -43,6 +43,7 @@ namespace TornadoCallouts.Callouts
 
         public override bool OnCalloutAccepted()
         {
+            Game.LogTrivial("[TornadoCallouts LOG]: Drug Overdose callout accepted.");
 
             CalloutInterfaceAPI.Functions.SendMessage(this, "Citizens are currently reporting an individual who has collapsed in a public area, exhibiting signs consistent with a drug overdose. The nature of the substance involved is unknown. Respond and assist the individual if EMS has not arrived yet.");
 
@@ -51,15 +52,12 @@ namespace TornadoCallouts.Callouts
             Victim = new Ped(SpawnPoint, heading);
             Victim.IsPersistent = true;
             Victim.BlockPermanentEvents = true;
+            Victim.IsRagdoll = true;
+            Victim.Health = 5;
 
             VictimBlip = Victim.AttachBlip();
             VictimBlip.Color = System.Drawing.Color.CadetBlue;
             VictimBlip.IsRouteEnabled = true;
-
-            if (Victim.IsMale)
-                malefemale = "sir";
-            else
-                malefemale = "ma'am";
 
             // Bystander ped
 
@@ -85,6 +83,15 @@ namespace TornadoCallouts.Callouts
         {
             base.Process();
 
+            if(Game.LocalPlayer.Character.DistanceTo(Victim) <= 50f)
+            {
+
+                Game.DisplayNotification("[TornadoCallouts]: On arrival, call EMS and speak with the bystander to get more info.");
+                
+                CalloutInterfaceAPI.Functions.SendMessage(this, "When you arrive on scene, call EMS and speak with the bystander to see what happened.");
+            }
+            
+            
             if(Game.LocalPlayer.Character.DistanceTo(Bystander) <= 10f)
             {
 
@@ -96,7 +103,7 @@ namespace TornadoCallouts.Callouts
 
                     if(counter == 1)
                     {
-                        Game.DisplaySubtitle("Player: Can you tell me what happened here" + malefemale + "?");
+                        Game.DisplaySubtitle("You: Can you tell me what happened here" + malefemale + "?");
                     }
                     if(counter == 2)
                     {
@@ -104,7 +111,7 @@ namespace TornadoCallouts.Callouts
                     }
                     if(counter == 3)
                     {
-                        Game.DisplaySubtitle("Player: Okay, we beleive it may be a drug overdose, thank you for calling us" + malefemale + ", you are fee to go.");
+                        Game.DisplaySubtitle("You: Okay, we beleive it may be a drug overdose, thank you for calling us" + malefemale + ", you are fee to go.");
                     }
                     if(counter == 4)
                     {
@@ -125,8 +132,8 @@ namespace TornadoCallouts.Callouts
             }
 
                 {
-                    Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
-                }
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
+            }
         }
 
 
@@ -154,7 +161,7 @@ namespace TornadoCallouts.Callouts
             }
 
 
-            Game.LogTrivial("TornadoCallouts | Drug Overdose | Has Cleaned Up.");
+            Game.LogTrivial("[TornadoCallouts LOG]: | Drug Overdose | Has Cleaned Up.");
         }
     }
 }

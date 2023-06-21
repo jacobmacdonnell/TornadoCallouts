@@ -82,15 +82,15 @@ namespace TornadoCallouts.Callouts
             switch (new Random().Next(1, 3))
             {
                 case 1:
-                    CalloutMessage = "~w~ Traffic Stop Backup Required";
+                    CalloutMessage = "~y~Traffic Stop Backup Required";
                     _callOutMessage = 1;
                     break;
                 case 2:
-                    CalloutMessage = "~w~ Traffic Stop Backup Required";
+                    CalloutMessage = "~y~Traffic Stop Backup Required";
                     _callOutMessage = 2;
                     break;
                 case 3:
-                    CalloutMessage = "~w~ Traffic Stop Backup Required";
+                    CalloutMessage = "~y~Traffic Stop Backup Required";
                     _callOutMessage = 3;
                     break;
             }
@@ -100,7 +100,7 @@ namespace TornadoCallouts.Callouts
 
         public override bool OnCalloutAccepted()
         {
-            Game.LogTrivial("TornadoCallouts Log: Traffic Stop Backup Required callout accepted.");
+            Game.LogTrivial("[TornadoCallouts LOG]: Traffic Stop Backup Required callout accepted.");
 
 
             CalloutInterfaceAPI.Functions.SendMessage(this, "An officer is requesting backup for an active traffic stop. Respond and assist the officer.");

@@ -60,8 +60,10 @@ namespace TornadoCallouts.Callouts
 
         public override bool OnCalloutAccepted()
         {
-            CalloutInterfaceAPI.Functions.SendMessage(this, "Staff at the bar are reporting two people are currently fighting. Call backup if needed. Approach with caution.");
+            Game.LogTrivial("[TornadoCallouts LOG]: Bar Fight callout accepted");
 
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Staff at the bar are reporting two people are currently fighting. Call backup if needed. Approach with caution.");
+            
             // List of ped model names
             List<string> pedModels = new List<string>()
             {
@@ -132,9 +134,9 @@ namespace TornadoCallouts.Callouts
             if (Game.IsKeyDown(IniFile.EndCall)) End();
 
                 {
-                    Game.DisplayNotification("Callout Ended. ~g~We Are Code 4.");
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Bar Fight", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
 
-                }
+            }
         
         
         }
@@ -162,7 +164,7 @@ namespace TornadoCallouts.Callouts
                 SuspectBlip2.Delete();
             }
 
-            Game.LogTrivial("TornadoCallouts | Bar Fight | Has Cleaned Up.");
+            Game.LogTrivial("[TornadoCallouts LOG]: | Bar Fight | Has Cleaned Up.");
         }
     }
 }

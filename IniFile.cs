@@ -30,7 +30,7 @@ namespace TornadoCallouts
         {
             try
             {
-                Game.LogTrivial("[LOG]: Attempting to load ini file from TornadoCallouts."); // Debugging line
+                Game.LogTrivial("[TornadoCallouts LOG]: Attempting to load ini file from TornadoCallouts."); // Debugging line
                 ini.Create();
                 
                 BarFight = ini.ReadBoolean("Callouts", "BarFight", true);
@@ -47,11 +47,11 @@ namespace TornadoCallouts
                 Dialog = ini.ReadEnum("Keys", "Dialog", Keys.Y);
 
 
-                Game.LogTrivial("[LOG]: Config file from TornadoCallouts has been loaded."); // Debugging line
+                Game.LogTrivial("[TornadoCallouts LOG]: Config file from TornadoCallouts has been loaded."); // Debugging line
             }
             catch (Exception e)
             {
-                Game.LogTrivial("[LOG]: Exception while loading  Ini file - " + e.Message);
+                Game.LogTrivial("[TornadoCallouts LOG]: Exception while loading  Ini file - " + e.Message);
             }
         }
 

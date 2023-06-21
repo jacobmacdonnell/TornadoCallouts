@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Reflection;
 using Rage;
 using LSPD_First_Response.Mod.API;
@@ -12,19 +13,19 @@ namespace TornadoCallouts
     {
         public override void Initialize()
         {
-            Game.LogTrivial("TornadoCallouts Initialize() method called.");
+            Game.LogTrivial("[TornadoCallouts LOG]: Initialize() method called.");
             Functions.OnOnDutyStateChanged += OnOnDutyStateChangedHandler;
-            Game.LogTrivial("Attempting to load IniFile...");
+            Game.LogTrivial("[TornadoCallouts LOG]: Attempting to load IniFile...");
             IniFile.LoadIniFile();
-            Game.LogTrivial("IniFile.LoadIniFile() method has been called.");
-            Game.LogTrivial($"Plugin TornadoCallouts {Assembly.GetExecutingAssembly().GetName().Version} by TornadoMac has been initialized!");
-            Game.LogTrivial("Go on duty to fully load TornadoCallouts.");
+            Game.LogTrivial("[TornadoCallouts LOG]: IniFile.LoadIniFile() method has been called.");
+            Game.LogTrivial($"[TornadoCallouts LOG]: Plugin TornadoCallouts {Assembly.GetExecutingAssembly().GetName().Version} by TornadoMac has been initialized!");
+            Game.LogTrivial("[TornadoCallouts LOG]: Go on duty to fully load TornadoCallouts.");
             AppDomain.CurrentDomain.AssemblyResolve += LSPDFRResolveEventHandler;
         }
 
         public override void Finally()
         {
-            Game.LogTrivial("TornadoCallouts has been cleaned up!");
+            Game.LogTrivial("[TornadoCallouts LOG]: TornadoCallouts has been cleaned up!");
         }
 
         private static void OnOnDutyStateChangedHandler(bool OnDuty)
@@ -38,9 +39,9 @@ namespace TornadoCallouts
 
                 GameFiber.StartNew(delegate
                 {
-                    Game.LogTrivial("Checking for a new TornadoCallouts version...");
+                    Game.LogTrivial("[TornadoCallouts LOG]: Checking for new plugin version...");
                     PluginCheck.IsUpdateAvailable();
-                    Game.DisplayNotification("TornadoCallouts by TornadoMac | ~y~Version " + Assembly.GetExecutingAssembly().GetName().Version + "~s~| Has ~g~Successfully Loaded!");
+                    Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "TornadoCallouts", "by ~b~TornadoMac~b~", "~s~|~s~ ~y~Version " + Assembly.GetExecutingAssembly().GetName().Version + "~s~ | Has ~g~Successfully Loaded!");
 
                     if (IniFile.HelpMessages)
                     {
@@ -63,7 +64,7 @@ namespace TornadoCallouts
             if (trafficStopBackupRequiredEnabled) { Functions.RegisterCallout(typeof(Callouts.TrafficStopBackupRequired)); }
             if (drugOverdoseEnabled) { Functions.RegisterCallout(typeof(Callouts.DrugOverdose)); }
 
-            Game.LogTrivial("[TornadoCallouts] All callouts were loaded successfully.");
+            Game.LogTrivial("[TornadoCallouts LOG]: All callouts were loaded successfully.");
         }
 
         private static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
