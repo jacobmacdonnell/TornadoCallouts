@@ -53,7 +53,7 @@ namespace TornadoCallouts.Callouts
             Victim.IsPersistent = true;
             Victim.BlockPermanentEvents = true;
             Victim.IsRagdoll = true;
-            Victim.Health = 5;
+            Victim.Health = 25;
 
             VictimBlip = Victim.AttachBlip();
             VictimBlip.Color = System.Drawing.Color.CadetBlue;
@@ -83,10 +83,9 @@ namespace TornadoCallouts.Callouts
         {
             base.Process();
 
-            if(Game.LocalPlayer.Character.DistanceTo(Victim) <= 50f)
+            if(Game.LocalPlayer.Character.DistanceTo(Victim) <= 100f)
             {
-
-                Game.DisplayNotification("[TornadoCallouts]: On arrival, call EMS and speak with the bystander to get more info.");
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "On arrival, call EMS and speak with the bystander to get more info.");
                 
                 CalloutInterfaceAPI.Functions.SendMessage(this, "When you arrive on scene, call EMS and speak with the bystander to see what happened.");
             }

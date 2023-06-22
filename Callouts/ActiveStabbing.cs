@@ -73,6 +73,9 @@ namespace TornadoCallouts.Callouts
         {
             if (_Blip) _Blip.Delete();
             if (_subject) _subject.Delete();
+            if (_victim) _victim.Delete();
+            if (_bystander) _bystander.Delete();
+
             base.OnCalloutNotAccepted();
         }
 
