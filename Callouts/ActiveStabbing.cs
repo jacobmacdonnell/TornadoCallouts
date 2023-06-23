@@ -21,7 +21,7 @@ namespace TornadoCallouts.Callouts
         private Ped _bystander;
         private Vector3 _SpawnPoint;
         private Vector3 _searcharea;
-        private Blip _Blip;
+        private Blip _subjectBlip;
         private LHandle _pursuit;
         private int _scenario = 0;
         private bool _hasBegunAttacking = false;
@@ -37,9 +37,10 @@ namespace TornadoCallouts.Callouts
             _scenario = new Random().Next(0, 100);
             _SpawnPoint = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around(1000f));
             ShowCalloutAreaBlipBeforeAccepting(_SpawnPoint, 100f);
-            CalloutMessage = "~w~ Reports of an Active Stabbing.";
+            CalloutMessage = "~w~Reports of an Active Stabbing.";
             CalloutPosition = _SpawnPoint;
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS ASSAULT_WITH_AN_DEADLY_WEAPON CIV_ASSISTANCE IN_OR_ON_POSITION", _SpawnPoint);
+
             return base.OnBeforeCalloutDisplayed();
         }
 
@@ -60,10 +61,10 @@ namespace TornadoCallouts.Callouts
             _bystander.IsPersistent = true;
           
             _searcharea = _SpawnPoint.Around2D(1f, 2f);
-            _Blip = new Blip(_searcharea, 80f);
-            _Blip.Color = Color.Yellow;
-            _Blip.EnableRoute(Color.Yellow);
-            _Blip.Alpha = 0.5f;
+            _subjectBlip = _subject.AttachBlip();
+            _subjectBlip.Color = Color.Red;
+            _subjectBlip.EnableRoute(Color.Yellow);
+            _subjectBlip.Alpha = 0.5f;
 
 
             return base.OnCalloutAccepted();
@@ -71,7 +72,7 @@ namespace TornadoCallouts.Callouts
 
         public override void OnCalloutNotAccepted()
         {
-            if (_Blip) _Blip.Delete();
+            if (_subjectBlip) _subjectBlip.Delete();
             if (_subject) _subject.Delete();
             if (_victim) _victim.Delete();
             if (_bystander) _bystander.Delete();
@@ -130,6 +131,10 @@ namespace TornadoCallouts.Callouts
                             LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(_pursuit, _subject);
                             LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
                             _hasPursuitBegun = true;
+
+                            _subjectBlip.IsFriendly = false;
+                            _subject.Tasks.CruiseWithVehicle(20f, VehicleDrivingFlags.Emergency);
+
                         }
                     }
                 }
@@ -137,6 +142,8 @@ namespace TornadoCallouts.Callouts
                 if (Game.IsKeyDown(IniFile.EndCall)) End();
                 if (_subject && _subject.IsDead) End();
                 if (_subject && LSPD_First_Response.Mod.API.Functions.IsPedArrested(_subject)) End();
+                if (_hasPursuitBegun && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(_pursuit)) End();
+
             }, "[TornadoCallouts] Active Stabbing");
             base.Process();
         }
@@ -146,7 +153,7 @@ namespace TornadoCallouts.Callouts
             if (_subject) _subject.Dismiss();
             if (_victim) _victim.Dismiss();
             if (_bystander) _bystander.Dismiss();
-            if (_Blip) _Blip.Delete();
+            if (_subjectBlip) _subjectBlip.Delete();
 
             Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Active Stabbing", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("ATTENTION_THIS_IS_DISPATCH_HIGH ALL_UNITS_CODE4 NO_FURTHER_UNITS_REQUIRED");

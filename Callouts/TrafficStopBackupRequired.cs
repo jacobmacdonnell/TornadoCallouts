@@ -184,7 +184,7 @@ namespace TornadoCallouts.Callouts
                 if (Game.IsKeyDown(IniFile.EndCall)) End();
                 if (_V && _V.IsDead) End();
                 if (_V && LSPD_First_Response.Mod.API.Functions.IsPedArrested(_V)) End();
-            }, "Traffic Stop Backup Required [TornadoCallouts ]");
+            }, "Traffic Stop Backup Required [TornadoCallouts]");
             base.Process();
         }
 
