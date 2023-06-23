@@ -27,6 +27,8 @@ namespace TornadoCallouts.Callouts
         private float heading;
         private int counter;
         private string malefemale;
+        private bool ArrivalNotificationSent = false;
+        private bool ConversationFinished = false;
 
         public override bool OnBeforeCalloutDisplayed()
         {
@@ -50,15 +52,19 @@ namespace TornadoCallouts.Callouts
             // Victim ped
 
             Victim = new Ped(SpawnPoint, heading);
+
+            Game.LogTrivial("[TornadoCallouts LOG]: Victim ped created");
+
             Victim.IsPersistent = true;
             Victim.BlockPermanentEvents = true;
             Victim.IsRagdoll = true;
-            Victim.Health = 25;
+            Victim.Health = 100;
 
             VictimBlip = Victim.AttachBlip();
             VictimBlip.Color = System.Drawing.Color.CadetBlue;
             VictimBlip.IsRouteEnabled = true;
 
+            Game.LogTrivial("[TornadoCallouts LOG]: Victim blip created");
             // Bystander ped
 
             Bystander = new Ped(SpawnPoint, heading);
@@ -83,18 +89,19 @@ namespace TornadoCallouts.Callouts
         {
             base.Process();
 
-            if(Game.LocalPlayer.Character.DistanceTo(Victim) <= 100f)
+            if(Game.LocalPlayer.Character.DistanceTo(Victim) <= 100f && !ArrivalNotificationSent)
             {
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "On arrival, call EMS and speak with the bystander to get more info.");
-                
                 CalloutInterfaceAPI.Functions.SendMessage(this, "When you arrive on scene, call EMS and speak with the bystander to see what happened.");
+
+                ArrivalNotificationSent = true;
             }
             
             
             if(Game.LocalPlayer.Character.DistanceTo(Bystander) <= 10f)
             {
 
-                Game.DisplayHelp("Press ~y~Y~~ to talk to the bystander.", false);
+                Game.DisplayHelp("Press ~y~Y ~s~to talk to the bystander.", false);
 
                 if (Game.IsKeyDown(System.Windows.Forms.Keys.Y))
                 {
@@ -121,18 +128,18 @@ namespace TornadoCallouts.Callouts
                         Game.DisplaySubtitle("Conversation has ended!");
                         
                         Bystander.Tasks.Wander();
+ 
+
                     }
                 }
             }
 
             if (Victim.IsCuffed || Victim.IsDead || !Victim.Exists() || Game.IsKeyDown(IniFile.EndCall) || Game.LocalPlayer.Character.IsDead)
             {
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "~b~You: ~w~Dispatch we're code 4.");
                 End();
             }
 
-                {
-                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
-            }
         }
 
 

@@ -79,7 +79,6 @@ namespace TornadoCallouts.Callouts
 
             base.OnCalloutNotAccepted();
         }
-
         public override void Process()
         {
             GameFiber.StartNew(delegate
@@ -90,14 +89,15 @@ namespace TornadoCallouts.Callouts
                     _isArmed = true;
                     _subject.Tasks.FightAgainst(_victim);
                     _fightAgainstVictim = true;
-
                 }
-                if (_bystander && _bystander.DistanceTo(Game.LocalPlayer.Character.GetOffsetPosition(Vector3.RelativeFront)) <= 70f && !_hasBegunFleeing)
+
+                if (_bystander && _bystander.DistanceTo(Game.LocalPlayer.Character.GetOffsetPosition(Vector3.RelativeFront)) <= 70f && _fightAgainstVictim && !_hasBegunFleeing)
                 {
                     _bystander.KeepTasks = true;
-                    _bystander.Tasks.ReactAndFlee(_subject); 
+                    _bystander.Tasks.ReactAndFlee(_subject);
                     _hasBegunFleeing = true;
                 }
+
                 if (_subject && _subject.DistanceTo(Game.LocalPlayer.Character.GetOffsetPosition(Vector3.RelativeFront)) < 18f && !_hasBegunAttacking)
                 {
                     if (_scenario > 40)
@@ -133,11 +133,25 @@ namespace TornadoCallouts.Callouts
                             _hasPursuitBegun = true;
 
                             _subjectBlip.IsFriendly = false;
-                            _subject.Tasks.CruiseWithVehicle(20f, VehicleDrivingFlags.Emergency);
 
+                            if (!_subject.IsInAnyVehicle(false))
+                            {
+                                Vehicle nearestVehicle = GetClosestVehicle(_subject.Position, 30f);
+                                if (nearestVehicle != null)
+                                {
+                                    _subject.Tasks.EnterVehicle(nearestVehicle, -1);
+                                    GameFiber.Wait(2000);
+                                    _subject.Tasks.CruiseWithVehicle(nearestVehicle, 20f, VehicleDrivingFlags.Emergency);
+                                }
+                            }
+                            else
+                            {
+                                _subject.Tasks.CruiseWithVehicle(20f, VehicleDrivingFlags.Emergency);
+                            }
                         }
                     }
                 }
+
                 if (Game.LocalPlayer.Character.IsDead) End();
                 if (Game.IsKeyDown(IniFile.EndCall)) End();
                 if (_subject && _subject.IsDead) End();
@@ -148,6 +162,25 @@ namespace TornadoCallouts.Callouts
             base.Process();
         }
 
+        private Vehicle GetClosestVehicle(Vector3 position, float maxDistance)
+        {
+            Vehicle closestVehicle = null;
+            float closestDistance = maxDistance;
+
+            foreach (Vehicle vehicle in World.GetAllVehicles())
+            {
+                float distance = Vector3.Distance(position, vehicle.Position);
+
+                if (distance < closestDistance)
+                {
+                    closestVehicle = vehicle;
+                    closestDistance = distance;
+                }
+            }
+
+            return closestVehicle;
+        }
+
         public override void End()
         {
             if (_subject) _subject.Dismiss();
@@ -155,7 +188,7 @@ namespace TornadoCallouts.Callouts
             if (_bystander) _bystander.Dismiss();
             if (_subjectBlip) _subjectBlip.Delete();
 
-            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Active Stabbing", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
+            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Active Stabbing", "~b~You: ~w~Dispatch we're code 4.");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("ATTENTION_THIS_IS_DISPATCH_HIGH ALL_UNITS_CODE4 NO_FURTHER_UNITS_REQUIRED");
 
             base.End();

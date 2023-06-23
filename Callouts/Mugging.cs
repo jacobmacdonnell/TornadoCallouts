@@ -118,7 +118,7 @@ namespace TornadoCallouts.Callouts
             if (state == EMuggingState.DecisionMade && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(pursuit)) End();
             if (Game.IsKeyDown(IniFile.EndCall)) End();
             {
-                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Mugging", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Mugging", "~b~You: ~w~Dispatch we're code 4.");
 
             }
         }

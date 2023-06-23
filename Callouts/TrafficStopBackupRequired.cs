@@ -195,7 +195,7 @@ namespace TornadoCallouts.Callouts
             if (_vV) _vV.Dismiss();
             if (_vCop) _vCop.Dismiss();
             if (_Blip) _Blip.Delete();
-            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts ", "~y~Traffic Stop Backup Required", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
+            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts ", "~y~Traffic Stop Backup Required", "~b~You: ~w~Dispatch we're code 4.");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("ATTENTION_THIS_IS_DISPATCH_HIGH ALL_UNITS_CODE4 NO_FURTHER_UNITS_REQUIRED");
             base.End();
         }
