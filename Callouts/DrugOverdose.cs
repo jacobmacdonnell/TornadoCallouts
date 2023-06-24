@@ -34,8 +34,8 @@ namespace TornadoCallouts.Callouts
         {
             SpawnPoint = new Vector3(94.63f, -217.37f, 54.49f);
             heading = 53.08f;
-            ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, 500f);
-            AddMinimumDistanceCheck(500f, SpawnPoint);
+            ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, 100f);
+            AddMinimumDistanceCheck(50f, SpawnPoint);
             CalloutMessage = "Potential Drug Overdose";
             CalloutPosition = SpawnPoint;
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 CITIZENS_REPORT_04 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", SpawnPoint);
@@ -57,8 +57,9 @@ namespace TornadoCallouts.Callouts
 
             Victim.IsPersistent = true;
             Victim.BlockPermanentEvents = true;
-            Victim.IsRagdoll = true;
-            Victim.Health = 100;
+            Victim.CanRagdoll = true;
+            Victim.Health = 0;
+
 
             VictimBlip = Victim.AttachBlip();
             VictimBlip.Color = System.Drawing.Color.CadetBlue;
@@ -89,7 +90,7 @@ namespace TornadoCallouts.Callouts
         {
             base.Process();
 
-            if(Game.LocalPlayer.Character.DistanceTo(Victim) <= 100f && !ArrivalNotificationSent)
+            if (Game.LocalPlayer.Character.DistanceTo(Victim) <= 150f && !ArrivalNotificationSent)
             {
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "On arrival, call EMS and speak with the bystander to get more info.");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "When you arrive on scene, call EMS and speak with the bystander to see what happened.");
@@ -109,40 +110,47 @@ namespace TornadoCallouts.Callouts
 
                     if(counter == 1)
                     {
-                        Game.DisplaySubtitle("You: Can you tell me what happened here" + malefemale + "?");
+                        Game.DisplaySubtitle("~b~You~s~: Can you tell me what happened here" + malefemale + "?");
                     }
                     if(counter == 2)
                     {
-                        Game.DisplaySubtitle("~y~Bystander: I don't know, I was walking by when I saw this person collapse to the ground, and then I called 9-11.");
+                        Game.DisplaySubtitle("~y~Bystander~s~: I don't know, I was walking by when I saw this person collapse to the ground, and then I called 9-11.");
                     }
                     if(counter == 3)
                     {
-                        Game.DisplaySubtitle("You: Okay, we beleive it may be a drug overdose, thank you for calling us" + malefemale + ", you are fee to go.");
+                        Game.DisplaySubtitle("~b~You~s~: Okay, we beleive it may be a drug overdose, thank you for calling us " + malefemale + ", you are fee to go.");
                     }
                     if(counter == 4)
                     {
-                        Game.DisplaySubtitle("~y~Bystander: Of course. I hope they are okay, bye.");
+                        Game.DisplaySubtitle("~y~Bystander~s~: Of course. I hope they are okay, bye.");
                     }
                     if(counter == 5)
                     {
-                        Game.DisplaySubtitle("Conversation has ended!");
+                        Game.DisplaySubtitle("~g~Conversation has ended!");
                         
                         Bystander.Tasks.Wander();
- 
+
+                       if(BystanderBlip.Exists())
+                        {
+                            BystanderBlip.Delete();
+                        }
+
+                        GameFiber.Wait(5000);
+
+                        Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "~s~Press your ~g~'END'~s~ Callout Key when you are finished.");
+
 
                     }
                 }
             }
 
-            if (Victim.IsCuffed || Victim.IsDead || !Victim.Exists() || Game.IsKeyDown(IniFile.EndCall) || Game.LocalPlayer.Character.IsDead)
+            if (Victim.IsCuffed || !Victim.Exists() || Victim.IsInAnyVehicle(false) || Game.IsKeyDown(IniFile.EndCall) || Game.LocalPlayer.Character.IsDead)
             {
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "~b~You: ~w~Dispatch we're code 4.");
                 End();
             }
 
         }
-
-
 
         public override void End()
         {
