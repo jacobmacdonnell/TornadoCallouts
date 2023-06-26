@@ -34,7 +34,7 @@ namespace TornadoCallouts
             {
                 RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging, IniFile.ActiveStabbing,IniFile.TrafficStopBackupRequired,
 
-                    IniFile.DrugOverdose);
+                    IniFile.DrugOverdose, IniFile.StudentsFighting);
 
 
                 GameFiber.StartNew(delegate
@@ -54,7 +54,9 @@ namespace TornadoCallouts
             }
         }
 
-        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled, bool activeStabbingEnabled, bool trafficStopBackupRequiredEnabled, bool drugOverdoseEnabled)
+        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled, bool activeStabbingEnabled, bool trafficStopBackupRequiredEnabled, 
+            
+            bool drugOverdoseEnabled, bool studentsFightingEnabled)
         {
            
             if (barFightEnabled) { Functions.RegisterCallout(typeof(Callouts.BarFight)); }
@@ -63,6 +65,7 @@ namespace TornadoCallouts
             if (activeStabbingEnabled) { Functions.RegisterCallout(typeof(Callouts.ActiveStabbing)); }
             if (trafficStopBackupRequiredEnabled) { Functions.RegisterCallout(typeof(Callouts.TrafficStopBackupRequired)); }
             if (drugOverdoseEnabled) { Functions.RegisterCallout(typeof(Callouts.DrugOverdose)); }
+            if (studentsFightingEnabled) { Functions.RegisterCallout(typeof(Callouts.StudentsFighting)); }
 
             Game.LogTrivial("[TornadoCallouts LOG]: All callouts were loaded successfully.");
         }
