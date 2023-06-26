@@ -49,8 +49,7 @@ namespace TornadoCallouts.Callouts
 
             CalloutInterfaceAPI.Functions.SendMessage(this, "Citizens are currently reporting an individual who has collapsed in a public area, exhibiting signs consistent with a drug overdose. The nature of the substance involved is unknown. Respond and assist the individual if EMS has not arrived yet.");
 
-            // Victim ped
-
+            // Spawn Victim ped
             Victim = new Ped(SpawnPoint, heading);
 
             Game.LogTrivial("[TornadoCallouts LOG]: Victim ped created");
@@ -59,19 +58,16 @@ namespace TornadoCallouts.Callouts
             Victim.BlockPermanentEvents = true;
             Victim.CanRagdoll = true;
             Victim.Health = 0;
-
-
             VictimBlip = Victim.AttachBlip();
             VictimBlip.Color = System.Drawing.Color.CadetBlue;
             VictimBlip.IsRouteEnabled = true;
 
             Game.LogTrivial("[TornadoCallouts LOG]: Victim blip created");
-            // Bystander ped
-
+            
+            // Spawn Bystander ped
             Bystander = new Ped(SpawnPoint, heading);
             Bystander.IsPersistent = true;
             Bystander.BlockPermanentEvents = true;
-
             BystanderBlip = Bystander.AttachBlip();
             BystanderBlip.Color = System.Drawing.Color.Yellow;
 
@@ -79,6 +75,9 @@ namespace TornadoCallouts.Callouts
                 malefemale = "sir";
             else
                 malefemale = "ma'am";
+
+            // Make the bystander do the waving animation
+            Bystander.Tasks.PlayAnimation("friends@frj@ig_1", "wave_a", 1f, AnimationFlags.Loop);
 
             counter = 0;
 
@@ -90,47 +89,56 @@ namespace TornadoCallouts.Callouts
         {
             base.Process();
 
-            if (Game.LocalPlayer.Character.DistanceTo(Victim) <= 150f && !ArrivalNotificationSent)
+            if (Game.LocalPlayer.Character.DistanceTo(Victim) <= 250f && !ArrivalNotificationSent)
             {
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "On arrival, call EMS and speak with the bystander to get more info.");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "When you arrive on scene, call EMS and speak with the bystander to see what happened.");
 
                 ArrivalNotificationSent = true;
             }
-            
-            
-            if(Game.LocalPlayer.Character.DistanceTo(Bystander) <= 10f)
-            {
 
+            if (Game.LocalPlayer.Character.DistanceTo(Bystander) <= 10 && !ConversationFinished)
+            {
                 Game.DisplayHelp("Press ~y~Y ~s~to talk to the bystander.", false);
 
                 if (Game.IsKeyDown(System.Windows.Forms.Keys.Y))
                 {
                     counter++;
 
-                    if(counter == 1)
+                    if (counter == 1)
                     {
-                        Game.DisplaySubtitle("~b~You~s~: Can you tell me what happened here" + malefemale + "?");
+                        // Stop the waving animation
+                        Bystander.Tasks.ClearImmediately();
+
+                        // Calculate the direction to face
+                        Vector3 directionToFace = Game.LocalPlayer.Character.Position - Bystander.Position;
+                        float headingToFacePlayer = MathHelper.ConvertDirectionToHeading(directionToFace);
+
+                        // Set the heading of the bystander
+                        Bystander.Heading = headingToFacePlayer;
+
+
+                        Game.DisplaySubtitle("~b~You~s~: Can you tell me what happened here " + malefemale + "?");
                     }
-                    if(counter == 2)
+                    if (counter == 2)
                     {
                         Game.DisplaySubtitle("~y~Bystander~s~: I don't know, I was walking by when I saw this person collapse to the ground, and then I called 9-11.");
                     }
-                    if(counter == 3)
+                    if (counter == 3)
                     {
-                        Game.DisplaySubtitle("~b~You~s~: Okay, we beleive it may be a drug overdose, thank you for calling us " + malefemale + ", you are fee to go.");
+                        Game.DisplaySubtitle("~b~You~s~: Okay, we believe it may be a drug overdose, thank you for calling us " + malefemale + ", you are free to go.");
                     }
-                    if(counter == 4)
+                    if (counter == 4)
                     {
                         Game.DisplaySubtitle("~y~Bystander~s~: Of course. I hope they are okay, bye.");
                     }
-                    if(counter == 5)
+                    if (counter == 5)
                     {
                         Game.DisplaySubtitle("~g~Conversation has ended!");
-                        
+
                         Bystander.Tasks.Wander();
 
-                       if(BystanderBlip.Exists())
+                        if (BystanderBlip.Exists())
                         {
                             BystanderBlip.Delete();
                         }
@@ -138,8 +146,10 @@ namespace TornadoCallouts.Callouts
                         GameFiber.Wait(5000);
 
                         Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "~s~Press your ~g~'END'~s~ Callout Key when you are finished.");
-
-
+                        
+                        
+                        // Set the conversation as finished
+                        ConversationFinished = true;
                     }
                 }
             }
@@ -151,6 +161,7 @@ namespace TornadoCallouts.Callouts
             }
 
         }
+
 
         public override void End()
         {
