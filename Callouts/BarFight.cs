@@ -15,7 +15,7 @@ namespace TornadoCallouts.Callouts
         private Vector3 Spawnpoint;
         private bool FightCreated;
         private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
-        private Random rand = new Random();
+        private readonly Random rand = new Random();
 
         private List<Vector3> spawnLocations = new List<Vector3>()
         {
@@ -140,8 +140,6 @@ namespace TornadoCallouts.Callouts
         
         
         }
-
-
         public override void End()
         {
             base.End();
