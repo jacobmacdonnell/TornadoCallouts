@@ -11,7 +11,7 @@ namespace TornadoCallouts.Callouts
     public class BarFight : Callout
     {
         private Ped Suspect1, Suspect2;
-        private Blip SuspectBlip1, SuspectBlip2;
+        private Blip Suspect1Blip, Suspect2Blip;
         private Vector3 Spawnpoint;
         private bool FightCreated;
         private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
@@ -26,7 +26,6 @@ namespace TornadoCallouts.Callouts
             new Vector3(226.7715f, 301.7152f, 105.5336f), // Singleton's Nightclub (Downtown Vinewood)
             new Vector3(919.417f, 50.9967f, 80.89855f), // Diamond Casino (Los Santos)
         };
-
         public override bool OnBeforeCalloutDisplayed()
         {
             List<Vector3> validSpawnLocations = new List<Vector3>();
@@ -57,7 +56,6 @@ namespace TornadoCallouts.Callouts
             // If none of the spawn locations were within the maximum distance, do not display the callout
             return false;
         }
-
         public override bool OnCalloutAccepted()
         {
             Game.LogTrivial("[TornadoCallouts LOG]: Bar Fight callout accepted");
@@ -95,11 +93,10 @@ namespace TornadoCallouts.Callouts
             Suspect1.BlockPermanentEvents = true;
             Suspect1.Alertness += 50;
             Suspect1.CanOnlyBeDamagedByPlayer = true;
-            Suspect1.Health += 50;
 
-            SuspectBlip1 = Suspect1.AttachBlip();
-            SuspectBlip1.Color = System.Drawing.Color.Yellow;
-            SuspectBlip1.IsRouteEnabled = true;
+            Suspect1Blip = Suspect1.AttachBlip();
+            Suspect1Blip.Color = System.Drawing.Color.Yellow;
+            Suspect1Blip.IsRouteEnabled = true;
 
             // Create suspect 2 at the selected location
             Suspect2 = new Ped(model2, Spawnpoint, 180f);
@@ -107,60 +104,57 @@ namespace TornadoCallouts.Callouts
             Suspect2.BlockPermanentEvents = true;
             Suspect2.Alertness += 50;
             Suspect2.CanOnlyBeDamagedByPlayer = true;
-            Suspect2.Health += 50;
 
-            SuspectBlip2 = Suspect2.AttachBlip();
-            SuspectBlip2.Color = System.Drawing.Color.Yellow;
+            Suspect2Blip = Suspect2.AttachBlip();
+            Suspect2Blip.Color = System.Drawing.Color.Yellow;
 
             FightCreated = false;
 
             return base.OnCalloutAccepted();
         }
-
         public override void Process()
         {
             base.Process();
 
-            if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 60f)
+            if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 100f)
             {
                 Suspect1.Tasks.FightAgainst(Suspect2);
                 Suspect2.Tasks.FightAgainst(Suspect1);
                 FightCreated = true;
             }
 
-            bool v = Suspect1.IsCuffed || Suspect2.IsCuffed; // Suspect 1 or 2 is cuffed.
-            bool n = Suspect1.IsCuffed && Suspect2.IsCuffed; // Suspect 1 and 2 are cuffed.
-            if (Suspect1.IsDead && Suspect2.IsDead || Game.LocalPlayer.Character.IsDead || !Suspect1.Exists() || !Suspect2.Exists() || v || n) End();
-            if (Game.IsKeyDown(IniFile.EndCall)) End();
+            // Check if either Suspect1 or Suspect2 is cuffed
+            bool oneOfSuspectsIsCuffed = Suspect1.IsCuffed || Suspect2.IsCuffed;
 
-                {
-                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Bar Fight", "~b~You: ~w~Dispatch we're code 4.");
+            // Check if either Suspect1 or Suspect2 is dead
+            bool oneOfSuspectsIsDead = Suspect1.IsDead || Suspect2.IsDead;
 
+            // Determine if the callout should end based on various conditions
+            bool shouldEnd = oneOfSuspectsIsDead
+                             || Game.LocalPlayer.Character.IsDead
+                             || !Suspect1.Exists()
+                             || !Suspect2.Exists()
+                             || oneOfSuspectsIsCuffed
+                             || Game.IsKeyDown(IniFile.EndCall);
+
+            // End callout if one of the conditions is met
+            if (shouldEnd)
+            {
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Store Altercation", "~b~You: ~w~Dispatch we're code 4.");
+                End();
             }
-        
-        
         }
         public override void End()
         {
             base.End();
 
-            if (Suspect1.Exists())
-            {
-                Suspect1.Dismiss();
-            }
-            if (Suspect2.Exists())
-            {
-                Suspect2.Dismiss();
-            }
+            // Clean up Suspect peds
+            if (Suspect1.Exists()) { Suspect1.Dismiss(); }
+            if (Suspect2.Exists()) { Suspect2.Dismiss(); }
 
-            if (SuspectBlip1.Exists())
-            {
-                SuspectBlip1.Delete();
-            }
-            if (SuspectBlip2.Exists())
-            {
-                SuspectBlip2.Delete();
-            }
+            // Clean up Suspect Blips
+            if (Suspect1Blip.Exists()) { Suspect1Blip.Delete(); }
+            if (Suspect2Blip.Exists()) { Suspect2Blip.Delete(); }
 
             Game.LogTrivial("[TornadoCallouts LOG]: | Bar Fight | Has Cleaned Up.");
         }

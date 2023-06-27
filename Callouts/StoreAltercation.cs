@@ -53,12 +53,7 @@ namespace TornadoCallouts.Callouts
             new Vector3(999f, 999f, 999f), // Grapeseeds Main Street
             new Vector3(999f, 999f, 999f), // Senora Freeway Mount Chiliad – 24/7 Supermarket
             new Vector3(999f, 999f, 999f), // Tataviam Mountains – 24/7 Supermarket
-
-            // Add more as needed
         };
-
-
-
         public override bool OnBeforeCalloutDisplayed()
         {
             List<Vector3> validSpawnLocations = new List<Vector3>();
@@ -89,7 +84,6 @@ namespace TornadoCallouts.Callouts
             // If none of the spawn locations were within the maximum distance, do not display the callout
             return false;
         }
-
         public override bool OnCalloutAccepted()
         {
             Game.LogTrivial("[TornadoCallouts LOG]: Store Altercation callout accepted");
@@ -130,7 +124,7 @@ namespace TornadoCallouts.Callouts
 
             // Suspect 1 blip and gender for speech.
             SuspectBlip1 = Suspect1.AttachBlip();
-            SuspectBlip1.Color = System.Drawing.Color.Orange;
+            SuspectBlip1.Color = System.Drawing.Color.Purple;
             SuspectBlip1.IsRouteEnabled = true;
 
             if (Suspect1.IsMale)
@@ -138,23 +132,20 @@ namespace TornadoCallouts.Callouts
             else
                 malefemaleSuspect1 = "ma'am";
 
-
             // Create suspect 2 at the selected location
             Suspect2 = new Ped(model2, Spawnpoint, 180f);
             Suspect2.IsPersistent = true;
             Suspect2.BlockPermanentEvents = true;
             Suspect2.CanOnlyBeDamagedByPlayer = true;
 
-
             // Suspect 2 blip and gender for speech.
             SuspectBlip2 = Suspect2.AttachBlip();
-            SuspectBlip2.Color = System.Drawing.Color.Purple;
+            SuspectBlip2.Color = System.Drawing.Color.HotPink;
 
             if (Suspect2.IsMale)
                 malefemaleSuspect2 = "sir";
             else
                 malefemaleSuspect2 = "ma'am";
-
 
             // Create store clerk at the selected location
             Clerk = new Ped(model3, Spawnpoint, 180f);
@@ -164,22 +155,18 @@ namespace TornadoCallouts.Callouts
 
             // Store Clerk blip and gender for speech.
             ClerkBlip = Clerk.AttachBlip();
-            ClerkBlip.Color = System.Drawing.Color.Cyan;
+            ClerkBlip.Color = System.Drawing.Color.Yellow;
 
             if (Clerk.IsMale)
                 malefemaleClerk = "sir";
             else
                 malefemaleClerk = "ma'am";
 
-
             FightCreated = false;
-
             counter = 0;
-
 
             return base.OnCalloutAccepted();
         }
-
         public override void Process()
         {
             base.Process();
@@ -195,7 +182,7 @@ namespace TornadoCallouts.Callouts
             // Suspect 1 conversation
             if (Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 5f && !Suspect1ConversationFinished && !Suspect2ConversationFinished && !ClerkConversationFinished)
             {
-                Game.DisplayHelp("Press ~y~Y ~s~to talk to ~o~Suspect 1.", false);
+                Game.DisplayHelp("Press ~y~Y ~s~to talk to ~h~~p~Suspect 1.", false);
 
                 if (Game.IsKeyDown(Keys.Y))
                 {
@@ -208,7 +195,7 @@ namespace TornadoCallouts.Callouts
                     }
                     else if (counter == 2)
                     {
-                        Game.DisplaySubtitle("~o~Suspect 1~s~: I was minding my own business when that person suddenly started provoking me. They were being aggressive and trying to start a fight!");
+                        Game.DisplaySubtitle("~p~Suspect 1~s~: I was minding my own business when that person suddenly started provoking me. They were being aggressive and trying to start a fight!");
                     }
                     else if (counter == 3)
                     {
@@ -216,7 +203,7 @@ namespace TornadoCallouts.Callouts
                     }
                     else if (counter == 4)
                     {
-                        Game.DisplaySubtitle("~o~Suspect 1~s~: Yes, I defended myself! They attacked me first, and I had no choice but to fight back!");
+                        Game.DisplaySubtitle("~p~Suspect 1~s~: Yes, I defended myself! They attacked me first, and I had no choice but to fight back!");
                     }
                     else if (counter == 5)
                     {
@@ -224,16 +211,19 @@ namespace TornadoCallouts.Callouts
                     }
                     else if (counter == 6)
                     {
-                        Game.DisplaySubtitle("~o~Suspect 1~s~: That's all I have to say. I hope you understand the truth!");
+                        Game.DisplaySubtitle("~p~Suspect 1~s~: That's all I have to say. I hope you understand the truth!");
                     }
                     else if (counter == 7)
                     {
-                        Game.DisplaySubtitle("~g~Conversation has ended, ~s~now talk to ~p~Suspect 2.");
+                        Game.DisplaySubtitle("~g~Conversation has ended, ~s~now talk to ~h~~q~Suspect 2.");
 
                         // Set Suspect1 conversation as finished
                         Suspect1ConversationFinished = true;
-
+                        
+                        // Set counter back to 0 for next conversation
                         counter = 0;
+                        
+                        GameFiber.Wait(1500);
                     }
                 }
             }
@@ -241,7 +231,7 @@ namespace TornadoCallouts.Callouts
             // Suspect 2 conversation
             if (Game.LocalPlayer.Character.DistanceTo(Suspect2) <= 5f && Suspect1ConversationFinished && !Suspect2ConversationFinished && !ClerkConversationFinished)
             {
-                Game.DisplayHelp("Press ~y~Y ~s~to talk to ~p~Suspect 2.", false);
+                Game.DisplayHelp("Press ~y~Y ~s~to talk to ~h~~q~Suspect 2.", false);
 
                 if (Game.IsKeyDown(Keys.Y))
                 {
@@ -274,13 +264,17 @@ namespace TornadoCallouts.Callouts
                     }
                     else if (counter == 7)
                     {
-                        Game.DisplaySubtitle("~g~Conversation has ended, ~s~now go talk to the ~c~Store Clerk.");
+                        Game.DisplaySubtitle("~g~Conversation has ended, ~s~now go talk to the ~h~~y~Store Clerk.");
 
+                        Clerk.Tasks.PlayAnimation("friends@frj@ig_1", "wave_a", 1f, AnimationFlags.Loop);
+                        
                         // Set Suspect2 conversation as finished
                         Suspect2ConversationFinished = true;
 
                         // Set counter back to 0 for next conversation
                         counter = 0;
+
+                        GameFiber.Wait(1500);
                     }
                 }
             }
@@ -288,18 +282,18 @@ namespace TornadoCallouts.Callouts
             // Store Clerk conversation
             if (Game.LocalPlayer.Character.DistanceTo(Clerk) <= 5f && Suspect1ConversationFinished && Suspect2ConversationFinished && !ClerkConversationFinished)
             {
-                Clerk.Tasks.PlayAnimation("friends@frj@ig_1", "wave_a", 1f, AnimationFlags.Loop);
-
-                Game.DisplayHelp("Press ~y~Y ~s~to talk to the ~y~Store Clerk.", false);
+                Game.DisplayHelp("Press ~y~Y ~s~to talk to the ~h~~y~Store Clerk.", false);
 
                 if (Game.IsKeyDown(Keys.Y))
                 {
+                    Clerk.Tasks.ClearImmediately();
+                    Game.LogTrivial("[TornadoCallouts LOG]: Clear animation task for clerk initiated");
+
+                    NativeFunction.Natives.x5AD23D40115353AC(Clerk, Game.LocalPlayer.Character, -1);
                     counter++;
 
                     if (counter == 1)
                     {
-                        Clerk.Tasks.ClearImmediately();
-                        NativeFunction.Natives.x5AD23D40115353AC(Clerk, Game.LocalPlayer.Character, -1);
                         Game.DisplaySubtitle("~b~You~s~: Can you tell me what happened here " + malefemaleClerk + "?");
                     }
                     else if (counter == 2)
@@ -324,11 +318,11 @@ namespace TornadoCallouts.Callouts
                     }
                     else if (counter == 7)
                     {
-                        Game.DisplaySubtitle("~g~Conversation has ended. Finish your investigation then end the callout.");
+                        Game.DisplaySubtitle("~g~Conversation has ended. ~s~Finish your investigation then end the callout.");
 
-                        GameFiber.Wait(5000);
+                        GameFiber.Wait(6000);
 
-                        Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Store Altercation", "~s~Press your ~g~'END'~s~ Callout Key when you are finished.");
+                        Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Store Altercation", "~s~Press your ~h~~g~'END'~s~ Callout Key when you are finished.");
 
                         // Set clerk conversation as finished
                         ClerkConversationFinished = true;
@@ -337,12 +331,12 @@ namespace TornadoCallouts.Callouts
             }
 
             // Initiate a fight between Suspect1 and Suspect2 if conditions are met
-            if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 60f)
-            {
-                Suspect1.Tasks.FightAgainst(Suspect2);
-                Suspect2.Tasks.FightAgainst(Suspect1);
-                FightCreated = true;
-            }
+          //  if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 60f)
+           // {
+              //  Suspect1.Tasks.FightAgainst(Suspect2);
+               // Suspect2.Tasks.FightAgainst(Suspect1);
+               // FightCreated = true;
+           // }
 
             // Check if either Suspect1 or Suspect2 is cuffed
             bool oneOfSuspectsIsCuffed = Suspect1.IsCuffed || Suspect2.IsCuffed;
@@ -355,28 +349,21 @@ namespace TornadoCallouts.Callouts
                              || Game.LocalPlayer.Character.IsDead
                              || !Suspect1.Exists()
                              || !Suspect2.Exists()
-                             || oneOfSuspectsIsCuffed;
+                             || oneOfSuspectsIsCuffed
+                             || Game.IsKeyDown(IniFile.EndCall);
 
-            // End the fight if necessary
+            // End callout if one of the conditions is met
             if (shouldEnd)
-            {
-                End();
-            }
-
-            // Check for player input to end the fight
-            if (Game.IsKeyDown(IniFile.EndCall))
             {
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Store Altercation", "~b~You: ~w~Dispatch we're code 4.");
                 End();
             }
-
         }
-
         public override void End()
         {
             base.End();
 
-            // Clean up Suspects
+            // Clean up Suspect Peds
             if (Suspect1.Exists()) { Suspect1.Dismiss(); }
             if (Suspect2.Exists()) { Suspect2.Dismiss(); }
 
@@ -384,10 +371,8 @@ namespace TornadoCallouts.Callouts
             if (SuspectBlip1.Exists()) { SuspectBlip1.Delete(); }
             if (SuspectBlip2.Exists()) { SuspectBlip2.Delete(); }
 
-            // Clean up Clerk
+            // Clean up Store Clerk Ped and Blip
             if (Clerk.Exists()) { Clerk.Dismiss(); }
-
-            // Clean up Clerk Blip
             if (ClerkBlip.Exists()) { ClerkBlip.Delete(); }
 
             Game.LogTrivial("[TornadoCallouts LOG]: | Store Altercation | Has Cleaned Up.");

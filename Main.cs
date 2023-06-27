@@ -67,10 +67,8 @@ namespace TornadoCallouts
             if (studentsFightingEnabled) { Functions.RegisterCallout(typeof(Callouts.StudentsFighting)); }
             if (storeAltercationEnabled) { Functions.RegisterCallout(typeof(Callouts.StoreAltercation)); }
 
-
             Game.LogTrivial("[TornadoCallouts LOG]: All callouts were loaded successfully.");
         }
-
         private static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
         {
             foreach (Assembly assembly in Functions.GetAllUserPlugins())
@@ -82,7 +80,6 @@ namespace TornadoCallouts
             }
             return null;
         }
-
         public static bool IsLSPDFRPluginRunning(string Plugin, Version minversion = null)
         {
             foreach (Assembly assembly in Functions.GetAllUserPlugins())

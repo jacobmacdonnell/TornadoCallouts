@@ -12,20 +12,19 @@ using System.Windows.Forms;
 
 namespace TornadoCallouts.Callouts
 {
-    [CalloutInterface("Students Fighting", CalloutProbability.High, "Two students are currently fighting.", "Code 2", "LSPD")]
+    [CalloutInterface("Students Fighting", CalloutProbability.Medium, "Two students are currently fighting.", "Code 2", "LSPD")]
     public class StudentsFighting : Callout
     {
         private Ped Student1, Student2;
         private Blip Student1Blip, Student2Blip;
         private Vector3 Spawnpoint;
         private Vector3 Searcharea;
-        private Random rand = new Random();
+        private readonly Random rand = new Random();
         private List<Ped> bystanders = new List<Ped>(); // To keep track of the bystander Peds
         private List<Blip> blips = new List<Blip>(); // To keep track of the blips
         private List<string> pedModels; // Declare pedModels at class level
         private bool FightCreated;
         private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
-
 
 
         // List potential spawn locations
@@ -73,12 +72,12 @@ namespace TornadoCallouts.Callouts
 
             // List of ped model names
             pedModels = new List<string>()
-    {
-            // Male Student Peds
-            "a_m_y_hipster_01", "a_m_y_hipster_02", "a_m_y_hipster_03",
-            "a_m_y_indian_01", "a_m_y_epsilon_02", "a_m_y_epsilon_01",
-            "a_m_y_vinewood_02", "a_m_y_vinewood_01", "a_m_y_vinewood_04", "a_m_y_vinewood_03",
-    };
+            {   
+               // Male Student Peds
+               "a_m_y_hipster_01", "a_m_y_hipster_02", "a_m_y_hipster_03",
+               "a_m_y_indian_01", "a_m_y_epsilon_02", "a_m_y_epsilon_01",
+               "a_m_y_vinewood_02", "a_m_y_vinewood_01", "a_m_y_vinewood_04", "a_m_y_vinewood_03",
+            };
 
             Game.LogTrivial("[TornadoCallouts LOG]: About to create students and bystanders");
 
@@ -105,7 +104,6 @@ namespace TornadoCallouts.Callouts
             student = new Ped(model, Spawnpoint, 180f);
             student.IsPersistent = true;
             student.BlockPermanentEvents = true;
-            student.Alertness += 50;
             student.CanOnlyBeDamagedByPlayer = true;
             studentBlip = student.AttachBlip();
             studentBlip.Color = System.Drawing.Color.Yellow;
@@ -117,7 +115,6 @@ namespace TornadoCallouts.Callouts
                 studentBlip.IsRouteEnabled = true;
             }
         }
-
         private void CreateBystanders()
         {
             Vector3 center = Spawnpoint; // Center of the circle where the students are fighting
@@ -151,7 +148,6 @@ namespace TornadoCallouts.Callouts
                 blips.Add(blip); // Add the blip to the list
             }
         }
-
         public bool ShouldEndCallout()
         {
             return Student1.IsDead || Student2.IsDead || Game.LocalPlayer.Character.IsDead || !Student1.Exists() || !Student2.Exists() || Student1.IsCuffed || Student2.IsCuffed || Game.IsKeyDown(IniFile.EndCall);
@@ -186,50 +182,22 @@ namespace TornadoCallouts.Callouts
                 End();
             }
         }
-
-
         public override void End()
         {
             base.End();
 
             // Clean up the students and their blips
-            if (Student1.Exists())
-            {
-                Student1.Dismiss();
-            }
-            if (Student2.Exists())
-            {
-                Student2.Dismiss();
-            }
-
-            if (Student1Blip.Exists())
-            {
-                Student1Blip.Delete();
-            }
-            if (Student2Blip.Exists())
-            {
-                Student2Blip.Delete();
-            }
+            if (Student1.Exists()) { Student1.Dismiss(); }
+            if (Student2.Exists()) { Student2.Dismiss(); }
+            if (Student1Blip.Exists()) { Student1Blip.Delete(); }
+            if (Student2Blip.Exists()) { Student2Blip.Delete(); }
 
             // Clean up the bystanders and their blips
-            foreach (Ped bystander in bystanders)
-            {
-                if (bystander.Exists())
-                {
-                    bystander.Dismiss();
-                }
-            }
+            foreach (Ped bystander in bystanders) { if (bystander.Exists()) { bystander.Dismiss(); } }
 
-            foreach (Blip blip in blips)
-            {
-                if (blip.Exists())
-                {
-                    blip.Delete();
-                }
-            }
+            foreach (Blip blip in blips) { if (blip.Exists()) { blip.Delete(); } }
 
             Game.LogTrivial("[TornadoCallouts LOG]: | Students Fighting | Has Cleaned Up.");
         }
-
     }
 }

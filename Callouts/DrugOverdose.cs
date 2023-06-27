@@ -4,19 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rage;
+using Rage.Native;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using CalloutInterfaceAPI;
 using System.Windows.Forms;
 using LSPD_First_Response.Engine;
-using Rage.Native;
 
 namespace TornadoCallouts.Callouts
 {
     [CalloutInterface("Drug Overdose", CalloutProbability.Medium, "An individual has had a potential drug overdose", "Code 3", "LSPD")]
-
-
     public class DrugOverdose : Callout
     {
 
@@ -43,7 +41,6 @@ namespace TornadoCallouts.Callouts
             
             return base.OnBeforeCalloutDisplayed();
         }
-
         public override bool OnCalloutAccepted()
         {
             Game.LogTrivial("[TornadoCallouts LOG]: Drug Overdose callout accepted.");
@@ -82,10 +79,8 @@ namespace TornadoCallouts.Callouts
 
             counter = 0;
 
-
             return base.OnCalloutAccepted();
         }
-
         public override void Process()
         {
             base.Process();
@@ -113,15 +108,15 @@ namespace TornadoCallouts.Callouts
 
 
                         //Turn_Ped_To_Face_Entity
-                        NativeFunction.Natives.x5AD23D40115353AC(Bystander, Game.LocalPlayer.Character, -1); 
+                        NativeFunction.Natives.x5AD23D40115353AC(Bystander, Game.LocalPlayer.Character, -1);
 
 
                         // Calculate the direction to face
-                             //  Vector3 directionToFace = Game.LocalPlayer.Character.Position - Bystander.Position;
-                             // float headingToFacePlayer = MathHelper.ConvertDirectionToHeading(directionToFace);
+                        //  Vector3 directionToFace = Game.LocalPlayer.Character.Position - Bystander.Position;
+                        // float headingToFacePlayer = MathHelper.ConvertDirectionToHeading(directionToFace);
 
                         // Set the heading of the bystander
-                             // Bystander.Heading = headingToFacePlayer;
+                        // Bystander.Heading = headingToFacePlayer;
 
                         Game.DisplaySubtitle("~b~You~s~: Can you tell me what happened here " + malefemale + "?");
                     }
@@ -143,30 +138,32 @@ namespace TornadoCallouts.Callouts
 
                         Bystander.Tasks.Wander();
 
-                        if (BystanderBlip.Exists())
-                        {
-                            BystanderBlip.Delete();
-                        }
+                        if (BystanderBlip.Exists()) { BystanderBlip.Delete(); }
 
                         GameFiber.Wait(5000);
 
                         Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "~s~Press your ~g~'END'~s~ Callout Key when you are finished.");
-                        
-                        
+
                         // Set the conversation as finished
                         ConversationFinished = true;
                     }
                 }
             }
+            
+            // Determine if the callout should end based on various conditions
+            bool shouldEnd = Victim.IsCuffed
+                            || !Victim.Exists()
+                            || Victim.IsInAnyVehicle(false)
+                            || Game.IsKeyDown(IniFile.EndCall)
+                            || Game.LocalPlayer.Character.IsDead;
 
-            if (Victim.IsCuffed || !Victim.Exists() || Victim.IsInAnyVehicle(false) || Game.IsKeyDown(IniFile.EndCall) || Game.LocalPlayer.Character.IsDead)
+            // End callout if one of the conditions is met
+            if (shouldEnd)
             {
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "~b~You: ~w~Dispatch we're code 4.");
                 End();
             }
-
         }
-
         public override void End()
         {
             base.End();

@@ -18,8 +18,6 @@ namespace TornadoCallouts
         internal static bool StoreAltercation = true;
 
 
-
-
         internal static bool HelpMessages = true;
         internal static Keys EndCall = Keys.End;
         internal static Keys Dialog = Keys.Y;
@@ -44,24 +42,17 @@ namespace TornadoCallouts
                 StudentsFighting = ini.ReadBoolean("Callouts", "StudentsFighting", true);
                 StoreAltercation = ini.ReadBoolean("Callouts", "StoreAltercation", true);
 
-
                 // Keys
-
                 EndCall = ini.ReadEnum("Keys", "EndCall", Keys.End);
                 Dialog = ini.ReadEnum("Keys", "Dialog", Keys.Y);
 
-
                 Game.LogTrivial("[TornadoCallouts LOG]: Config file from TornadoCallouts has been loaded."); // Debugging line
             }
-            catch (Exception e)
+                catch (Exception e)
             {
                 Game.LogTrivial("[TornadoCallouts LOG]: Exception while loading  Ini file - " + e.Message);
             }
         }
-
-
         public static readonly string PluginVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
     }
-
 }
