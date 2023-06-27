@@ -6,6 +6,7 @@ using LSPD_First_Response.Mod.Callouts;
 using CalloutInterfaceAPI;
 using LSPD_First_Response.Engine;
 using System.Reflection;
+using Rage.Native;
 
 namespace TornadoCallouts.Callouts
 {
@@ -15,12 +16,14 @@ namespace TornadoCallouts.Callouts
         private Ped Student1, Student2;
         private Blip StudentBlip1, StudentBlip2;
         private Vector3 Spawnpoint;
-        private bool FightCreated;
-        private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
+        private Vector3 Searcharea;
         private Random rand = new Random();
         private List<Ped> bystanders = new List<Ped>(); // To keep track of the bystander Peds
         private List<Blip> blips = new List<Blip>(); // To keep track of the blips
         private List<string> pedModels; // Declare pedModels at class level
+        private bool FightCreated;
+        private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
+
 
 
         // List potential spawn locations
@@ -77,12 +80,15 @@ namespace TornadoCallouts.Callouts
 
             Game.LogTrivial("[TornadoCallouts LOG]: About to create students and bystanders");
 
-            CreateStudent(ref Student1, ref StudentBlip1);
-            CreateStudent(ref Student2, ref StudentBlip2);
-            CreateBystanders(); // This spawns the bystanders
+            CreateStudent(ref Student1, ref StudentBlip1); // Spawning the first student involved in the fight
+            CreateStudent(ref Student2, ref StudentBlip2); // Spawning the second student involved in the fight
+            CreateBystanders(); // Spawning bystanders around the fighting students
 
             Game.LogTrivial("[TornadoCallouts LOG]: Students and bystanders created");
 
+            Searcharea = Spawnpoint.Around2D(1f, 2f);
+
+            Game.LogTrivial("[TornadoCallouts LOG]: Searcharea created");
 
             FightCreated = false;
 
@@ -113,7 +119,7 @@ namespace TornadoCallouts.Callouts
         private void CreateBystanders()
         {
             Vector3 center = Spawnpoint; // Center of the circle where the students are fighting
-            float radius = 10f; // Radius of the circle
+            float radius = 8f; // Radius of the circle
 
             // Generate 6 bystanders around the fighting students
             for (int i = 0; i < 6; i++)
@@ -144,9 +150,6 @@ namespace TornadoCallouts.Callouts
             }
         }
 
-
-
-
         public bool ShouldEndCallout()
         {
             return Student1.IsDead || Student2.IsDead || Game.LocalPlayer.Character.IsDead || !Student1.Exists() || !Student2.Exists() || Student1.IsCuffed || Student2.IsCuffed || Game.IsKeyDown(IniFile.EndCall);
@@ -163,6 +166,14 @@ namespace TornadoCallouts.Callouts
                 Student2.Tasks.FightAgainst(Student1);
                 FightCreated = true;
 
+                Vector3 center = (Student1.Position + Student2.Position) / 2; // center point between the fighting students
+
+                // Make sure bystanders are turned facing the fighting students
+                foreach (Ped bystander in bystanders)
+                {
+                    NativeFunction.Natives.x5AD23D40115353AC(bystander, center, -1); //Turn_Ped_To_Face_Entity
+                }
+
                 Game.LogTrivial("[TornadoCallouts LOG]: Fight between students started");
             }
 
@@ -173,6 +184,7 @@ namespace TornadoCallouts.Callouts
                 End();
             }
         }
+
 
         public override void End()
         {

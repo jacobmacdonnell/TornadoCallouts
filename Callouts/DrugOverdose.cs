@@ -10,6 +10,7 @@ using System.Drawing;
 using CalloutInterfaceAPI;
 using System.Windows.Forms;
 using LSPD_First_Response.Engine;
+using Rage.Native;
 
 namespace TornadoCallouts.Callouts
 {
@@ -97,11 +98,11 @@ namespace TornadoCallouts.Callouts
                 ArrivalNotificationSent = true;
             }
 
-            if (Game.LocalPlayer.Character.DistanceTo(Bystander) <= 10 && !ConversationFinished)
+            if (Game.LocalPlayer.Character.DistanceTo(Bystander) <= 10f && !ConversationFinished)
             {
                 Game.DisplayHelp("Press ~y~Y ~s~to talk to the bystander.", false);
 
-                if (Game.IsKeyDown(System.Windows.Forms.Keys.Y))
+                if (Game.IsKeyDown(Keys.Y))
                 {
                     counter++;
 
@@ -110,13 +111,17 @@ namespace TornadoCallouts.Callouts
                         // Stop the waving animation
                         Bystander.Tasks.ClearImmediately();
 
+
+                        //Turn_Ped_To_Face_Entity
+                        NativeFunction.Natives.x5AD23D40115353AC(Bystander, Game.LocalPlayer.Character, -1); 
+
+
                         // Calculate the direction to face
-                        Vector3 directionToFace = Game.LocalPlayer.Character.Position - Bystander.Position;
-                        float headingToFacePlayer = MathHelper.ConvertDirectionToHeading(directionToFace);
+                             //  Vector3 directionToFace = Game.LocalPlayer.Character.Position - Bystander.Position;
+                             // float headingToFacePlayer = MathHelper.ConvertDirectionToHeading(directionToFace);
 
                         // Set the heading of the bystander
-                        Bystander.Heading = headingToFacePlayer;
-
+                             // Bystander.Heading = headingToFacePlayer;
 
                         Game.DisplaySubtitle("~b~You~s~: Can you tell me what happened here " + malefemale + "?");
                     }
@@ -134,7 +139,7 @@ namespace TornadoCallouts.Callouts
                     }
                     if (counter == 5)
                     {
-                        Game.DisplaySubtitle("~g~Conversation has ended!");
+                        Game.DisplaySubtitle("~g~Conversation has ended. Complete your investigation then end the callout.");
 
                         Bystander.Tasks.Wander();
 

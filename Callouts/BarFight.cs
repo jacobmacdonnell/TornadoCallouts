@@ -134,7 +134,7 @@ namespace TornadoCallouts.Callouts
             if (Game.IsKeyDown(IniFile.EndCall)) End();
 
                 {
-                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Bar Fight", "~b~You: ~w~Dispatch we're code 4. Show me ~g~10-8.");
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Bar Fight", "~b~You: ~w~Dispatch we're code 4.");
 
             }
         

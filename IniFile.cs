@@ -16,6 +16,8 @@ namespace TornadoCallouts
         internal static bool TrafficStopBackupRequired = true;
         internal static bool DrugOverdose = true;
         internal static bool StudentsFighting = true;
+        internal static bool StoreAltercation = true;
+
 
 
 
@@ -41,6 +43,7 @@ namespace TornadoCallouts
                 TrafficStopBackupRequired = ini.ReadBoolean("Callouts", "TrafficStopBackupRequired", true);
                 DrugOverdose = ini.ReadBoolean("Callouts", "DrugOverdose", true);
                 StudentsFighting = ini.ReadBoolean("Callouts", "StudentsFighting", true);
+                StoreAltercation = ini.ReadBoolean("Callouts", "StoreAltercation", true);
 
 
                 // Keys
