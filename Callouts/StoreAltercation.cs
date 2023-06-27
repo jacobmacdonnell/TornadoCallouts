@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace TornadoCallouts.Callouts
 {
-    [CalloutInterface("Store Altercation", CalloutProbability.High, "There is an altercation at a store.", "Code 3", "LSPD")]
+    [CalloutInterface("Store Altercation", CalloutProbability.High, "There is an altercation at a store.", "Code 2", "LSPD")]
 
     public class StoreAltercation : Callout
     {
@@ -28,8 +28,9 @@ namespace TornadoCallouts.Callouts
         private string malefemaleSuspect1;
         private string malefemaleSuspect2;
         private string malefemaleClerk;
-        private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
         private readonly Random rand = new Random();
+        private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
+
 
         private List<Vector3> spawnLocations = new List<Vector3>()
         {
@@ -108,7 +109,6 @@ namespace TornadoCallouts.Callouts
             Suspect1 = new Ped(model1, Spawnpoint, 180f);
             Suspect1.IsPersistent = true;
             Suspect1.BlockPermanentEvents = true;
-            Suspect1.Alertness += 50;
             Suspect1.CanOnlyBeDamagedByPlayer = true;
 
             // Suspect 1 blip and gender for speech.
@@ -126,7 +126,6 @@ namespace TornadoCallouts.Callouts
             Suspect2 = new Ped(model2, Spawnpoint, 180f);
             Suspect2.IsPersistent = true;
             Suspect2.BlockPermanentEvents = true;
-            Suspect2.Alertness += 50;
             Suspect2.CanOnlyBeDamagedByPlayer = true;
 
 
@@ -187,32 +186,32 @@ namespace TornadoCallouts.Callouts
 
                     if (counter == 1)
                     {
-
-                        //Turn_Ped_To_Face_Entity
                         NativeFunction.Natives.x5AD23D40115353AC(Suspect1, Game.LocalPlayer.Character, -1);
-
-
                         Game.DisplaySubtitle("~b~You~s~: Can you tell me what happened here " + malefemaleSuspect1 + "?");
                     }
-                    if (counter == 2)
+                    else if (counter == 2)
                     {
-                        Game.DisplaySubtitle("~o~Suspect 1~s~: I don't know, I was walking by when I saw this person collapse to the ground, and then I called 9-11.");
+                        Game.DisplaySubtitle("~o~Suspect 1~s~: I was minding my own business when that person suddenly started provoking me. They were being aggressive and trying to start a fight!");
                     }
-                    if (counter == 3)
+                    else if (counter == 3)
                     {
-                        Game.DisplaySubtitle("~b~You~s~: Okay, we believe it may be a drug overdose, thank you for calling us " + malefemaleSuspect1 + ", you are free to go.");
+                        Game.DisplaySubtitle("~b~You~s~: Did you engage in a physical altercation with them?");
                     }
-                    if (counter == 4)
+                    else if (counter == 4)
                     {
-                        Game.DisplaySubtitle("~o~Suspect 1~s~: Of course. I hope they are okay, bye.");
+                        Game.DisplaySubtitle("~o~Suspect 1~s~: Yes, I defended myself! They attacked me first, and I had no choice but to fight back!");
                     }
-                    if (counter == 5)
+                    else if (counter == 5)
+                    {
+                        Game.DisplaySubtitle("~b~You~s~: Is there anything else you want to add to your side of the story?");
+                    }
+                    else if (counter == 6)
+                    {
+                        Game.DisplaySubtitle("~o~Suspect 1~s~: That's all I have to say. I hope you understand the truth!");
+                    }
+                    else if (counter == 7)
                     {
                         Game.DisplaySubtitle("~g~Conversation has ended, ~s~now talk to ~p~Suspect 2.");
-
-                        GameFiber.Wait(5000);
-
-                        Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Store Altercation", "~s~Press your ~g~'END'~s~ Callout Key when you are finished.");
 
                         // Set Suspect1 conversation as finished
                         Suspect1ConversationFinished = true;
@@ -233,31 +232,32 @@ namespace TornadoCallouts.Callouts
 
                     if (counter == 1)
                     {
-
-                        //Turn_Ped_To_Face_Entity
                         NativeFunction.Natives.x5AD23D40115353AC(Suspect2, Game.LocalPlayer.Character, -1);
-
                         Game.DisplaySubtitle("~b~You~s~: Can you tell me what happened here " + malefemaleSuspect2 + "?");
                     }
-                    if (counter == 2)
+                    else if (counter == 2)
                     {
-                        Game.DisplaySubtitle("~p~Suspect 2~s~: I don't know, I was walking by when I saw this person collapse to the ground, and then I called 9-11.");
+                        Game.DisplaySubtitle("~p~Suspect 2~s~: That's not true! they are lying! They were the one who instigated the fight. I was just defending myself!");
                     }
-                    if (counter == 3)
+                    else if (counter == 3)
                     {
-                        Game.DisplaySubtitle("~b~You~s~: Okay, we believe it may be a drug overdose, thank you for calling us " + malefemaleSuspect2 + ", you are free to go.");
+                        Game.DisplaySubtitle("~b~You~s~: Did you engage in a physical altercation with them?");
                     }
-                    if (counter == 4)
+                    else if (counter == 4)
                     {
-                        Game.DisplaySubtitle("~p~Suspect 2~s~: Of course. I hope they are okay, bye.");
+                        Game.DisplaySubtitle("~p~Suspect 2~s~: Yes, but only because they attacked me first. I had no choice but to fight back for my own safety!");
                     }
-                    if (counter == 5)
+                    else if (counter == 5)
+                    {
+                        Game.DisplaySubtitle("~b~You~s~: Is there anything else you want to add to your side of the story?");
+                    }
+                    else if (counter == 6)
+                    {
+                        Game.DisplaySubtitle("~p~Suspect 2~s~: That's all I have to say. Please understand that I was only defending myself!");
+                    }
+                    else if (counter == 7)
                     {
                         Game.DisplaySubtitle("~g~Conversation has ended, ~s~now go talk to the ~c~Store Clerk.");
-
-                        GameFiber.Wait(5000);
-
-                        Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Store Altercation", "~s~Press your ~g~'END'~s~ Callout Key when you are finished.");
 
                         // Set Suspect2 conversation as finished
                         Suspect2ConversationFinished = true;
@@ -271,7 +271,6 @@ namespace TornadoCallouts.Callouts
             // Store Clerk conversation
             if (Game.LocalPlayer.Character.DistanceTo(Clerk) <= 5f && Suspect1ConversationFinished && Suspect2ConversationFinished && !ClerkConversationFinished)
             {
-                // Make the store clerk do the waving animation
                 Clerk.Tasks.PlayAnimation("friends@frj@ig_1", "wave_a", 1f, AnimationFlags.Loop);
 
                 Game.DisplayHelp("Press ~y~Y ~s~to talk to the ~y~Store Clerk.", false);
@@ -282,31 +281,33 @@ namespace TornadoCallouts.Callouts
 
                     if (counter == 1)
                     {
-                        // Stop the waving animation
                         Clerk.Tasks.ClearImmediately();
-
-
-                        //Turn_Ped_To_Face_Entity
                         NativeFunction.Natives.x5AD23D40115353AC(Clerk, Game.LocalPlayer.Character, -1);
-
-
                         Game.DisplaySubtitle("~b~You~s~: Can you tell me what happened here " + malefemaleClerk + "?");
                     }
-                    if (counter == 2)
+                    else if (counter == 2)
                     {
-                        Game.DisplaySubtitle("~y~Clerk~s~: I don't know, I was walking by when I saw this person collapse to the ground, and then I called 9-11.");
+                        Game.DisplaySubtitle("~y~Clerk~s~: I witnessed the altercation between these two people. They were arguing and exchanging blows. It seemed like a mutual fight, both actively participating.");
                     }
-                    if (counter == 3)
+                    else if (counter == 3)
                     {
-                        Game.DisplaySubtitle("~b~You~s~: Okay, we believe it may be a drug overdose, thank you for calling us " + malefemaleClerk + ", you are free to go.");
+                        Game.DisplaySubtitle("~b~You~s~: Did you see who initiated the fight?");
                     }
-                    if (counter == 4)
+                    else if (counter == 4)
                     {
-                        Game.DisplaySubtitle("~y~Clerk~s~: Of course. I hope they are okay, bye.");
+                        Game.DisplaySubtitle("~y~Clerk~s~: It's hard to say for sure, but it appeared that Suspect1 threw the first punch. However, Suspect 2 quickly retaliated.");
                     }
-                    if (counter == 5)
+                    else if (counter == 5)
                     {
-                        Game.DisplaySubtitle("~g~Conversation has ended!");
+                        Game.DisplaySubtitle("~b~You~s~: Is there anything else you want to add to what you saw?");
+                    }
+                    else if (counter == 6)
+                    {
+                        Game.DisplaySubtitle("~y~Clerk~s~: That's all I can provide. It was a chaotic situation, and both suspects seemed equally involved in the altercation.");
+                    }
+                    else if (counter == 7)
+                    {
+                        Game.DisplaySubtitle("~g~Conversation has ended. Finish your investigation then end the callout.");
 
                         GameFiber.Wait(5000);
 
@@ -314,11 +315,9 @@ namespace TornadoCallouts.Callouts
 
                         // Set clerk conversation as finished
                         ClerkConversationFinished = true;
-
                     }
                 }
             }
-
 
             // Initiate a fight between Suspect1 and Suspect2 if conditions are met
             if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 60f)
@@ -353,8 +352,6 @@ namespace TornadoCallouts.Callouts
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Store Altercation", "~b~You: ~w~Dispatch we're code 4.");
                 End();
             }
-
-
 
         }
 

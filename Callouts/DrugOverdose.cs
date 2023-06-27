@@ -90,7 +90,7 @@ namespace TornadoCallouts.Callouts
         {
             base.Process();
 
-            if (Game.LocalPlayer.Character.DistanceTo(Victim) <= 250f && !ArrivalNotificationSent)
+            if (Game.LocalPlayer.Character.DistanceTo(Victim) <= 350f && !ArrivalNotificationSent)
             {
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "On arrival, call EMS and speak with the bystander to get more info.");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "When you arrive on scene, call EMS and speak with the bystander to see what happened.");
@@ -167,29 +167,17 @@ namespace TornadoCallouts.Callouts
 
         }
 
-
         public override void End()
         {
             base.End();
 
-            if (Victim.Exists())
-            {
-                Victim.Dismiss();
-            }
-            if (VictimBlip.Exists())
-            {
-                VictimBlip.Delete();
-            }   
-            
-            if (Bystander.Exists())
-            {
-                Bystander.Dismiss();
-            }
-            if (BystanderBlip.Exists())
-            {
-                BystanderBlip.Delete();
-            }
+            // Clean up Victim ped and blip
+            if (Victim.Exists()) { Victim.Dismiss(); }
+            if (VictimBlip.Exists()) { VictimBlip.Delete(); }
 
+            // Clean up Bystander ped and blip
+            if (Bystander.Exists()) { Bystander.Dismiss(); }
+            if (BystanderBlip.Exists()) { BystanderBlip.Delete(); }
 
             Game.LogTrivial("[TornadoCallouts LOG]: | Drug Overdose | Has Cleaned Up.");
         }
