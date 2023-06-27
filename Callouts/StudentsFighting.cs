@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Rage;
+using Rage.Native;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using CalloutInterfaceAPI;
 using LSPD_First_Response.Engine;
 using System.Reflection;
-using Rage.Native;
+using System.Windows.Forms;
+
 
 namespace TornadoCallouts.Callouts
 {
@@ -14,7 +16,7 @@ namespace TornadoCallouts.Callouts
     public class StudentsFighting : Callout
     {
         private Ped Student1, Student2;
-        private Blip StudentBlip1, StudentBlip2;
+        private Blip Student1Blip, Student2Blip;
         private Vector3 Spawnpoint;
         private Vector3 Searcharea;
         private Random rand = new Random();
@@ -80,8 +82,8 @@ namespace TornadoCallouts.Callouts
 
             Game.LogTrivial("[TornadoCallouts LOG]: About to create students and bystanders");
 
-            CreateStudent(ref Student1, ref StudentBlip1); // Spawning the first student involved in the fight
-            CreateStudent(ref Student2, ref StudentBlip2); // Spawning the second student involved in the fight
+            CreateStudent(ref Student1, ref Student1Blip); // Spawning the first student involved in the fight
+            CreateStudent(ref Student2, ref Student2Blip); // Spawning the second student involved in the fight
             CreateBystanders(); // Spawning bystanders around the fighting students
 
             Game.LogTrivial("[TornadoCallouts LOG]: Students and bystanders created");
@@ -110,7 +112,7 @@ namespace TornadoCallouts.Callouts
 
             Game.LogTrivial("[TornadoCallouts LOG]: 2 Student peds created");
 
-            if (studentBlip == StudentBlip1)
+            if (studentBlip == Student1Blip)
             {
                 studentBlip.IsRouteEnabled = true;
             }
@@ -200,13 +202,13 @@ namespace TornadoCallouts.Callouts
                 Student2.Dismiss();
             }
 
-            if (StudentBlip1.Exists())
+            if (Student1Blip.Exists())
             {
-                StudentBlip1.Delete();
+                Student1Blip.Delete();
             }
-            if (StudentBlip2.Exists())
+            if (Student2Blip.Exists())
             {
-                StudentBlip2.Delete();
+                Student2Blip.Delete();
             }
 
             // Clean up the bystanders and their blips

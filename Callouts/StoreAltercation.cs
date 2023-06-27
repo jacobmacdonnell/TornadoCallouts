@@ -32,15 +32,32 @@ namespace TornadoCallouts.Callouts
         private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
 
 
-        private List<Vector3> spawnLocations = new List<Vector3>()
+        private readonly List<Vector3> spawnLocations = new List<Vector3>()
         {
-            new Vector3(127.44f, -1306.12f, 29.23f), // Vanilla Unicorn Strip Club (Strawberry)
-            new Vector3(-1391.837f, -585.1603f, 30.23638f), // Bahama Mamas Bar (Del Perro)
-            new Vector3(487.0231f, -1545.364f, 29.19354f), // Hi-Men Bar (Rancho)
-            new Vector3(250.0017f, -1011.299f, 29.26846f), // Shenanigan's Bar (Legion Square)
-            new Vector3(226.7715f, 301.7152f, 105.5336f), // Singleton's Nightclub (Downtown Vinewood)
-            new Vector3(919.417f, 50.9967f, 80.89855f), // Diamond Casino (Los Santos)
+            new Vector3(999f, 999f, 999f), // Clinton Avenue, Downtown Vinewood – 24/7 Supermarket
+            new Vector3(999f, 999f, 999f), // E Mirror Drive, Mirror Park – Limited LTD Gasoline
+            new Vector3(999f, 999f, 999f), // El Rancho Boulevard – Robs Liquor
+            new Vector3(999f, 999f, 999f), // Innocence Boulevard Strawberry – 24/7 Supermarket
+            new Vector3(999f, 999f, 999f), // Grove Street – Limited LTD Gasoline
+            new Vector3(999f, 999f, 999f), // Lindsay Circus – Limited LTD Gasoline
+            new Vector3(999f, 999f, 999f), // San Andreas Avenue – Robs Liquor
+            new Vector3(999f, 999f, 999f), // Prosperity Street – Robs Liquor
+            new Vector3(999f, 999f, 999f), // Tongva Drive – Limited LTD Gasoline
+            new Vector3(999f, 999f, 999f), // Great Ocean Highway – Robs Liquor
+            new Vector3(999f, 999f, 999f), // Ineseno Road – 24/7 Supermarket
+            new Vector3(999f, 999f, 999f), // Barbareno Road – 24/7 Supermarket
+            new Vector3(999f, 999f, 999f), // Route 68 Harmony – 24/7 Supermarket
+            new Vector3(999f, 999f, 999f), // Route 68 – Scoops Liquor Barn
+            new Vector3(999f, 999f, 999f), // Niland Avenue – 24/7 Supermarket
+            new Vector3(999f, 999f, 999f), // Grand Senora Freeway – Convenience Store
+            new Vector3(999f, 999f, 999f), // Grapeseeds Main Street
+            new Vector3(999f, 999f, 999f), // Senora Freeway Mount Chiliad – 24/7 Supermarket
+            new Vector3(999f, 999f, 999f), // Tataviam Mountains – 24/7 Supermarket
+
+            // Add more as needed
         };
+
+
 
         public override bool OnBeforeCalloutDisplayed()
         {

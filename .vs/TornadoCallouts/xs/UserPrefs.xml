@@ -1,43 +1,35 @@
 ﻿<Properties>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Callouts/StoreAltercation.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Callouts/StudentsFighting.cs">
     <Files>
       <File FileName="Properties/AssemblyInfo.cs" Line="36" Column="41" IsPinned="True" />
-      <File FileName="IniFile.cs" Line="46" Column="81" IsPinned="True" />
-      <File FileName="Main.cs" Line="54" Column="14" IsPinned="True" />
-      <File FileName="Callouts/DrugOverdose.cs" Line="196" Column="6" IsPinned="True" />
-      <File FileName="Callouts/StoreAltercation (copy).cs" Line="57" Column="1" IsPinned="True" />
-      <File FileName="Callouts/ActiveStabbing.cs" Line="7" Column="22" IsPinned="True" />
+      <File FileName="IniFile.cs" Line="5" Column="1" IsPinned="True" />
+      <File FileName="Main.cs" Line="7" Column="1" IsPinned="True" />
+      <File FileName="Callouts/DrugOverdose.cs" Line="14" Column="1" IsPinned="True" />
+      <File FileName="Callouts/StoreAltercation.cs" Line="10" Column="1" IsPinned="True" />
+      <File FileName="Callouts/StudentsFighting.cs" Line="198" Column="36" IsPinned="True" />
+      <File FileName="VersionChecker/PluginCheck.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="TornadoCallouts" expanded="True">
             <Node name="TornadoCallouts" expanded="True">
-              <Node name="References" expanded="True" />
               <Node name="Callouts" expanded="True">
                 <Node name="StoreAltercation.cs" selected="True" />
               </Node>
               <Node name="Properties" expanded="True" />
               <Node name="Stuff" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State name="__root__">
-          <Node name="TornadoCallouts" expanded="True">
-            <Node name="TornadoCallouts" expanded="True">
-              <Node name="References" expanded="True" selected="True" />
+              <Node name="VersionChecker" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
 </Properties>

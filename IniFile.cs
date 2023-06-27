@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Windows.Forms;
 using Rage;
-using TornadoCallouts.Callouts;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace TornadoCallouts

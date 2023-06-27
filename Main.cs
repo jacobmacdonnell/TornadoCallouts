@@ -4,7 +4,6 @@ using System.Reflection;
 using Rage;
 using LSPD_First_Response.Mod.API;
 using TornadoCallouts.VersionChecker;
-using TornadoCallouts.Callouts;
 using System.Runtime;
 
 namespace TornadoCallouts
