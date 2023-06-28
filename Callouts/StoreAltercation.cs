@@ -223,7 +223,7 @@ namespace TornadoCallouts.Callouts
                         // Set counter back to 0 for next conversation
                         counter = 0;
                         
-                        GameFiber.Wait(1500);
+                        GameFiber.Wait(1000);
                     }
                 }
             }
@@ -274,7 +274,7 @@ namespace TornadoCallouts.Callouts
                         // Set counter back to 0 for next conversation
                         counter = 0;
 
-                        GameFiber.Wait(1500);
+                        GameFiber.Wait(1000);
                     }
                 }
             }
@@ -320,12 +320,12 @@ namespace TornadoCallouts.Callouts
                     {
                         Game.DisplaySubtitle("~g~Conversation has ended. ~s~Finish your investigation then end the callout.");
 
+                        // Set clerk conversation as finished
+                        ClerkConversationFinished = true;
+
                         GameFiber.Wait(6000);
 
                         Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Store Altercation", "~s~Press your ~h~~g~'END'~s~ Callout Key when you are finished.");
-
-                        // Set clerk conversation as finished
-                        ClerkConversationFinished = true;
                     }
                 }
             }

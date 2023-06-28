@@ -1,22 +1,19 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Callouts/StudentsFighting.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Callouts/StoreAltercation.cs">
     <Files>
       <File FileName="Properties/AssemblyInfo.cs" Line="36" Column="41" IsPinned="True" />
       <File FileName="IniFile.cs" Line="5" Column="1" IsPinned="True" />
       <File FileName="Main.cs" Line="7" Column="1" IsPinned="True" />
       <File FileName="Callouts/DrugOverdose.cs" Line="14" Column="1" IsPinned="True" />
-      <File FileName="Callouts/StoreAltercation.cs" Line="10" Column="1" IsPinned="True" />
-      <File FileName="Callouts/StudentsFighting.cs" Line="198" Column="36" IsPinned="True" />
-      <File FileName="VersionChecker/PluginCheck.cs" />
+      <File FileName="Callouts/StoreAltercation.cs" Line="328" Column="217" IsPinned="True" />
+      <File FileName="Callouts/BarFight.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="TornadoCallouts" expanded="True">
-            <Node name="TornadoCallouts" expanded="True">
-              <Node name="Callouts" expanded="True">
-                <Node name="StoreAltercation.cs" selected="True" />
-              </Node>
+          <Node name="TornadoCallouts">
+            <Node name="TornadoCallouts">
+              <Node name="Callouts" expanded="True" />
               <Node name="Properties" expanded="True" />
               <Node name="Stuff" expanded="True" />
               <Node name="VersionChecker" expanded="True" />
@@ -28,8 +25,8 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
 </Properties>
