@@ -17,7 +17,7 @@ namespace TornadoCallouts.Callouts
         private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
         private readonly Random rand = new Random();
 
-        private List<Vector3> spawnLocations = new List<Vector3>()
+        private readonly List<Vector3> spawnLocations = new List<Vector3>()
         {
             new Vector3(127.44f, -1306.12f, 29.23f), // Vanilla Unicorn Strip Club (Strawberry)
             new Vector3(-1391.837f, -585.1603f, 30.23638f), // Bahama Mamas Bar (Del Perro)

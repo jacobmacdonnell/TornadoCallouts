@@ -11,6 +11,7 @@ using System.Drawing;
 using CalloutInterfaceAPI;
 using System.Windows.Forms;
 using LSPD_First_Response.Engine;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace TornadoCallouts.Callouts
 {
@@ -22,24 +23,51 @@ namespace TornadoCallouts.Callouts
         private Blip BystanderBlip;
         private Ped Victim;
         private Blip VictimBlip;
-        private Vector3 SpawnPoint;
-        private float heading;
+        private Vector3 Spawnpoint;
+        private readonly float heading;
         private int counter;
         private string malefemale;
         private bool ArrivalNotificationSent = false;
         private bool ConversationFinished = false;
+        private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
+        private readonly Random rand = new Random();
+
+
+        // List potential spawn locations
+        private readonly List<Vector3> spawnLocations = new List<Vector3>()
+        {
+               new Vector3(94.63f, -217.37f, 54.49f)
+        };
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            SpawnPoint = new Vector3(94.63f, -217.37f, 54.49f);
-            heading = 53.08f;
-            ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, 100f);
-            AddMinimumDistanceCheck(50f, SpawnPoint);
-            CalloutMessage = "Potential Drug Overdose";
-            CalloutPosition = SpawnPoint;
-            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 CITIZENS_REPORT_04 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", SpawnPoint);
-            
-            return base.OnBeforeCalloutDisplayed();
+            List<Vector3> validSpawnLocations = new List<Vector3>();
+
+            // Check the distance to each spawn location
+            foreach (var location in spawnLocations)
+            {
+                float distance = Game.LocalPlayer.Character.Position.DistanceTo(location);
+                if (distance < MaxDistance)
+                {
+                    validSpawnLocations.Add(location);
+                }
+            }
+
+            if (validSpawnLocations.Count > 0)
+            {
+                // Select a random spawn location from the valid locations
+                Spawnpoint = validSpawnLocations[rand.Next(validSpawnLocations.Count)];
+
+                ShowCalloutAreaBlipBeforeAccepting(Spawnpoint, 100f);
+                AddMinimumDistanceCheck(50f, Spawnpoint);
+                CalloutMessage = "Potential Drug Overdose";
+                CalloutPosition = Spawnpoint;
+                LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 CITIZENS_REPORT_04 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", Spawnpoint);
+                return base.OnBeforeCalloutDisplayed();
+            }
+
+            // If none of the spawn locations were within the maximum distance, do not display the callout
+            return false;
         }
         public override bool OnCalloutAccepted()
         {
@@ -48,7 +76,7 @@ namespace TornadoCallouts.Callouts
             CalloutInterfaceAPI.Functions.SendMessage(this, "Citizens are currently reporting an individual who has collapsed in a public area, exhibiting signs consistent with a drug overdose. The nature of the substance involved is unknown. Respond and assist the individual if EMS has not arrived yet.");
 
             // Spawn Victim ped
-            Victim = new Ped(SpawnPoint, heading);
+            Victim = new Ped(Spawnpoint, heading);
 
             Game.LogTrivial("[TornadoCallouts LOG]: Victim ped created");
 
@@ -57,17 +85,17 @@ namespace TornadoCallouts.Callouts
             Victim.CanRagdoll = true;
             Victim.Health = 0;
             VictimBlip = Victim.AttachBlip();
-            VictimBlip.Color = System.Drawing.Color.CadetBlue;
+            VictimBlip.Color = Color.CadetBlue;
             VictimBlip.IsRouteEnabled = true;
 
             Game.LogTrivial("[TornadoCallouts LOG]: Victim blip created");
             
             // Spawn Bystander ped
-            Bystander = new Ped(SpawnPoint, heading);
+            Bystander = new Ped(Spawnpoint, heading);
             Bystander.IsPersistent = true;
             Bystander.BlockPermanentEvents = true;
             BystanderBlip = Bystander.AttachBlip();
-            BystanderBlip.Color = System.Drawing.Color.Yellow;
+            BystanderBlip.Color = Color.Yellow;
 
             if (Bystander.IsMale)
                 malefemale = "sir";

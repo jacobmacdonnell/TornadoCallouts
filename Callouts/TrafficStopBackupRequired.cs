@@ -57,7 +57,7 @@ namespace TornadoCallouts.Callouts
             {
                 list.Add(SpawningLocationList[i].Item1);
             }
-            int num = LocationChooser.nearestLocationIndex(list);
+            int num = LocationChooser.NearestLocationIndex(list);
             _SpawnPoint = SpawningLocationList[num].Item1;
             _vCop = new Vehicle(CopCars[new Random().Next(CopCars.Length)], _SpawnPoint, SpawningLocationList[num].Item2);
             switch (new Random().Next(1, 3))

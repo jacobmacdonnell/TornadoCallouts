@@ -20,15 +20,15 @@ namespace TornadoCallouts.Callouts
         private Vector3 Spawnpoint;
         private Vector3 Searcharea;
         private readonly Random rand = new Random();
-        private List<Ped> bystanders = new List<Ped>(); // To keep track of the bystander Peds
-        private List<Blip> blips = new List<Blip>(); // To keep track of the blips
+        private readonly List<Ped> bystanders = new List<Ped>(); // To keep track of the bystander Peds
+        private readonly List<Blip> blips = new List<Blip>(); // To keep track of the blips
         private List<string> pedModels; // Declare pedModels at class level
         private bool FightCreated;
         private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
 
 
         // List potential spawn locations
-        private List<Vector3> spawnLocations = new List<Vector3>()
+        private readonly List<Vector3> spawnLocations = new List<Vector3>()
         {
                new Vector3(-1473f, 240f, 55f), // University of San Andreas, Los Santos (Richman District)
         };
