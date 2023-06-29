@@ -1,15 +1,23 @@
 ﻿using System;
-using System.Drawing;
 using System.Reflection;
 using Rage;
 using LSPD_First_Response.Mod.API;
 using TornadoCallouts.VersionChecker;
-using System.Runtime;
+using System.Linq;
 
 namespace TornadoCallouts
 {
     public class Main : Plugin
     {
+        private static readonly Func<string, bool> IsLoaded = plugName =>
+            Functions.GetAllUserPlugins().Any(assembly => assembly.GetName().Name.Equals(plugName, StringComparison.OrdinalIgnoreCase));
+        internal static bool UsingUB { get; } = IsLoaded("UltimateBackup");
+
+        static Main()
+        {
+            Game.LogTrivial($"[TornadoCallouts LOG]: Checked for UltimateBackup plugin, result: {UsingUB}");
+        }
+
         public override void Initialize()
         {
             Game.LogTrivial("[TornadoCallouts LOG]: Initialize() method called.");
@@ -31,7 +39,7 @@ namespace TornadoCallouts
         {
             if (OnDuty)
             {
-                RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging, IniFile.ActiveStabbing,IniFile.TrafficStopBackupRequired,
+                RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging, IniFile.ActiveStabbing, IniFile.TrafficStopBackupRequired,
 
                     IniFile.DrugOverdose, IniFile.StudentsFighting, IniFile.StoreAltercation);
 
@@ -62,10 +70,10 @@ namespace TornadoCallouts
             if (stolenVehicleEnabled) { Functions.RegisterCallout(typeof(Callouts.StolenVehicle)); }
             if (muggingEnabled) { Functions.RegisterCallout(typeof(Callouts.Mugging)); }
             if (activeStabbingEnabled) { Functions.RegisterCallout(typeof(Callouts.ActiveStabbing)); }
-            if (trafficStopBackupRequiredEnabled) { Functions.RegisterCallout(typeof(Callouts.TrafficStopBackupRequired)); }
+           // if (trafficStopBackupRequiredEnabled) { Functions.RegisterCallout(typeof(Callouts.TrafficStopBackupRequired)); }
             if (drugOverdoseEnabled) { Functions.RegisterCallout(typeof(Callouts.DrugOverdose)); }
-            if (studentsFightingEnabled) { Functions.RegisterCallout(typeof(Callouts.StudentsFighting)); }
-            if (storeAltercationEnabled) { Functions.RegisterCallout(typeof(Callouts.StoreAltercation)); }
+           // if (studentsFightingEnabled) { Functions.RegisterCallout(typeof(Callouts.StudentsFighting)); }
+           // if (storeAltercationEnabled) { Functions.RegisterCallout(typeof(Callouts.StoreAltercation)); }
 
             Game.LogTrivial("[TornadoCallouts LOG]: All callouts were loaded successfully.");
         }

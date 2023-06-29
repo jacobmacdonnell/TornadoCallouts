@@ -14,9 +14,9 @@ namespace TornadoCallouts.Callouts
     [CalloutInfo("Traffic Stop Backup Required", CalloutProbability.Medium)]
     public class TrafficStopBackupRequired : Callout
     {
-        private string[] CopList = new string[] { "S_M_Y_COP_01", "S_F_Y_COP_01", "S_M_Y_SHERIFF_01", "S_F_Y_SHERIFF_01" };
-        private string[] CopCars = new string[] { "POLICE", "POLICE2", "POLICE3", "POLICE4", "FBI", "FBI2", "SHERIFF", "SHERIFF2" };
-        private string[] VCars = new string[] {"DUKES", "BALLER", "BALLER2", "BISON", "BISON2", "BJXL", "CAVALCADE", "CHEETAH", "COGCABRIO", "ASEA", "ADDER", "FELON", "FELON2", "ZENTORNO",
+        private readonly string[] CopList = new string[] { "S_M_Y_COP_01", "S_F_Y_COP_01", "S_M_Y_SHERIFF_01", "S_F_Y_SHERIFF_01" };
+        private readonly string[] CopCars = new string[] { "POLICE", "POLICE2", "POLICE3", "POLICE4", "FBI", "FBI2", "SHERIFF", "SHERIFF2" };
+        private readonly string[] VCars = new string[] {"DUKES", "BALLER", "BALLER2", "BISON", "BISON2", "BJXL", "CAVALCADE", "CHEETAH", "COGCABRIO", "ASEA", "ADDER", "FELON", "FELON2", "ZENTORNO",
                                                "WARRENER", "RAPIDGT", "INTRUDER", "FELTZER2", "FQ2", "RANCHERXL", "REBEL", "SCHWARZER", "COQUETTE", "CARBONIZZARE", "EMPEROR", "SULTAN", "EXEMPLAR", "MASSACRO",
                                                "DOMINATOR", "ASTEROPE", "PRAIRIE", "NINEF", "WASHINGTON", "CHINO", "CASCO", "INFERNUS", "ZTYPE", "DILETTANTE", "VIRGO", "F620", "PRIMO", "SULTAN", "EXEMPLAR", "F620", "FELON2", "FELON", "SENTINEL", "WINDSOR",
                                                "DOMINATOR", "DUKES", "GAUNTLET", "VIRGO", "ADDER", "BUFFALO", "ZENTORNO", "MASSACRO" };
@@ -52,7 +52,7 @@ namespace TornadoCallouts.Callouts
                Tuple.Create(new Vector3(2404.46f, 2872.158f, 39.88745f),307.5641f),
                Tuple.Create(new Vector3(2913.759f, 4148.546f, 50.26934f),16.63741f),
 
-        };
+            };
             for (int i = 0; i < SpawningLocationList.Length; i++)
             {
                 list.Add(SpawningLocationList[i].Item1);
@@ -82,15 +82,15 @@ namespace TornadoCallouts.Callouts
             switch (new Random().Next(1, 3))
             {
                 case 1:
-                    CalloutMessage = "~y~Traffic Stop Backup Required";
+                    CalloutMessage ="~y~Traffic Stop Backup Required";
                     _callOutMessage = 1;
                     break;
                 case 2:
-                    CalloutMessage = "~y~Traffic Stop Backup Required";
+                    CalloutMessage ="~y~Traffic Stop Backup Required";
                     _callOutMessage = 2;
                     break;
                 case 3:
-                    CalloutMessage = "~y~Traffic Stop Backup Required";
+                    CalloutMessage ="~y~Traffic Stop Backup Required";
                     _callOutMessage = 3;
                     break;
             }

@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Windows.Forms;
 using Rage;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace TornadoCallouts
 {
@@ -23,8 +22,8 @@ namespace TornadoCallouts
         internal static Keys Dialog = Keys.Y;
 
 
-        private static string path = "plugins/LSPDFR/TornadoCallouts.ini";
-        private static InitializationFile ini = new InitializationFile(path);
+        private static readonly string path = "plugins/LSPDFR/TornadoCallouts.ini";
+        private static readonly InitializationFile ini = new InitializationFile(path);
 
         internal static void LoadIniFile()
         {

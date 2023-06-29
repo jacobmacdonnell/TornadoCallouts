@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Rage;
 using Rage.Native;
-using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using CalloutInterfaceAPI;
+using TornadoCallouts.Stuff;
 using System.Windows.Forms;
-using LSPD_First_Response.Engine;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using LSPD_First_Response;
 
 namespace TornadoCallouts.Callouts
 {
-    [CalloutInterface("Drug Overdose", CalloutProbability.Medium, "An individual has had a potential drug overdose", "Code 3", "LSPD")]
+    [CalloutInterface("Drug Overdose", CalloutProbability.High, "An individual has had a potential drug overdose", "Code 3", "LSPD")]
     public class DrugOverdose : Callout
     {
 
@@ -29,6 +25,7 @@ namespace TornadoCallouts.Callouts
         private string malefemale;
         private bool ArrivalNotificationSent = false;
         private bool ConversationFinished = false;
+        private bool MedicalSent = false;
         private const float MaxDistance = 6500f; // Approx. 6.5km (4mi) in-game distance
         private readonly Random rand = new Random();
 
@@ -36,7 +33,8 @@ namespace TornadoCallouts.Callouts
         // List potential spawn locations
         private readonly List<Vector3> spawnLocations = new List<Vector3>()
         {
-               new Vector3(94.63f, -217.37f, 54.49f)
+               new Vector3(94.63f, -217.37f, 54.49f),
+               new Vector3(127.44f, -1306.12f, 29.23f), // Vanilla Unicorn Strip Club (Strawberry)
         };
 
         public override bool OnBeforeCalloutDisplayed()
@@ -69,6 +67,7 @@ namespace TornadoCallouts.Callouts
             // If none of the spawn locations were within the maximum distance, do not display the callout
             return false;
         }
+
         public override bool OnCalloutAccepted()
         {
             Game.LogTrivial("[TornadoCallouts LOG]: Drug Overdose callout accepted.");
@@ -112,13 +111,33 @@ namespace TornadoCallouts.Callouts
 
             if (Game.LocalPlayer.Character.DistanceTo(Victim) <= 350f && !ArrivalNotificationSent)
             {
-                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "On arrival, call EMS and speak with the bystander to get more info.");
-                CalloutInterfaceAPI.Functions.SendMessage(this, "When you arrive on scene, call EMS and speak with the bystander to see what happened.");
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "On arrival speak with the bystander to get more info.");
+                CalloutInterfaceAPI.Functions.SendMessage(this, "When you arrive on scene speak with the bystander to see what happened.");
 
                 ArrivalNotificationSent = true;
             }
 
-            if (Game.LocalPlayer.Character.DistanceTo(Bystander) <= 10f && !ConversationFinished)
+            if (Game.LocalPlayer.Character.DistanceTo(Victim) <= 600f && !MedicalSent)
+            {
+                if (TornadoCallouts.Main.UsingUB)
+                {
+                    UltimateBackupWrapper.CallEms();
+                }
+                else
+                {
+                    LSPD_First_Response.Mod.API.Functions.RequestBackup(Game.LocalPlayer.Character.Position, EBackupResponseType.Code3,
+                        EBackupUnitType.Ambulance);
+                }
+
+                GameFiber.Wait(1500);
+
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "EMS has also been dispatched, if you arrive before them administer CPR.");
+                CalloutInterfaceAPI.Functions.SendMessage(this, "EMS has also been dispatched, if you arrive before them administer CPR.");
+
+                MedicalSent = true;
+            }
+
+            if (Game.LocalPlayer.Character.DistanceTo(Bystander) <= 8f && !ConversationFinished)
             {
                 Game.DisplayHelp("Press ~y~Y ~s~to talk to the bystander.", false);
 
@@ -131,17 +150,8 @@ namespace TornadoCallouts.Callouts
                         // Stop the waving animation
                         Bystander.Tasks.ClearImmediately();
 
-
                         //Turn_Ped_To_Face_Entity
                         NativeFunction.Natives.x5AD23D40115353AC(Bystander, Game.LocalPlayer.Character, -1);
-
-
-                        // Calculate the direction to face
-                        //  Vector3 directionToFace = Game.LocalPlayer.Character.Position - Bystander.Position;
-                        // float headingToFacePlayer = MathHelper.ConvertDirectionToHeading(directionToFace);
-
-                        // Set the heading of the bystander
-                        // Bystander.Heading = headingToFacePlayer;
 
                         Game.DisplaySubtitle("~b~You~s~: Can you tell me what happened here " + malefemale + "?");
                     }
@@ -161,6 +171,8 @@ namespace TornadoCallouts.Callouts
                     {
                         Game.DisplaySubtitle("~g~Conversation has ended. Complete your investigation then end the callout.");
 
+                        ConversationFinished = true;
+
                         Bystander.Tasks.Wander();
 
                         if (BystanderBlip.Exists()) { BystanderBlip.Delete(); }
@@ -168,9 +180,6 @@ namespace TornadoCallouts.Callouts
                         GameFiber.Wait(5000);
 
                         Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "~s~Press your ~g~'END'~s~ Callout Key when you are finished.");
-
-                        // Set the conversation as finished
-                        ConversationFinished = true;
                     }
                 }
             }
