@@ -97,10 +97,7 @@ namespace TornadoCallouts.Callouts
             BystanderBlip = Bystander.AttachBlip();
             BystanderBlip.Color = Color.Yellow;
 
-            if (Bystander.IsMale)
-                malefemale = "sir";
-            else
-                malefemale = "ma'am";
+            if (Bystander.IsMale) malefemale = "sir"; else malefemale = "ma'am";
 
             // Make the bystander do the waving animation
             Bystander.Tasks.PlayAnimation("friends@frj@ig_1", "wave_a", 1f, AnimationFlags.Loop);

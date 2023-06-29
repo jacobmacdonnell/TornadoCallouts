@@ -90,34 +90,26 @@ namespace TornadoCallouts.Callouts
 
             CalloutInterfaceAPI.Functions.SendMessage(this, "A store clerk is currently reporting two people having an altercation. Call backup if needed. Approach with caution.");
             
-            // List of ped model names
+            // List of ped models used for Store Clerk
             List<string> pedModels = new List<string>()
             {
-                // Male Gang Peds
-                "a_m_y_mexthug_01",
-                "g_m_importexport_01",
-                "g_m_m_korboss_01",
-                "g_m_y_ballaorig_01",
-                "g_m_y_famdnf_01",
-                "g_m_y_mexgoon_01",
-                "g_m_y_salvaboss_01",
-                "g_m_y_mexgoon_01",
-                "g_m_m_chigoon_02",
-
-                // Female Gang Peds
-                "g_f_y_ballas_01",
-                "g_f_y_lost_01",
-                "g_f_y_families_01",
-                "g_f_y_vagos_01",
+                "mp_m_shopkeep_01",
+                "a_m_m_indian_01",
+                "s_m_m_autoshop_01",
+                "s_m_m_linecook",
+                "s_m_y_shop_mask",
+                "s_f_m_sweatshop_01",
+                "s_f_y_sweatshop_01",
+                "a_m_m_skidrow_01",
+                "a_m_m_socenlat_01",
+                "a_m_y_indian_01",
             };
 
-            // Select random models for the suspects
-            string model1 = pedModels[rand.Next(pedModels.Count)];
-            string model2 = pedModels[rand.Next(pedModels.Count)];
-            string model3 = pedModels[rand.Next(pedModels.Count)];
+            // Select random model from list for Store Clerk
+            string Clerkmodel1 = pedModels[rand.Next(pedModels.Count)];
 
             // Create suspect 1 at the selected location
-            Suspect1 = new Ped(model1, Spawnpoint, 180f);
+            Suspect1 = new Ped(Spawnpoint.Around2D(2f), 180f);
             Suspect1.IsPersistent = true;
             Suspect1.BlockPermanentEvents = true;
             Suspect1.CanOnlyBeDamagedByPlayer = true;
@@ -127,13 +119,10 @@ namespace TornadoCallouts.Callouts
             SuspectBlip1.Color = System.Drawing.Color.Purple;
             SuspectBlip1.IsRouteEnabled = true;
 
-            if (Suspect1.IsMale)
-                malefemaleSuspect1 = "sir";
-            else
-                malefemaleSuspect1 = "ma'am";
+            if (Suspect1.IsMale) malefemaleSuspect1 = "sir"; else malefemaleSuspect1 = "ma'am";
 
             // Create suspect 2 at the selected location
-            Suspect2 = new Ped(model2, Spawnpoint, 180f);
+            Suspect2 = new Ped (Spawnpoint.Around2D(4f), 180f);
             Suspect2.IsPersistent = true;
             Suspect2.BlockPermanentEvents = true;
             Suspect2.CanOnlyBeDamagedByPlayer = true;
@@ -142,13 +131,10 @@ namespace TornadoCallouts.Callouts
             SuspectBlip2 = Suspect2.AttachBlip();
             SuspectBlip2.Color = System.Drawing.Color.HotPink;
 
-            if (Suspect2.IsMale)
-                malefemaleSuspect2 = "sir";
-            else
-                malefemaleSuspect2 = "ma'am";
+            if (Suspect2.IsMale) malefemaleSuspect2 = "sir"; else malefemaleSuspect2 = "ma'am";
 
             // Create store clerk at the selected location
-            Clerk = new Ped(model3, Spawnpoint, 180f);
+            Clerk = new Ped(Clerkmodel1, Spawnpoint.Around2D(6f), 180f);
             Clerk.IsPersistent = true;
             Clerk.BlockPermanentEvents = true;
             Clerk.CanOnlyBeDamagedByPlayer = true;
@@ -157,10 +143,7 @@ namespace TornadoCallouts.Callouts
             ClerkBlip = Clerk.AttachBlip();
             ClerkBlip.Color = System.Drawing.Color.Yellow;
 
-            if (Clerk.IsMale)
-                malefemaleClerk = "sir";
-            else
-                malefemaleClerk = "ma'am";
+            if (Clerk.IsMale) malefemaleClerk = "sir"; else malefemaleClerk = "ma'am";
 
             FightCreated = false;
             counter = 0;
