@@ -9,18 +9,12 @@ namespace TornadoCallouts
 {
     public class Main : Plugin
     {
-        private static readonly Func<string, bool> IsLoaded = plugName =>
-            Functions.GetAllUserPlugins().Any(assembly => assembly.GetName().Name.Equals(plugName, StringComparison.OrdinalIgnoreCase));
-        internal static bool UsingUB { get; } = IsLoaded("UltimateBackup");
-
-        static Main()
-        {
-            Game.LogTrivial($"[TornadoCallouts LOG]: Checked for UltimateBackup plugin, result: {UsingUB}");
-        }
+        internal static bool UsingUB { get; private set; }
 
         public override void Initialize()
         {
             Game.LogTrivial("[TornadoCallouts LOG]: Initialize() method called.");
+
             Functions.OnOnDutyStateChanged += OnOnDutyStateChangedHandler;
             Game.LogTrivial("[TornadoCallouts LOG]: Attempting to load IniFile...");
             IniFile.LoadIniFile();
@@ -29,6 +23,7 @@ namespace TornadoCallouts
             Game.LogTrivial("[TornadoCallouts LOG]: Go on duty to fully load TornadoCallouts.");
             AppDomain.CurrentDomain.AssemblyResolve += LSPDFRResolveEventHandler;
         }
+
 
         public override void Finally()
         {
@@ -39,33 +34,29 @@ namespace TornadoCallouts
         {
             if (OnDuty)
             {
+                // Move the plugin check here
+                UsingUB = IsPluginLoaded("UltimateBackup");
+                Game.LogTrivial($"[TornadoCallouts LOG]: UltimateBackup plugin loaded: {UsingUB}");
+
                 RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging, IniFile.ActiveStabbing, IniFile.TrafficStopBackupRequired,
-
-                    IniFile.DrugOverdose, IniFile.StudentsFighting, IniFile.StoreAltercation);
-
+                                 IniFile.DrugOverdose, IniFile.StudentsFighting, IniFile.StoreAltercation);
 
                 GameFiber.StartNew(delegate
                 {
                     Game.LogTrivial("[TornadoCallouts LOG]: Checking for new plugin version...");
                     PluginCheck.IsUpdateAvailable();
                     Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "TornadoCallouts", "by ~b~TornadoMac~b~", "~s~|~s~ ~y~Version " + Assembly.GetExecutingAssembly().GetName().Version + "~s~ | Has ~g~Successfully Loaded!");
-
                     if (IniFile.HelpMessages)
                     {
                         Game.DisplayHelp("You can change all ~y~keys~w~ in the ~g~TornadoCallouts.ini~w~. Press ~b~" + IniFile.EndCall + "~w~ to end a callout.", 5000);
                     }
-                    else { IniFile.HelpMessages = false; }
-
-
                 });
             }
         }
 
-        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled, bool activeStabbingEnabled, bool trafficStopBackupRequiredEnabled, 
-            
-            bool drugOverdoseEnabled, bool studentsFightingEnabled, bool storeAltercationEnabled)
+
+        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled, bool activeStabbingEnabled, bool trafficStopBackupRequiredEnabled, bool drugOverdoseEnabled, bool studentsFightingEnabled, bool storeAltercationEnabled)
         {
-           
             if (barFightEnabled) { Functions.RegisterCallout(typeof(Callouts.BarFight)); }
             if (stolenVehicleEnabled) { Functions.RegisterCallout(typeof(Callouts.StolenVehicle)); }
             if (muggingEnabled) { Functions.RegisterCallout(typeof(Callouts.Mugging)); }
@@ -77,6 +68,7 @@ namespace TornadoCallouts
 
             Game.LogTrivial("[TornadoCallouts LOG]: All callouts were loaded successfully.");
         }
+
         private static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
         {
             foreach (Assembly assembly in Functions.GetAllUserPlugins())
@@ -88,20 +80,24 @@ namespace TornadoCallouts
             }
             return null;
         }
-        public static bool IsLSPDFRPluginRunning(string Plugin, Version minversion = null)
+
+        public static bool IsPluginLoaded(string pluginName, Version minVersion = null)
         {
-            foreach (Assembly assembly in Functions.GetAllUserPlugins())
+            var plugins = Functions.GetAllUserPlugins();
+            if (plugins == null)
             {
-                AssemblyName an = assembly.GetName();
-                if (an.Name.ToLower() == Plugin.ToLower())
-                {
-                    if (minversion == null || an.Version.CompareTo(minversion) >= 0)
-                    {
-                        return true;
-                    }
-                }
+                Game.LogTrivial("[TornadoCallouts LOG]: GetAllUserPlugins() returned null.");
+                return false;
             }
-            return false;
+
+            return plugins.Any(assembly =>
+            {
+                var assemblyName = assembly?.GetName();
+                if (assemblyName == null) return false;
+
+                return assemblyName.Name.Equals(pluginName, StringComparison.OrdinalIgnoreCase) &&
+                       (minVersion == null || assemblyName.Version.CompareTo(minVersion) >= 0);
+            });
         }
     }
 }
