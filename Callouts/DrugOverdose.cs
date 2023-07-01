@@ -111,13 +111,13 @@ namespace TornadoCallouts.Callouts
 
             if (Game.LocalPlayer.Character.DistanceTo(Victim) <= 350f && !ArrivalNotificationSent)
             {
-                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "On arrival speak with the bystander to get more info.");
-                CalloutInterfaceAPI.Functions.SendMessage(this, "When you arrive on scene speak with the bystander to see what happened.");
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "~w~TornadoCallouts", "~y~Drug Overdose", "If you arrive before EMS give CPR, later speak with the bystander.");
+                CalloutInterfaceAPI.Functions.SendMessage(this, "If you arrive before EMS give CPR, later speak with the bystander to see what happened.");
 
                 ArrivalNotificationSent = true;
             }
 
-            if (Game.LocalPlayer.Character.DistanceTo(Victim) <= 600f && !MedicalSent)
+            if (Game.LocalPlayer.Character.DistanceTo(Victim) <= 18f && !MedicalSent)
             {
                 if (TornadoCallouts.Main.UsingUB)
                 {

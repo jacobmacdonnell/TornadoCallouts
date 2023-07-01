@@ -84,12 +84,9 @@
     <Compile Include="Callouts\Mugging.cs" />
     <Compile Include="Callouts\StolenVehicle.cs" />
     <Compile Include="VersionChecker\PluginCheck.cs" />
-    <Compile Include="Callouts\TrafficStopBackupRequired.cs" />
     <Compile Include="Stuff\LocationChooser.cs" />
     <Compile Include="Stuff\Vector3Extension.cs" />
     <Compile Include="Callouts\DrugOverdose.cs" />
-    <Compile Include="Callouts\StoreAltercation.cs" />
-    <Compile Include="Callouts\StudentsFighting.cs" />
     <Compile Include="Stuff\UltimateBackupWrapper.cs" />
   </ItemGroup>
   <ItemGroup />
