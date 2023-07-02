@@ -45,7 +45,7 @@ namespace TornadoCallouts
                 EndCall = ini.ReadEnum("Keys", "EndCall", Keys.End);
                 Dialog = ini.ReadEnum("Keys", "Dialog", Keys.Y);
 
-                Game.LogTrivial("[TornadoCallouts LOG]: Config file from TornadoCallouts has been loaded."); // Debugging line
+                Game.LogTrivial("[TornadoCallouts LOG]: Ini file has been loaded."); // Debugging line
             }
                 catch (Exception e)
             {

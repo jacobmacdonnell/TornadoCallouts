@@ -14,7 +14,6 @@ namespace TornadoCallouts.Callouts
     [CalloutInterface("Drug Overdose", CalloutProbability.High, "An individual has had a potential drug overdose", "Code 3", "LSPD")]
     public class DrugOverdose : Callout
     {
-
         private Ped Bystander;
         private Blip BystanderBlip;
         private Ped Victim;
@@ -33,8 +32,26 @@ namespace TornadoCallouts.Callouts
         // List potential spawn locations
         private readonly List<Vector3> spawnLocations = new List<Vector3>()
         {
-               new Vector3(94.63f, -217.37f, 54.49f),
-               new Vector3(127.44f, -1306.12f, 29.23f), // Vanilla Unicorn Strip Club (Strawberry)
+            new Vector3(94.63f, -217.37f, 54.49f),
+            new Vector3(127.44f, -1306.12f, 29.23f), // Vanilla Unicorn Strip Club (Strawberry)
+            new Vector3(1994.2f, 3800.8f, 32.2f), // Abandoned Motel in Sandy Shores
+            new Vector3(1972.5f, 3804.6f, 32.1f), // Sandy Shores Trailer Park
+            new Vector3(1961.5f, 3743.7f, 32.4f), // Sandy Shores Gas Station
+            new Vector3(1845.7f, 3642.1f, 34.2f), // Alamo Sea Shoreline
+            new Vector3(1848.4f, 3681.1f, 34.2f), // Sandy Shores Medical Clinic
+            new Vector3(-193.4f, -1772.1f, 29.3f), // Underpass near Strawberry Ave (Strawberry)
+            new Vector3(-538.2f, -243.7f, 35.5f), // Parking Garage near Del Perro Freeway (Del Perro)
+            new Vector3(-1095.1f, -1469.4f, 4.9f), // Construction Site near Elysian Fields Freeway (La Puerta)
+            new Vector3(-1016.2f, -2694.4f, 13.6f), // Abandoned Factory near Palmer-Taylor Power Station (Davis)
+            new Vector3(-722.8f, -857.9f, 22.3f), // Docks near Terminal (La Mesa)
+            new Vector3(-1469.3f, -647.5f, 29.5f), // Construction Site near Sustancia Rd (Cypress Flats)
+            new Vector3(267.9f, -1964.7f, 23.5f), // Motel near Davis Quartz Quarry (Davis)
+            new Vector3(1404.6f, 1119.3f, 113.8f), // Vinewood Hills Overlook (Vinewood Hills)
+            new Vector3(-94.7f, -1140.6f, 26.2f), // Convenience Store near Vespucci Blvd (Vespucci Beach)
+            new Vector3(726.5f, -1045.9f, 22.6f), // Warehouse near Innocence Blvd (Strawberry)
+            new Vector3(1449.7f, 3742.9f, 33.9f), // Beachfront near Pacific Bluffs (Pacific Bluffs)
+            new Vector3(121.8f, -732.9f, 45.8f), // Observatory Parking Lot (Vinewood Hills)
+            new Vector3(-48.7f, -577.8f, 37.0f), // Apartment Complex near Alta St (Downtown Los Santos)
         };
 
         public override bool OnBeforeCalloutDisplayed()
