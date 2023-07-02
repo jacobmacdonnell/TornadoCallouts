@@ -4,6 +4,7 @@ using Rage;
 using LSPD_First_Response.Mod.API;
 using TornadoCallouts.VersionChecker;
 using System.Linq;
+using TornadoCallouts.Callouts;
 
 namespace TornadoCallouts
 {
@@ -38,6 +39,7 @@ namespace TornadoCallouts
                 UsingUB = IsPluginLoaded("UltimateBackup");
                 Game.LogTrivial($"[TornadoCallouts LOG]: UltimateBackup plugin loaded: {UsingUB}");
 
+                // Register ini file settings for the callouts
                 RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging, IniFile.ActiveStabbing,
                                  IniFile.DrugOverdose);
 
@@ -61,6 +63,7 @@ namespace TornadoCallouts
             if (muggingEnabled) { Functions.RegisterCallout(typeof(Callouts.Mugging)); }
             if (activeStabbingEnabled) { Functions.RegisterCallout(typeof(Callouts.ActiveStabbing)); }
             if (drugOverdoseEnabled) { Functions.RegisterCallout(typeof(Callouts.DrugOverdose)); }
+           // if (helicopterAssistanceEnabled) { Functions.RegisterCallout(typeof(Callouts.HelicopterAssistance)); }
            // if (trafficStopBackupRequiredEnabled) { Functions.RegisterCallout(typeof(Callouts.TrafficStopBackupRequired)); }
            // if (studentsFightingEnabled) { Functions.RegisterCallout(typeof(Callouts.StudentsFighting)); }
            // if (storeAltercationEnabled) { Functions.RegisterCallout(typeof(Callouts.StoreAltercation)); }

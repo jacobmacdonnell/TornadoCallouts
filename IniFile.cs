@@ -15,6 +15,7 @@ namespace TornadoCallouts
        // internal static bool TrafficStopBackupRequired = true;
        // internal static bool StudentsFighting = true;
        // internal static bool StoreAltercation = true;
+       // internal static bool HelicopterAssistance = true
 
 
         internal static bool HelpMessages = true;
@@ -40,6 +41,7 @@ namespace TornadoCallouts
                // TrafficStopBackupRequired = ini.ReadBoolean("Callouts", "TrafficStopBackupRequired", true);
                // StudentsFighting = ini.ReadBoolean("Callouts", "StudentsFighting", true);
                // StoreAltercation = ini.ReadBoolean("Callouts", "StoreAltercation", true);
+               // HelicopterAssistance = ini.ReadBoolean("Callouts"), "HelicopterAssistance", true);
 
                 // Keys
                 EndCall = ini.ReadEnum("Keys", "EndCall", Keys.End);
