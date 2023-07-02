@@ -54,7 +54,6 @@ namespace TornadoCallouts
             }
         }
 
-
         private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled, bool activeStabbingEnabled, bool drugOverdoseEnabled)
         {
             if (barFightEnabled) { Functions.RegisterCallout(typeof(Callouts.BarFight)); }
