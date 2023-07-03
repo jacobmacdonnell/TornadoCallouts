@@ -18,6 +18,7 @@ namespace TornadoCallouts.Callouts
         private Blip SuspectBlip;
         private Blip SearchAreaBlip;
         private DateTime lastBlipUpdateTime;
+        private readonly Random rand = new Random();
         private LHandle Pursuit;
         private bool PursuitCreated = false;
 
@@ -27,10 +28,11 @@ namespace TornadoCallouts.Callouts
             ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, 50f);
             CalloutPosition = SpawnPoint;
             CalloutMessage = "Helicopter Assistance Required";
-            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_04 CRIME_GRAND_THEFT_AUTO_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", SpawnPoint);
+            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_02", SpawnPoint);
 
             return base.OnBeforeCalloutDisplayed();
         }
+
         public override bool OnCalloutAccepted()
         {
             // List of sports car models
@@ -45,14 +47,45 @@ namespace TornadoCallouts.Callouts
                 "XA21", "TEZERACT", "TURISMOR", "REAPER", "TYRANT"
             };
 
-            Random random = new Random();
-            int index = random.Next(sportsCars.Count);
-            string randomSportsCar = sportsCars[index];
+            // List of muscle car models
+            List<string> muscleCars = new List<string>
+            {
+                "BLADE", "BUCCANEER", "CHINO", "CLIQUE", "COQUETTE3",
+                "DEVIANTE", "DOMINATOR", "DUKES", "ELLIE", "GAUNTLET",
+                "GAUNTLET5", "HERMES", "HOTKNIFE", "IMPERATOR", "IMPERATOR2",
+                "IMPERATOR3", "LURCHER", "MOONBEAM2", "PEYOTE", "PHOENIX",
+                "PICADOR", "RATLOADER2", "RUINER", "SABREGT", "SABREGT2",
+                "SLAMVAN", "SLAMVAN2", "SLAMVAN3", "STALION", "STALION2",
+                "TAMPA", "TAMPA2", "TULIP", "VAMOS", "VIGERO",
+                "VIRGO", "VIRGO2", "VIRGO3", "VOODOO", "VOODOO2"
+            };
 
-            string location = World.GetStreetName(SpawnPoint);
-            CalloutInterfaceAPI.Functions.SendMessage(this, $"Air 1 to ground units: We are tracking a vehicle traveling at high speed near {location}. The driver is driving erratically. Requesting a unit to perform a traffic stop. Proceed with caution.");
+            // List of sedan car models
+            List<string> sedanCars = new List<string>
+            {
+                "ASTEROPE", "FUGITIVE", "INGOT", "INTRUDER", "PREMIER",
+                "PRIMO", "REGINA", "ROMERO", "SCHAFTER2", "STANIER",
+                "STRATUM", "STRETCH", "SUPERD", "SURGE", "TAILGATER",
+                "WARRENER", "WASHINGTON"
+            };
 
-            SuspectVehicle = new Vehicle(randomSportsCar, SpawnPoint);
+            int index = rand.Next(sportsCars.Count + muscleCars.Count + sedanCars.Count);
+
+            string randomCarModel;
+            if (index < sportsCars.Count)
+            {
+                randomCarModel = sportsCars[index];
+            }
+            else if (index < sportsCars.Count + muscleCars.Count)
+            {
+                randomCarModel = muscleCars[index - sportsCars.Count];
+            }
+            else
+            {
+                randomCarModel = sedanCars[index - sportsCars.Count - muscleCars.Count];
+            }
+
+            SuspectVehicle = new Vehicle(randomCarModel, SpawnPoint);
             SuspectVehicle.IsPersistent = true;
 
             Suspect = SuspectVehicle.CreateRandomDriver();
@@ -72,6 +105,12 @@ namespace TornadoCallouts.Callouts
 
             Suspect.Tasks.CruiseWithVehicle(20f, VehicleDrivingFlags.Emergency);
 
+            string carColor = SuspectVehicle.PrimaryColor.ToString();
+            string location = World.GetStreetName(SpawnPoint);
+
+            CalloutInterfaceAPI.Functions.SendMessage(this, $"Air 1 to ground units: We are tracking {carColor} {randomCarModel} traveling at high speed near {location}. The driver is driving erratically. Requesting a unit to perform a traffic stop. Proceed with caution.");
+            Game.DisplayNotification($"Air 1 to ground units: Look for a {carColor} {randomCarModel} around {location} traveling at high speed.");
+
             return base.OnCalloutAccepted();
         }
 
@@ -79,39 +118,53 @@ namespace TornadoCallouts.Callouts
         {
             base.Process();
 
-            if (!PursuitCreated && Game.LocalPlayer.Character.DistanceTo(Suspect.Position) < 30f)
-            {
-                if (SearchAreaBlip.Exists()) { SearchAreaBlip.Delete(); }
-
-                SuspectBlip = Suspect.AttachBlip();
-
-                Random rand = new Random();
-                if (rand.Next(100) < 50) // 50% chance to initiate pursuit
-                {
-                    Pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
-                    LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(Pursuit, Suspect);
-                    LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(Pursuit, true);
-                    PursuitCreated = true;
-                }
-            }
+            float distanceToSuspect = Game.LocalPlayer.Character.DistanceTo(Suspect.Position);
 
             if (!PursuitCreated)
             {
-                // Check if it has been more than 10 seconds since last update
-                if ((DateTime.Now - lastBlipUpdateTime).TotalSeconds >= 10)
+                if (distanceToSuspect < 30f)
                 {
-                    // Update the search area blip location to suspect vehicle position
-                    if (SearchAreaBlip.Exists()) { SearchAreaBlip.Delete(); }
-                    SearchAreaBlip = new Blip(SuspectVehicle.Position);
-                    SearchAreaBlip.Color = System.Drawing.Color.Red;
-                    SearchAreaBlip.Scale = 50f;
+                    if (SearchAreaBlip.Exists())
+                    {
+                        SearchAreaBlip.Delete();
+                    }
 
-                    // Update the last blip update time
-                    lastBlipUpdateTime = DateTime.Now;
+                    if (SuspectBlip == null || !SuspectBlip.Exists())
+                    {
+                        SuspectBlip = Suspect.AttachBlip();
+                        SuspectBlip.Color = System.Drawing.Color.Red;
+                    }
+                }
+                else
+                {
+                    if ((DateTime.Now - lastBlipUpdateTime).TotalSeconds >= 10)
+                    {
+                        if (SearchAreaBlip.Exists()) { SearchAreaBlip.Delete(); }
+                        SearchAreaBlip = new Blip(SuspectVehicle.Position);
+                        SearchAreaBlip.Scale = 50f;
+
+                        lastBlipUpdateTime = DateTime.Now;
+                    }
+                }
+
+                if (distanceToSuspect < 5f)
+                {
+                    if (rand.Next(100) < 60)
+                    {
+                        Pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
+                        LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(Pursuit, Suspect);
+                        LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(Pursuit, true);
+                        PursuitCreated = true;
+                    }
                 }
             }
-
-            if (PursuitCreated && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(Pursuit)) End();
+            else
+            {
+                if (!LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(Pursuit))
+                {
+                    End();
+                }
+            }
         }
 
 
