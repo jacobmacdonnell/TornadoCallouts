@@ -16,7 +16,7 @@ namespace TornadoCallouts.Callouts
         private Vehicle SuspectVehicle;
         private Vector3 SpawnPoint;
         private Blip SuspectBlip;
-        private Blip SearchAreaBlip;
+        private Vector3 SearchArea;
         private DateTime lastBlipUpdateTime;
         private readonly Random rand = new Random();
         private LHandle Pursuit;
@@ -96,10 +96,9 @@ namespace TornadoCallouts.Callouts
             SuspectBlip.IsFriendly = false;
             SuspectBlip.Delete(); // Hide it initially
 
-            SearchAreaBlip = new Blip(SpawnPoint);
-            SearchAreaBlip.Color = System.Drawing.Color.Red;
-            SearchAreaBlip.Scale = 50f;
-            SearchAreaBlip.IsRouteEnabled = true;
+            SearchArea = SpawnPoint.Around2D(1f, 2f);
+
+ 
 
             lastBlipUpdateTime = DateTime.Now;
 
@@ -124,11 +123,6 @@ namespace TornadoCallouts.Callouts
             {
                 if (distanceToSuspect < 30f)
                 {
-                    if (SearchAreaBlip.Exists())
-                    {
-                        SearchAreaBlip.Delete();
-                    }
-
                     if (SuspectBlip == null || !SuspectBlip.Exists())
                     {
                         SuspectBlip = Suspect.AttachBlip();
@@ -139,9 +133,8 @@ namespace TornadoCallouts.Callouts
                 {
                     if ((DateTime.Now - lastBlipUpdateTime).TotalSeconds >= 10)
                     {
-                        if (SearchAreaBlip.Exists()) { SearchAreaBlip.Delete(); }
-                        SearchAreaBlip = new Blip(SuspectVehicle.Position);
-                        SearchAreaBlip.Scale = 50f;
+                        SearchArea = Suspect.Around2D
+
 
                         lastBlipUpdateTime = DateTime.Now;
                     }
@@ -175,7 +168,6 @@ namespace TornadoCallouts.Callouts
             if (Suspect.Exists()) { Suspect.Dismiss(); }
             if (SuspectVehicle.Exists()) { SuspectVehicle.Dismiss(); }
             if (SuspectBlip.Exists()) { SuspectBlip.Delete(); }
-            if (SearchAreaBlip.Exists()) { SearchAreaBlip.Delete(); }
 
             Game.LogTrivial("[TornadoCallouts LOG]: | Helicopter Assistance | Has Cleaned Up.");
         }

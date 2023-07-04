@@ -40,8 +40,7 @@ namespace TornadoCallouts
                 Game.LogTrivial($"[TornadoCallouts LOG]: UltimateBackup plugin loaded: {UsingUB}");
 
                 // Register ini file settings for the callouts
-                RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging, IniFile.ActiveStabbing,
-                                 IniFile.DrugOverdose);
+                RegisterCallouts(IniFile.BarFight, IniFile.StolenVehicle, IniFile.Mugging, IniFile.ActiveStabbing, IniFile.DrugOverdose, IniFile.HelicopterAssistance);
 
                 GameFiber.StartNew(delegate
                 {
@@ -56,17 +55,21 @@ namespace TornadoCallouts
             }
         }
 
-        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled, bool activeStabbingEnabled, bool drugOverdoseEnabled)
+        private static void RegisterCallouts(bool barFightEnabled, bool stolenVehicleEnabled, bool muggingEnabled, bool activeStabbingEnabled, bool drugOverdoseEnabled, bool helicopterAssistanceEnabled)
         {
             if (barFightEnabled) { Functions.RegisterCallout(typeof(Callouts.BarFight)); }
             if (stolenVehicleEnabled) { Functions.RegisterCallout(typeof(Callouts.StolenVehicle)); }
             if (muggingEnabled) { Functions.RegisterCallout(typeof(Callouts.Mugging)); }
             if (activeStabbingEnabled) { Functions.RegisterCallout(typeof(Callouts.ActiveStabbing)); }
             if (drugOverdoseEnabled) { Functions.RegisterCallout(typeof(Callouts.DrugOverdose)); }
-           // if (helicopterAssistanceEnabled) { Functions.RegisterCallout(typeof(Callouts.HelicopterAssistance)); }
-           // if (trafficStopBackupRequiredEnabled) { Functions.RegisterCallout(typeof(Callouts.TrafficStopBackupRequired)); }
-           // if (studentsFightingEnabled) { Functions.RegisterCallout(typeof(Callouts.StudentsFighting)); }
-           // if (storeAltercationEnabled) { Functions.RegisterCallout(typeof(Callouts.StoreAltercation)); }
+            if (helicopterAssistanceEnabled) { Functions.RegisterCallout(typeof(Callouts.HelicopterAssistance)); }
+
+           
+            // CURRENTLY DISABLED CALLOUTS
+
+            // if (trafficStopBackupRequiredEnabled) { Functions.RegisterCallout(typeof(Callouts.TrafficStopBackupRequired)); }
+            // if (studentsFightingEnabled) { Functions.RegisterCallout(typeof(Callouts.StudentsFighting)); }
+            // if (storeAltercationEnabled) { Functions.RegisterCallout(typeof(Callouts.StoreAltercation)); }
 
             Game.LogTrivial("[TornadoCallouts LOG]: All callouts were loaded successfully.");
         }
