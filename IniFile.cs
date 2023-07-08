@@ -13,13 +13,12 @@ namespace TornadoCallouts
         internal static bool ActiveStabbing = true;
         internal static bool DrugOverdose = true;
         internal static bool HelicopterAssistance = true;
-
+        internal static bool StoreAltercation = true;
 
         // CURRENTLY DISABLED CALLOUTS
 
         // internal static bool TrafficStopBackupRequired = true;
         // internal static bool StudentsFighting = true;
-        // internal static bool StoreAltercation = true;
 
 
         internal static bool HelpMessages = true;
@@ -43,13 +42,12 @@ namespace TornadoCallouts
                 ActiveStabbing = ini.ReadBoolean("Callouts", "ActiveStabbing", true);
                 DrugOverdose = ini.ReadBoolean("Callouts", "DrugOverdose", true);
                 HelicopterAssistance = ini.ReadBoolean("Callouts", "HelicopterAssistance", true);
-
+                StoreAltercation = ini.ReadBoolean("Callouts", "StoreAltercation", true);
 
                 // CURRENTLY DISABLED CALLOUTS
 
                 // TrafficStopBackupRequired = ini.ReadBoolean("Callouts", "TrafficStopBackupRequired", true);
                 // StudentsFighting = ini.ReadBoolean("Callouts", "StudentsFighting", true);
-                // StoreAltercation = ini.ReadBoolean("Callouts", "StoreAltercation", true);
 
                 // Keys
                 EndCall = ini.ReadEnum("Keys", "EndCall", Keys.End);

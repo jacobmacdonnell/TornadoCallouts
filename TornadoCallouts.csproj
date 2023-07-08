@@ -79,6 +79,7 @@
     <Compile Include="Callouts\ActiveStabbing.cs" />
     <Compile Include="Callouts\BarFight.cs" />
     <Compile Include="Callouts\HelicopterAssistance.cs" />
+    <Compile Include="Callouts\StoreAltercation.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

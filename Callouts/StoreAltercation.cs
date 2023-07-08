@@ -34,26 +34,34 @@ namespace TornadoCallouts.Callouts
 
         private readonly List<Vector3> spawnLocations = new List<Vector3>()
         {
-            new Vector3(999f, 999f, 999f), // Clinton Avenue, Downtown Vinewood – 24/7 Supermarket
-            new Vector3(999f, 999f, 999f), // E Mirror Drive, Mirror Park – Limited LTD Gasoline
-            new Vector3(999f, 999f, 999f), // El Rancho Boulevard – Robs Liquor
-            new Vector3(999f, 999f, 999f), // Innocence Boulevard Strawberry – 24/7 Supermarket
-            new Vector3(999f, 999f, 999f), // Grove Street – Limited LTD Gasoline
-            new Vector3(999f, 999f, 999f), // Lindsay Circus – Limited LTD Gasoline
-            new Vector3(999f, 999f, 999f), // San Andreas Avenue – Robs Liquor
+            new Vector3(372.84f, 328.12f, 103.56f), // Clinton Avenue, Downtown Vinewood – 24/7 Supermarket
+            new Vector3(1160.47f, -316.43f, 69.18f), // E Mirror Drive, Mirror Park – Limited LTD Gasoline
+            new Vector3(1135.75f, -981.49f, 46.41f), // El Rancho Boulevard – Robs Liquor
+            new Vector3(24.43f, -1345.97f, 29.49f), // Innocence Boulevard, Strawberry – 24/7 Supermarket
+            new Vector3(-47.84f, -1758.68f, 29.42f), // Grove Street – Limited LTD Gasoline
+            new Vector3(-708.17f, -913.63f, 19.21f), // Lindsay Circus – Limited LTD Gasoline
+            new Vector3(-1222.74f, -906.86f, 12.32f), // San Andreas Avenue – Robs Liquor
+            new Vector3(1961.11f, 3740.67f, 32.34f), // Sandy Shores – 24/7 Supermarket
+            new Vector3(1734.54f, 6419.35f, 35.03f), // Paleto Bay – 24/7 Supermarket
+            new Vector3(-709.17f, -904.21f, 19.21f), // Davis – LTD Gasoline
+            new Vector3(-705.96f, -915.42f, 19.21f), // Little Seoul – LTD Gasoline
+            new Vector3(1697.99f, 4924.40f, 42.06f), // Grapeseed – LTD Gasoline
             new Vector3(999f, 999f, 999f), // Prosperity Street – Robs Liquor
             new Vector3(999f, 999f, 999f), // Tongva Drive – Limited LTD Gasoline
             new Vector3(999f, 999f, 999f), // Great Ocean Highway – Robs Liquor
             new Vector3(999f, 999f, 999f), // Ineseno Road – 24/7 Supermarket
             new Vector3(999f, 999f, 999f), // Barbareno Road – 24/7 Supermarket
-            new Vector3(999f, 999f, 999f), // Route 68 Harmony – 24/7 Supermarket
+            new Vector3(999f, 999f, 999f), // Route 68, Harmony – 24/7 Supermarket
             new Vector3(999f, 999f, 999f), // Route 68 – Scoops Liquor Barn
             new Vector3(999f, 999f, 999f), // Niland Avenue – 24/7 Supermarket
             new Vector3(999f, 999f, 999f), // Grand Senora Freeway – Convenience Store
             new Vector3(999f, 999f, 999f), // Grapeseeds Main Street
-            new Vector3(999f, 999f, 999f), // Senora Freeway Mount Chiliad – 24/7 Supermarket
+            new Vector3(999f, 999f, 999f), // Senora Freeway, Mount Chiliad – 24/7 Supermarket
             new Vector3(999f, 999f, 999f), // Tataviam Mountains – 24/7 Supermarket
         };
+
+dr
+
         public override bool OnBeforeCalloutDisplayed()
         {
             List<Vector3> validSpawnLocations = new List<Vector3>();
@@ -84,6 +92,9 @@ namespace TornadoCallouts.Callouts
             // If none of the spawn locations were within the maximum distance, do not display the callout
             return false;
         }
+
+
+
         public override bool OnCalloutAccepted()
         {
             Game.LogTrivial("[TornadoCallouts LOG]: Store Altercation callout accepted");
@@ -116,7 +127,7 @@ namespace TornadoCallouts.Callouts
 
             // Suspect 1 blip and gender for speech.
             SuspectBlip1 = Suspect1.AttachBlip();
-            SuspectBlip1.Color = System.Drawing.Color.Purple;
+            SuspectBlip1.Color = System.Drawing.Color.Green;
             SuspectBlip1.IsRouteEnabled = true;
 
             if (Suspect1.IsMale) malefemaleSuspect1 = "sir"; else malefemaleSuspect1 = "ma'am";
@@ -129,7 +140,7 @@ namespace TornadoCallouts.Callouts
 
             // Suspect 2 blip and gender for speech.
             SuspectBlip2 = Suspect2.AttachBlip();
-            SuspectBlip2.Color = System.Drawing.Color.HotPink;
+            SuspectBlip2.Color = System.Drawing.Color.Red;
 
             if (Suspect2.IsMale) malefemaleSuspect2 = "sir"; else malefemaleSuspect2 = "ma'am";
 
@@ -150,6 +161,10 @@ namespace TornadoCallouts.Callouts
 
             return base.OnCalloutAccepted();
         }
+
+
+
+
         public override void Process()
         {
             base.Process();
@@ -165,7 +180,7 @@ namespace TornadoCallouts.Callouts
             // Suspect 1 conversation
             if (Game.LocalPlayer.Character.DistanceTo(Suspect1) <= 5f && !Suspect1ConversationFinished && !Suspect2ConversationFinished && !ClerkConversationFinished)
             {
-                Game.DisplayHelp("Press ~y~Y ~s~to talk to ~h~~p~Suspect 1.", false);
+                Game.DisplayHelp("Press ~y~Y ~s~to talk to ~h~~g~Suspect 1 (green blip).", false);
 
                 if (Game.IsKeyDown(Keys.Y))
                 {
@@ -214,7 +229,7 @@ namespace TornadoCallouts.Callouts
             // Suspect 2 conversation
             if (Game.LocalPlayer.Character.DistanceTo(Suspect2) <= 5f && Suspect1ConversationFinished && !Suspect2ConversationFinished && !ClerkConversationFinished)
             {
-                Game.DisplayHelp("Press ~y~Y ~s~to talk to ~h~~q~Suspect 2.", false);
+                Game.DisplayHelp("Press ~y~Y ~s~to talk to ~h~~r~Suspect 2 (red blip).", false);
 
                 if (Game.IsKeyDown(Keys.Y))
                 {
@@ -265,7 +280,7 @@ namespace TornadoCallouts.Callouts
             // Store Clerk conversation
             if (Game.LocalPlayer.Character.DistanceTo(Clerk) <= 5f && Suspect1ConversationFinished && Suspect2ConversationFinished && !ClerkConversationFinished)
             {
-                Game.DisplayHelp("Press ~y~Y ~s~to talk to the ~h~~y~Store Clerk.", false);
+                Game.DisplayHelp("Press ~y~Y ~s~to talk to ~h~~y~the Clerk (yellow blip).", false);
 
                 if (Game.IsKeyDown(Keys.Y))
                 {
@@ -342,6 +357,10 @@ namespace TornadoCallouts.Callouts
                 End();
             }
         }
+
+
+
+
         public override void End()
         {
             base.End();

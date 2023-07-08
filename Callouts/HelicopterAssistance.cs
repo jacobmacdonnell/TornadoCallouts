@@ -6,6 +6,7 @@ using LSPD_First_Response.Mod.Callouts;
 using LSPD_First_Response.Engine.Scripting.Entities;
 using CalloutInterfaceAPI;
 using LSPD_First_Response.Engine;
+using System.Drawing;
 
 namespace TornadoCallouts.Callouts
 {
@@ -97,10 +98,9 @@ namespace TornadoCallouts.Callouts
             SuspectBlip.Delete(); // Hide it initially
 
             SearchArea = SpawnPoint.Around2D(1f, 2f);
+           
 
- 
-
-            lastBlipUpdateTime = DateTime.Now;
+                       lastBlipUpdateTime = DateTime.Now;
 
             Suspect.Tasks.CruiseWithVehicle(20f, VehicleDrivingFlags.Emergency);
 
@@ -131,11 +131,9 @@ namespace TornadoCallouts.Callouts
                 }
                 else
                 {
-                    if ((DateTime.Now - lastBlipUpdateTime).TotalSeconds >= 10)
+                    if ((DateTime.Now - lastBlipUpdateTime).TotalSeconds >= 15)
                     {
-                        SearchArea = Suspect.Around2D
-
-
+                        SearchArea = Suspect.Position.Around2D(1f, 2f);
                         lastBlipUpdateTime = DateTime.Now;
                     }
                 }
@@ -159,6 +157,7 @@ namespace TornadoCallouts.Callouts
                 }
             }
         }
+
 
 
         public override void End()
