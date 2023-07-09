@@ -90,6 +90,7 @@
     <Compile Include="Stuff\Vector3Extension.cs" />
     <Compile Include="Callouts\DrugOverdose.cs" />
     <Compile Include="Stuff\UltimateBackupWrapper.cs" />
+    <Compile Include="Callouts\StudentsFighting.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

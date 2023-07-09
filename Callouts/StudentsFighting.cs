@@ -33,68 +33,9 @@ namespace TornadoCallouts.Callouts
                new Vector3(-1473f, 240f, 55f), // University of San Andreas, Los Santos (Richman District)
         };
 
-        public override bool OnBeforeCalloutDisplayed()
-        {
-            List<Vector3> validSpawnLocations = new List<Vector3>();
 
-            // Check the distance to each spawn location
-            foreach (var location in spawnLocations)
-            {
-                float distance = Game.LocalPlayer.Character.Position.DistanceTo(location);
-                if (distance < MaxDistance)
-                {
-                    validSpawnLocations.Add(location);
-                }
-            }
 
-            if (validSpawnLocations.Count > 0)
-            {
-                // Select a random spawn location from the valid locations
-                Spawnpoint = validSpawnLocations[rand.Next(validSpawnLocations.Count)];
 
-                ShowCalloutAreaBlipBeforeAccepting(Spawnpoint, 50f);
-                AddMinimumDistanceCheck(100f, Spawnpoint);
-                CalloutMessage = "Students Fighting";
-                CalloutPosition = Spawnpoint;
-                LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_04 CRIME_ASSAULT_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_01", Spawnpoint);
-                return base.OnBeforeCalloutDisplayed();
-            }
-
-            // If none of the spawn locations were within the maximum distance, do not display the callout
-            return false;
-        }
-
-        public override bool OnCalloutAccepted()
-        {
-            Game.LogTrivial("[TornadoCallouts LOG]: Students Fighting callout accepted");
-
-            CalloutInterfaceAPI.Functions.SendMessage(this, "Students at the university are reporting two students are currently fighting. Call backup if needed. Approach with caution.");
-
-            // List of ped model names
-            pedModels = new List<string>()
-            {   
-               // Male Student Peds
-               "a_m_y_hipster_01", "a_m_y_hipster_02", "a_m_y_hipster_03",
-               "a_m_y_indian_01", "a_m_y_epsilon_02", "a_m_y_epsilon_01",
-               "a_m_y_vinewood_02", "a_m_y_vinewood_01", "a_m_y_vinewood_04", "a_m_y_vinewood_03",
-            };
-
-            Game.LogTrivial("[TornadoCallouts LOG]: About to create students and bystanders");
-
-            CreateStudent(ref Student1, ref Student1Blip); // Spawning the first student involved in the fight
-            CreateStudent(ref Student2, ref Student2Blip); // Spawning the second student involved in the fight
-            CreateBystanders(); // Spawning bystanders around the fighting students
-
-            Game.LogTrivial("[TornadoCallouts LOG]: Students and bystanders created");
-
-            Searcharea = Spawnpoint.Around2D(1f, 2f);
-
-            Game.LogTrivial("[TornadoCallouts LOG]: Searcharea created");
-
-            FightCreated = false;
-
-            return base.OnCalloutAccepted();
-        }
 
         private void CreateStudent(ref Ped student, ref Blip studentBlip)
         {
@@ -115,6 +56,10 @@ namespace TornadoCallouts.Callouts
                 studentBlip.IsRouteEnabled = true;
             }
         }
+
+
+
+
         private void CreateBystanders()
         {
             Vector3 center = Spawnpoint; // Center of the circle where the students are fighting
@@ -148,10 +93,87 @@ namespace TornadoCallouts.Callouts
                 blips.Add(blip); // Add the blip to the list
             }
         }
+
+
+
+
+        public override bool OnBeforeCalloutDisplayed()
+        {
+            List<Vector3> validSpawnLocations = new List<Vector3>();
+
+            // Check the distance to each spawn location
+            foreach (var location in spawnLocations)
+            {
+                float distance = Game.LocalPlayer.Character.Position.DistanceTo(location);
+                if (distance < MaxDistance)
+                {
+                    validSpawnLocations.Add(location);
+                }
+            }
+
+            if (validSpawnLocations.Count > 0)
+            {
+                // Select a random spawn location from the valid locations
+                Spawnpoint = validSpawnLocations[rand.Next(validSpawnLocations.Count)];
+
+                ShowCalloutAreaBlipBeforeAccepting(Spawnpoint, 50f);
+                AddMinimumDistanceCheck(100f, Spawnpoint);
+                CalloutMessage = "Students Fighting";
+                CalloutPosition = Spawnpoint;
+                LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_04 CRIME_ASSAULT_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_01", Spawnpoint);
+                return base.OnBeforeCalloutDisplayed();
+            }
+
+            // If none of the spawn locations were within the maximum distance, do not display the callout
+            return false;
+        }
+
+
+
+
+        public override bool OnCalloutAccepted()
+        {
+            Game.LogTrivial("[TornadoCallouts LOG]: Students Fighting callout accepted");
+
+            CalloutInterfaceAPI.Functions.SendMessage(this, "Students at the university are reporting two students are currently fighting. Call backup if needed. Approach with caution.");
+
+            // List of ped model names
+            pedModels = new List<string>()
+            {   
+               // Male Student Peds
+               "a_m_y_hipster_01", "a_m_y_hipster_02", "a_m_y_hipster_03",
+               "a_m_y_indian_01", "a_m_y_epsilon_02", "a_m_y_epsilon_01",
+               "a_m_y_vinewood_02", "a_m_y_vinewood_01", "a_m_y_vinewood_04", "a_m_y_vinewood_03",
+            };
+
+            Game.LogTrivial("[TornadoCallouts LOG]: About to create students and bystanders");
+
+            CreateStudent(ref Student1, ref Student1Blip); // Spawning the first student involved in the fight
+            CreateStudent(ref Student2, ref Student2Blip); // Spawning the second student involved in the fight
+            CreateBystanders(); // Spawning bystanders around the fighting students
+
+            Game.LogTrivial("[TornadoCallouts LOG]: Students and bystanders created");
+
+            Searcharea = Spawnpoint.Around2D(1f, 2f);
+
+            Game.LogTrivial("[TornadoCallouts LOG]: Searcharea created");
+
+            FightCreated = false;
+
+            return base.OnCalloutAccepted();
+        }
+
+
+
+
+
         public bool ShouldEndCallout()
         {
             return Student1.IsDead || Student2.IsDead || Game.LocalPlayer.Character.IsDead || !Student1.Exists() || !Student2.Exists() || Student1.IsCuffed || Student2.IsCuffed || Game.IsKeyDown(IniFile.EndCall);
         }
+
+
+
 
         public override void Process()
         {
@@ -182,6 +204,9 @@ namespace TornadoCallouts.Callouts
                 End();
             }
         }
+
+
+
         public override void End()
         {
             base.End();

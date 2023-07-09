@@ -60,7 +60,6 @@ namespace TornadoCallouts.Callouts
             new Vector3(999f, 999f, 999f), // Tataviam Mountains – 24/7 Supermarket
         };
 
-dr
 
         public override bool OnBeforeCalloutDisplayed()
         {
