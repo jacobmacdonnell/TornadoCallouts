@@ -180,7 +180,7 @@ namespace TornadoCallouts.Callouts
             base.Process();
 
             // Start the fight between the two students if the player is close enough
-            if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Student1) <= 350f)
+            if (!FightCreated && Game.LocalPlayer.Character.DistanceTo(Student1) <= 500f)
             {
                 Student1.Tasks.FightAgainst(Student2);
                 Student2.Tasks.FightAgainst(Student1);

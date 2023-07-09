@@ -23,16 +23,21 @@ namespace TornadoCallouts.Callouts
         private LHandle Pursuit;
         private bool PursuitCreated = false;
 
+
+
+
         public override bool OnBeforeCalloutDisplayed()
         {
             SpawnPoint = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around(250f));
             ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, 50f);
             CalloutPosition = SpawnPoint;
-            CalloutMessage = "Helicopter Assistance Required";
+            CalloutMessage = "Air 1 Requesting Officer Assistance";
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_02", SpawnPoint);
 
             return base.OnBeforeCalloutDisplayed();
         }
+
+
 
         public override bool OnCalloutAccepted()
         {
@@ -112,6 +117,8 @@ namespace TornadoCallouts.Callouts
 
             return base.OnCalloutAccepted();
         }
+
+
 
         public override void Process()
         {
